@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Sistema TCC</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== Painel esquerdo decorativo ===== -->
+        <div class="painel-esquerdo">
+            <div class="bolha bolha-1"></div>
+            <div class="bolha bolha-2"></div>
+            <div class="bolha bolha-3"></div>
+
+            <div class="marca">
+                <div class="marca-icone">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </div>
+                <span class="marca-nome">Sistema TCC</span>
+            </div>
+
+            <div class="painel-hero">
+                <h1>Bem-vindo<br><span>de volta!</span></h1>
+                <p>Entre com suas credenciais para acessar a plataforma e continuar de onde parou.</p>
+            </div>
+
+            <div class="recursos">
+                <div class="recurso-item">
+                    <div class="recurso-icone">🔒</div>
+                    <div class="recurso-texto">
+                        <strong>Acesso seguro</strong>
+                        <span>Sessão protegida por criptografia</span>
+                    </div>
+                </div>
+                <div class="recurso-item">
+                    <div class="recurso-icone">⚡</div>
+                    <div class="recurso-texto">
+                        <strong>Acesso rápido</strong>
+                        <span>Entre em menos de 30 segundos</span>
+                    </div>
+                </div>
+                <div class="recurso-item">
+                    <div class="recurso-icone">🎯</div>
+                    <div class="recurso-texto">
+                        <strong>Suporte dedicado</strong>
+                        <span>Equipe disponível 24/7</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="painel-rodape">© 2026 Sistema TCC. Todos os direitos reservados.</div>
+        </div>
+
+        <!-- ===== Painel direito — formulário ===== -->
+        <div class="painel-direito">
+            <div class="form-wrapper">
+
+                <div class="form-header">
+                    <h2>Entrar na conta</h2>
+                    <p>Insira seu e-mail e senha para continuar</p>
+                </div>
+
+                <form action="login.php" method="post" id="formLogin">
+
+                    <div class="campo">
+                        <label>E-mail</label>
+                        <input type="email" name="email" id="email" placeholder="seuemail@exemplo.com" required autocomplete="email">
+                    </div>
+
+                    <div class="campo campo-senha-wrap">
+                        <label>Senha</label>
+                        <div class="campo_senha">
+                            <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required autocomplete="current-password">
+                            <img id="olho" src="olho.png" alt="Ver senha">
+                        </div>
+                    </div>
+
+                    <div class="linha-esqueci">
+                        <a href="recuperar-senha.html" class="link-esqueci">Esqueci minha senha</a>
+                    </div>
+
+                    <div id="erro-login" class="erro-msg" style="display:none;">
+                        E-mail ou senha incorretos. Tente novamente.
+                    </div>
+
+                    <button type="submit" class="botao">Entrar</button>
+
+                </form>
+
+                <div class="divisor">
+                    <span>ou</span>
+                </div>
+
+                <p class="link-cadastro">
+                    Não tem uma conta? <a href="Cadastro.html">Criar conta grátis</a>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

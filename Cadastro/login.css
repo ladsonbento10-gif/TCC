@@ -9,16 +9,16 @@
 }
 
 :root {
-    --verde:        #16a34a;
-    --verde-escuro: #0f5c2e;
-    --verde-hover:  #15803d;
-    --verde-borda:  #d1e8d4;
-    --verde-muted:  #5a7560;
-    --fundo:        #f4f7f4;
+    --verde:        #1f9c50;
+    --verde-escuro: #0c4f26;
+    --verde-hover:  #157a3d;
+    --verde-borda:  #d8e7dc;
+    --verde-muted:  #718078;
+    --fundo:        #edf7f0;
     --branco:       #ffffff;
-    --texto:        #1a2b1a;
-    --placeholder:  #9db8a0;
-    --label:        #4a6650;
+    --texto:        #173322;
+    --placeholder:  #9fc2ab;
+    --label:        #405048;
     --erro:         #dc2626;
     --radius:       14px;
 }
@@ -42,7 +42,7 @@ body {
 /* Painel esquerdo */
 .painel-esquerdo {
     width: 42%;
-    background: linear-gradient(145deg, var(--verde-escuro) 0%, var(--verde) 45%, #4ade80 100%);
+    background: linear-gradient(145deg, var(--verde-escuro) 0%, var(--verde) 45%, #5fc985 100%);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -66,9 +66,9 @@ body {
     border-radius: 50%;
     pointer-events: none;
 }
-.bolha-1 { top: -100px; left: -80px;  width: 360px; height: 360px; background: radial-gradient(circle, rgba(134,239,172,0.22), transparent); }
-.bolha-2 { top: 45%;   right: -80px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(167,243,208,0.16), transparent); }
-.bolha-3 { bottom: -80px; left: 60px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(187,247,208,0.12), transparent); }
+.bolha-1 { top: -100px; left: -80px;  width: 360px; height: 360px; background: radial-gradient(circle, rgba(95, 201, 133,0.22), transparent); }
+.bolha-2 { top: 45%;   right: -80px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(151, 214, 178,0.16), transparent); }
+.bolha-3 { bottom: -80px; left: 60px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(190, 230, 205,0.12), transparent); }
 
 .marca {
     display: flex;
@@ -226,7 +226,7 @@ input[type="text"] {
 input::placeholder { color: var(--placeholder); }
 input:focus {
     border-color: var(--verde);
-    box-shadow: 0 0 0 3px rgba(22,163,74,0.10);
+    box-shadow: 0 0 0 3px rgba(31, 156, 80,0.10);
 }
 
 /* ===== 6. Campo senha ===== */
@@ -289,9 +289,9 @@ input:focus {
     letter-spacing: 0.02em;
     cursor: pointer;
     transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-    box-shadow: 0 4px 14px rgba(22,163,74,0.30);
+    box-shadow: 0 4px 14px rgba(31, 156, 80,0.30);
 }
-.botao:hover  { background: var(--verde-hover); box-shadow: 0 6px 18px rgba(22,163,74,0.38); }
+.botao:hover  { background: var(--verde-hover); box-shadow: 0 6px 18px rgba(31, 156, 80,0.38); }
 .botao:active { transform: scale(0.98); }
 
 /* ===== 10. Divisor ===== */
@@ -300,7 +300,7 @@ input:focus {
     align-items: center;
     gap: 12px;
     margin: 24px 0;
-    color: #b0c8b4;
+    color: #9fc2ab;
     font-size: 12px;
 }
 .divisor::before,

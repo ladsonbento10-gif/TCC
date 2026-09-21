@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 html,
@@ -351,10 +353,10 @@ main {
 
 /* Administrador */
 .botao-admin {
-    background: #1e303e;
+    background: #157a3d;
 }
 .botao-admin:hover {
-    background: #263c4d;
+    background: #1a8f48;
 }
 .botao-admin .botao-icone {
     background: #f6c358;
@@ -366,10 +368,10 @@ main {
 
 /* Cliente */
 .botao-cliente {
-    background: #276b98;
+    background: #1f4d3c;
 }
 .botao-cliente:hover {
-    background: #2e7bab;
+    background: #3c6e52;
 }
 
 /* =========================================================

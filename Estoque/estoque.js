@@ -1,4 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.querySelector(".sidebar");
+
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("collapsed");
+            localStorage.setItem("menuAdminRecolhido", sidebar.classList.contains("collapsed") ? "1" : "0");
+        });
+
+        if (localStorage.getItem("menuAdminRecolhido") === "1") {
+            sidebar.classList.add("collapsed");
+        }
+    }
+
+    document.querySelectorAll(".menu a[data-aba]").forEach(function (link) {
+        link.addEventListener("click", function () {
+            const aba = document.querySelector('.aba[data-painel="' + this.dataset.aba + '"]');
+            if (aba) aba.click();
+        });
+    });
+
     const abas = document.querySelectorAll(".aba");
 
     abas.forEach(function (aba) {

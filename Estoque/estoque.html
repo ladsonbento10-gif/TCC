@@ -4,10 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estoque - Mercado TCC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="estoque.css">
     <script src="estoque.js"></script>
 </head>
 <body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-shopping-cart"></i>
+            <span>TCC</span>
+            <small>MERCADO KLP.NUNES</small>
+        </div>
+
+        <ul class="menu">
+            <li><a href="../Administrador/Area_do_Admin.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li class="active"><a href="estoque.html"><i class="fas fa-boxes"></i><span>Estoque</span></a></li>
+            <li><a href="#painel-lista" data-aba="lista"><i class="fas fa-cube"></i><span>Produtos</span></a></li>
+            <li><a href="#painel-categoria" data-aba="categoria"><i class="fas fa-tags"></i><span>Categorias</span></a></li>
+            <li><a href="#painel-marca" data-aba="marca"><i class="fas fa-copyright"></i><span>Marcas</span></a></li>
+            <li><a href="../Administrador/Clientes.html"><i class="fas fa-users"></i><span>Clientes</span></a></li>
+            <li><a href="../Funcionario/funcionario.html"><i class="fas fa-user-tie"></i><span>Funcionários</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i><span>Relatórios</span></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i><span>Configurações</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="../Administrador/logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="top-header">
+            <button id="menuToggle" class="menu-toggle"><i class="fas fa-bars"></i></button>
+            <div class="header-title">
+                <h1>Estoque</h1>
+            </div>
+            <div class="header-actions">
+                <div class="user-profile">
+                    <i class="far fa-user-circle"></i>
+                    <span>Administrador</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-body">
     <div class="container">
         <div class="abas">
             <button class="aba ativa" data-painel="produto">  📦 Produto </button>
@@ -151,6 +193,8 @@
             <div id="lista-produtos"></div>
         </section>
     </div>
-</div>
+    </div>
+        </div>
+    </main>
 </body>
 </html>

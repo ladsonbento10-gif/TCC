@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque - Mercado TCC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="estoque.css">
+    <script src="estoque.js"></script>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-shopping-cart"></i>
+            <span>TCC</span>
+            <small>MERCADO KLP.NUNES</small>
+        </div>
+
+        <ul class="menu">
+            <li><a href="../Administrador/Area_do_Admin.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li class="active"><a href="estoque.html"><i class="fas fa-boxes"></i><span>Estoque</span></a></li>
+            <li><a href="#painel-lista" data-aba="lista"><i class="fas fa-cube"></i><span>Produtos</span></a></li>
+            <li><a href="#painel-categoria" data-aba="categoria"><i class="fas fa-tags"></i><span>Categorias</span></a></li>
+            <li><a href="#painel-marca" data-aba="marca"><i class="fas fa-copyright"></i><span>Marcas</span></a></li>
+            <li><a href="../Administrador/Clientes.html"><i class="fas fa-users"></i><span>Clientes</span></a></li>
+            <li><a href="../Funcionario/funcionario.html"><i class="fas fa-user-tie"></i><span>Funcionários</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i><span>Relatórios</span></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i><span>Configurações</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="../Administrador/logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="top-header">
+            <button id="menuToggle" class="menu-toggle"><i class="fas fa-bars"></i></button>
+            <div class="header-title">
+                <h1>Estoque</h1>
+            </div>
+            <div class="header-actions">
+                <div class="user-profile">
+                    <i class="far fa-user-circle"></i>
+                    <span>Administrador</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-body">
+    <div class="container">
+        <div class="abas">
+            <button class="aba ativa" data-painel="produto">  📦 Produto </button>
+            <button class="aba" data-painel="marca"> 🏷️ Marca </button>
+            <button class="aba" data-painel="categoria"> 📂 Categoria </button>
+            <button class="aba" data-painel="lista"> 📋 Produtos </button>
+        </div>
+
+        <div class="card">
+            <section id="painel-produto" class="painel ativo">
+                <div class="titulo">
+                    <h1>Cadastro de Produtos</h1>
+                    <p> Sistema de Controle de Estoque </p>
+                </div>
+
+                <div id="mensagem-produto"></div>
+
+                <form id="form-produto">
+                    <input type="hidden" name="acao" value="salvar_produto">
+
+                    <div class="form-group">
+                        <label for="nome_produto"> Nome do Produto </label>
+                        <input type="text" id="nome_produto" name="nome_produto" placeholder="Digite o nome do produto" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descricao"> Descrição </label>
+                        <input type="text" id="descricao" name="descricao" placeholder="Digite a descrição">
+                    </div>
+
+                    <div class="linha">
+                        <div class="form-group">
+                            <label for="marca_id"> Marca </label>
+
+                        <select id="marca_id" name="marca_id" required >
+                            <option value=""> Carregando marcas... </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoria_id"> Categoria </label>
+
+                        <select id="categoria_id" name="categoria_id" required >
+                            <option value=""> Carregando categorias... </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="linha">
+                    <div class="form-group">
+                        <label for="quantidade"> Quantidade </label>
+
+                        <input type="number" id="quantidade" name="quantidade" min="0" value="0" required >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preco"> Preço (R$) </label>
+
+                        <input type="number"id="preco" name="preco" step="0.01" min="0" placeholder="0,00" required >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label> Status </label>
+                    
+                    <div class="status-group">
+                        <label class="toggle">
+
+                            <input type="checkbox" id="toggle-ativo" checked >
+                            <span class="toggle-slider"></span>
+                        </label>
+
+                        <span class="status-label"> Produto
+                            <strong id="status-texto"> Ativo </strong>
+                        </span>
+
+                        <input type="hidden" name="ativo" id="ativo" value="1">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-principal"> Salvar Produto</button>
+            </form>
+        </section>
+
+        <section id="painel-marca" class="painel">
+
+            <div class="titulo">
+                <h1>Cadastro de Marcas</h1>
+                <p> Adicione novas marcas ao sistema </p>
+            </div>
+
+            <div id="mensagem-marca"></div>
+
+            <form id="form-marca">
+                <input type="hidden" name="acao" value="salvar_marca">
+
+                <div class="form-group">
+                    <label for="nome_marca"> Nome da Marca </label>
+                    <input type="text" id="nome_marca" name="nome" placeholder="Ex: Coca-Cola" required>
+                </div>
+
+                <button type="submit" class="btn-principal"> Salvar Marca </button>
+            </form>
+
+            <div class="lista-tags">
+                <h3> Marcas cadastradas </h3>
+                <div id="lista-marcas" class="tags"></div>
+            </div>
+        </section>
+
+        <section id="painel-categoria" class="painel">
+            <div class="titulo">
+                <h1>Cadastro de Categorias</h1>
+                <p> Adicione novas categorias ao sistema </p>
+            </div>
+
+            <div id="mensagem-categoria"></div>
+
+            <form id="form-categoria">
+                <input type="hidden" name="acao" value="salvar_categoria">
+
+                <div class="form-group">
+                    <label for="nome_categoria"> Nome da Categoria </label>
+                    <input type="text" id="nome_categoria" name="nome" placeholder="Ex: Bebidas" required >
+                </div>
+
+                <button type="submit" class="btn-principal"> Salvar Categoria </button>
+            </form>
+
+            <div class="lista-tags">
+                <h3> Categorias cadastradas </h3>
+                <div id="lista-categorias" class="tags"></div>
+            </div>
+        </section>
+
+        <section id="painel-lista" class="painel">
+            <div class="titulo">
+                <h1> Produtos Cadastrados </h1>
+                <p> Controle dos produtos do estoque </p>
+            </div>
+            <div id="lista-produtos"></div>
+        </section>
+    </div>
+    </div>
+        </div>
+    </main>
+</body>
+</html>

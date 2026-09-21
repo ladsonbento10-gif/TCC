@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Sistema de Gerenciamento de MERCADO KLP.NUNES </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="admin.css">
+    <script src="admin.js"> </script>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-shopping-cart"></i>
+            <span>TCC</span>
+            <small>MERCADO KLP.NUNES</small>
+        </div>
+
+        <ul class="menu">
+            <li class="active"><a href="#"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li><a href="../Estoque/estoque.html"><i class="fas fa-boxes"></i><span>Estoque</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-lista"><i class="fas fa-cube"></i><span>Produtos</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-categoria"><i class="fas fa-tags"></i><span>Categorias</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-marca"><i class="fas fa-copyright"></i><span>Marcas</span></a></li>
+            <li><a href="Clientes.html"><i class="fas fa-users"></i><span>Clientes</span></a></li>
+            <li><a href="../Funcionario/funcionario.html"><i class="fas fa-user-tie"></i><span>Funcionários</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i><span>Relatórios</span></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i><span>Configurações</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="logout.php" class="logout-btn" id="btnSair"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <header class="top-header">
+            <button id="menuToggle" class="menu-toggle"><i class="fas fa-bars"></i></button>
+            <div class="search-bar">
+                <input type="text" placeholder="Pesquisar...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="header-actions">
+                <div class="notifications">
+                    <i class="far fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+                <div class="user-profile">
+                    <i class="far fa-user-circle"></i>
+                    <span id="nomeAdminHeader">Administrador</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-body">
+            <div class="welcome-banner">
+                <h2>Olá, <span id="nomeAdminBoasVindas">Administrador</span>! 👋</h2>
+                <p>Bem-vindo ao painel administrativo do sistema.</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon blue"><i class="fas fa-cube"></i></div>
+                    <div class="card-info">
+                        <span class="card-title">PRODUTOS</span>
+                        <h3>325</h3>
+                        <small>Itens cadastrados</small>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon green"><i class="fas fa-users"></i></div>
+                    <div class="card-info">
+                        <span class="card-title">CLIENTES</span>
+                        <h3>108</h3>
+                        <small>Clientes cadastrados</small>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon purple"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="card-info">
+                        <span class="card-title">PEDIDOS</span>
+                        <h3>52</h3>
+                        <small>Pedidos este mês</small>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon orange"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="card-info">
+                        <span class="card-title">ESTOQUE BAIXO</span>
+                        <h3>7</h3>
+                        <small>Itens com estoque baixo</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2-col">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>VENDAS DOS ÚLTIMOS 6 MESES</h3>
+                        <select class="select-sm">
+                            <option>6 meses</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>PRODUTOS RECENTES</h3>
+                        <a href="#" class="btn-link">Ver todos</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>PRODUTO</th>
+                                    <th>MARCA</th>
+                                    <th>CATEGORIA</th>
+                                    <th>ESTOQUE</th>
+                                    <th>STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1256</td>
+                                    <td>Filtro de Óleo</td>
+                                    <td>Bosch</td>
+                                    <td>Filtros</td>
+                                    <td>45</td>
+                                    <td><span class="status-badge success">Em estoque</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#1255</td>
+                                    <td>Pastilha de Freio</td>
+                                    <td>TRW</td>
+                                    <td>Freios</td>
+                                    <td>12</td>
+                                    <td><span class="status-badge warning">Estoque baixo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#1254</td>
+                                    <td>Bateria 60Ah</td>
+                                    <td>Moura</td>
+                                    <td>Elétricos</td>
+                                    <td>8</td>
+                                    <td><span class="status-badge warning">Estoque baixo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#1253</td>
+                                    <td>Óleo 5W30</td>
+                                    <td>Mobil</td>
+                                    <td>Lubrificantes</td>
+                                    <td>32</td>
+                                    <td><span class="status-badge success">Em estoque</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#1252</td>
+                                    <td>Correia Dentada</td>
+                                    <td>Gates</td>
+                                    <td>Motor</td>
+                                    <td>15</td>
+                                    <td><span class="status-badge success">Em estoque</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2-col bottom-grid">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>ATIVIDADES RECENTES</h3>
+                    </div>
+                    <ul class="activity-list">
+                        <li>
+                            <div class="activity-icon blue"><i class="fas fa-cube"></i></div>
+                            <div class="activity-details">
+                                <p>Novo produto cadastrado: Filtro de Ar Esportivo</p>
+                            </div>
+                            <span class="activity-time">Hoje, 10:23</span>
+                        </li>
+                        <li>
+                            <div class="activity-icon green"><i class="fas fa-shopping-cart"></i></div>
+                            <div class="activity-details">
+                                <p>Pedido #5234 realizado por João da Silva</p>
+                            </div>
+                            <span class="activity-time">Hoje, 09:15</span>
+                        </li>
+                        <li>
+                            <div class="activity-icon orange"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="activity-details">
+                                <p>Estoque baixo: Pastilha de Freio</p>
+                            </div>
+                            <span class="activity-time">Ontem, 16:45</span>
+                        </li>
+                        <li>
+                            <div class="activity-icon purple"><i class="fas fa-user-plus"></i></div>
+                            <div class="activity-details">
+                                <p>Novo cliente cadastrado: Maria Oliveira</p>
+                            </div>
+                            <span class="activity-time">Ontem, 11:30</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="promo-banner">
+                    <div class="promo-content">
+                        <span class="promo-kicker">MERCADO KLP.NUNES</span>
+                        <h2>Controle seu mercado<br>de forma simples,<br>rápida e eficiente!</h2>
+                        <p>Produtos, estoque e clientes em um só lugar.</p>
+                    </div>
+                    <div class="promo-illustration" aria-hidden="true">🛒<span>🍎 🥦</span></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro — Sistema TCC</title>
+    <link rel="stylesheet" href="cadastro.css">
+    <script src="cadastro.js" defer></script>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ===== Painel esquerdo decorativo ===== -->
+        <div class="painel-esquerdo">
+            <div class="bolha bolha-1"></div>
+            <div class="bolha bolha-2"></div>
+            <div class="bolha bolha-3"></div>
+
+            <!-- Logo -->
+            <div class="marca">
+                <div class="marca-icone">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </div>
+                <span class="marca-nome">Sistema TCC</span>
+            </div>
+
+            <!-- Hero text -->
+            <div class="painel-hero">
+                <h1>Bem-vindo ao<br><span>nosso sistema</span></h1>
+                <p>Crie sua conta e tenha acesso completo à plataforma. Rápido, seguro e fácil de usar.</p>
+            </div>
+
+            <!-- Recursos -->
+            <div class="recursos">
+                <div class="recurso-item">
+                    <div class="recurso-icone">🔒</div>
+                    <div class="recurso-texto">
+                        <strong>Dados 100% seguros</strong>
+                        <span>Criptografia de ponta a ponta</span>
+                    </div>
+                </div>
+                <div class="recurso-item">
+                    <div class="recurso-icone">⚡</div>
+                    <div class="recurso-texto">
+                        <strong>Acesso instantâneo</strong>
+                        <span>Cadastro em menos de 2 minutos</span>
+                    </div>
+                </div>
+                <div class="recurso-item">
+                    <div class="recurso-icone">🎯</div>
+                    <div class="recurso-texto">
+                        <strong>Suporte dedicado</strong>
+                        <span>Equipe disponível 24/7</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="painel-rodape">© 2026 Sistema TCC. Todos os direitos reservados.</div>
+        </div>
+
+        <!-- ===== Painel direito — formulário ===== -->
+        <div class="painel-direito">
+            <div class="form-wrapper">
+
+                <div class="form-header">
+                    <h2>Criar conta</h2>
+                    <p>Preencha os dados abaixo para se cadastrar</p>
+                </div>
+
+                <!-- Tabs de seleção de tipo -->
+                <div class="tabs">
+                    <button class="tab-btn ativo" onclick="selecionarTipo('administrador')">Administrador</button>
+                    <button class="tab-btn"       onclick="selecionarTipo('cliente')">Cliente</button>
+                </div>
+
+                <form action="cadastro.php" method="post">
+                    <input type="hidden" id="tipo_hidden" name="tipo_usuario" value="administrador">
+
+                    <!-- ===== FORMULÁRIO ADMINISTRADOR ===== -->
+                    <div id="campo_admin">
+
+                        <div class="grid">
+                            <div class="campo col-span-2">
+                                <label>Nome <strong>Completo</strong></label>
+                                <input type="text" name="nome" placeholder="Digite seu nome completo" required>
+                            </div>
+                            <div class="campo">
+                                <label><strong>CPF</strong></label>
+                                <input type="text" name="cpf" placeholder="000.000.000-00" required>
+                            </div>
+                            <div class="campo">
+                                <label>Data de <strong>Nascimento</strong></label>
+                                <input type="date" name="data_nascimento" required>
+                            </div>
+                            <div class="campo col-span-2">
+                                <label><strong>Gmail</strong> Corporativo</label>
+                                <input type="email" name="email" placeholder="seuemail@empresa.com" required>
+                            </div>
+                            <div class="campo_senha">
+                                <label>Senha de <strong>Acesso</strong></label>
+                                <input type="password" id="senha" name="senha" placeholder="Crie sua senha" required>
+                                <img id="olho" src="olho.png" alt="Ver senha">
+                            </div>
+                            <div class="campo">
+                                <label><strong>Confirme</strong> a Senha</label>
+                                <input type="password" name="senha_confirmacao" placeholder="Repita a senha" required>
+                            </div>
+                            <div class="campo col-span-2">
+                                <label>Cargo</label>
+                                <select name="cargo_id" required>
+                                    <option value="">Selecione um cargo</option>
+                                    <option value="1">Administrador</option>
+                                    <option value="2">Gerente</option>
+                                    <option value="3">Funcionário</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="botao">Criar Conta de Administrador</button>
+                    </div>
+
+                    <!-- ===== FORMULÁRIO CLIENTE ===== -->
+                    <div id="campo_cliente" style="display:none;">
+
+                        <p class="section-title">Dados Pessoais</p>
+
+                        <div class="grid">
+                            <div class="campo col-span-2">
+                                <label>Nome <strong>Completo</strong></label>
+                                <input type="text" name="nome" placeholder="Digite seu nome completo" disabled>
+                            </div>
+                            <div class="campo">
+                                <label><strong>CPF</strong></label>
+                                <input type="text" name="cpf" placeholder="000.000.000-00" disabled>
+                            </div>
+                            <div class="campo">
+                                <label><strong>Gmail</strong></label>
+                                <input type="email" name="email" placeholder="seuemail@gmail.com" disabled>
+                            </div>
+                            <div class="campo">
+                                <label>Data de <strong>Nascimento</strong></label>
+                                <input type="date" name="data_nascimento" disabled>
+                            </div>
+                            <div class="campo">
+                                <label><strong>Telefone</strong></label>
+                                <input type="tel" name="telefone" placeholder="(00) 00000-0000" disabled>
+                            </div>
+                        </div>
+
+                        <p class="section-title">Endereço de Entrega</p>
+
+                        <div class="grid">
+                            <div class="campo">
+                                <label><strong>CEP</strong></label>
+                                <input type="text" name="cep" placeholder="00000-000" disabled>
+                            </div>
+                            <div class="campo">
+                                <label><strong>Endereço</strong></label>
+                                <input type="text" name="endereco" placeholder="Rua, Avenida..." disabled>
+                            </div>
+                            <div class="campo">
+                                <label>Número da <strong>Casa</strong></label>
+                                <input type="text" name="numero_casa" placeholder="Nº da casa" disabled>
+                            </div>
+                            <div class="campo">
+                                <label>Complemento</label>
+                                <input type="text" name="complemento" placeholder="Apto, Bloco..." disabled>
+                            </div>
+                            <div class="campo">
+                                <label><strong>Bairro</strong></label>
+                                <input type="text" name="bairro" placeholder="Seu bairro" disabled>
+                            </div>
+                            <div class="campo">
+                                <label><strong>Cidade</strong></label>
+                                <input type="text" name="cidade" placeholder="Sua cidade" disabled>
+                            </div>
+                            <div class="campo col-span-2">
+                                <label><strong>Estado</strong></label>
+                                <input type="text" name="estado" placeholder="Seu estado" disabled>
+                            </div>
+                            <input type="hidden" name="pais" value="Brasil">
+                        </div>
+
+                        <div class="checkbox">
+                            <input type="checkbox" disabled>
+                            <span class="link">Concordo em receber comunicações da empresa</span>
+                        </div>
+                        <div class="checkbox">
+                            <input type="checkbox" disabled>
+                            <span class="link">Confirmo a veracidade dos dados e aceito os <span>Termos de Uso</span> e <span>Política de Privacidade</span></span>
+                        </div>
+
+                        <p class="section-title" style="margin-top:28px;">Senha de Acesso</p>
+
+                        <div class="grid">
+                            <div class="campo_senha">
+                                <label>Criar <strong>Senha</strong></label>
+                                <input type="password" id="senha_cliente" name="senha" placeholder="Crie sua senha" disabled>
+                                <img id="olho_cliente" src="olho.png" alt="Ver senha">
+                            </div>
+                            <div class="campo">
+                                <label><strong>Confirme</strong> a Senha</label>
+                                <input type="password" name="senha_confirmacao" placeholder="Repita a senha" disabled>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="botao">Finalizar Cadastro</button>
+                    </div>
+
+                </form>
+
+                <p class="link-login">Já tem uma conta? <a href="login.html">Faça login aqui</a></p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

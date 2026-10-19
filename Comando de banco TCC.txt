@@ -1,0 +1,525 @@
+CREATE TABLE continentes (
+    id_continente INT AUTO_INCREMENT PRIMARY KEY,
+    nome_continente VARCHAR(200) NOT NULL UNIQUE,
+    codigo_iso CHAR(2) UNIQUE,
+    area_km2 DECIMAL(15,2) NOT NULL,
+    populacao_estimada BIGINT NOT NULL,
+    slug VARCHAR(50) NOT NULL UNIQUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE paises (
+    id_paises INT AUTO_INCREMENT PRIMARY KEY,
+    nome_paises VARCHAR(100) NOT NULL,
+    sigla_iso2 CHAR(2) NOT NULL UNIQUE,
+    sigla_iso3 CHAR(3) NOT NULL UNIQUE,
+    codigo_tel VARCHAR(5) NOT NULL,
+    continente_id INT NOT NULL,
+    CONSTRAINT fk_pais FOREIGN KEY (continente_id) REFERENCES continentes(id_continente)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE estados (
+    id_estado INT AUTO_INCREMENT PRIMARY KEY,
+    nome_estados VARCHAR(100) NOT NULL,
+    uf CHAR(2) NOT NULL,
+    pais_id INT NOT NULL,
+    CONSTRAINT fk_estado FOREIGN KEY (pais_id) REFERENCES paises(id_paises)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE cidades (
+    id_cidade INT AUTO_INCREMENT PRIMARY KEY,
+    nome_cidades VARCHAR(100) NOT NULL,
+    ibge_code INT NOT NULL,
+    estado_id INT NOT NULL,
+    CONSTRAINT fk_cidade FOREIGN KEY (estado_id) REFERENCES estados(id_estado)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE bairros (
+    id_bairro INT AUTO_INCREMENT PRIMARY KEY,
+    nome_bairro VARCHAR(100) NOT NULL,
+    cidade_id INT NOT NULL,
+    CONSTRAINT fk_bairro FOREIGN KEY (cidade_id) REFERENCES cidades(id_cidade)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE departamento (
+    id_departamento INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE cargo (
+    id_cargo INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    departamento_id INT NOT NULL,
+    CONSTRAINT fk_cargo_departamento FOREIGN KEY (departamento_id) REFERENCES departamento(id_departamento)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE usuario_admin (
+    id_admin INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    gmail VARCHAR(100) NOT NULL,
+    senha VARCHAR(100) NOT NULL,
+    cargo_id INT NOT NULL,
+    CONSTRAINT fk_usuario_admin_cargo FOREIGN KEY (cargo_id) REFERENCES cargo(id_cargo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE permissao (
+    id_permissao INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE cargo_permissao (
+    cargo_id INT,
+    permissao_id INT,
+    PRIMARY KEY (cargo_id, permissao_id),
+    CONSTRAINT fk_cp_cargo FOREIGN KEY (cargo_id) REFERENCES cargo(id_cargo),
+    CONSTRAINT fk_cp_permissao FOREIGN KEY (permissao_id) REFERENCES permissao(id_permissao)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE usuario_cliente (
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(11) NOT NULL,
+    gmail VARCHAR(100) NOT NULL,
+    data_nascimento DATE NOT NULL,
+    senha VARCHAR(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE tipo_fone (
+    id_tipo_fone INT AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(50)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE telefone_cliente (
+    id_telefone INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    dd_fone VARCHAR(3),
+    numero_fone VARCHAR(15),
+    tipo_fone_id INT,
+    CONSTRAINT fk_tel_cliente FOREIGN KEY (cliente_id) REFERENCES usuario_cliente(id_cliente) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_tel_tipo FOREIGN KEY (tipo_fone_id) REFERENCES tipo_fone(id_tipo_fone) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE endereco_cliente (
+    id_endereco INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    bairro_id INT NOT NULL,
+    rua VARCHAR(100),
+    numero VARCHAR(10),
+    complemento VARCHAR(100),
+    cep VARCHAR(10),
+    CONSTRAINT fk_end_cliente FOREIGN KEY (cliente_id) REFERENCES usuario_cliente(id_cliente) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_end_bairro FOREIGN KEY (bairro_id) REFERENCES bairros(id_bairro) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE categoria (
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE marca (
+    id_marca INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE estoque (
+    id_estoque INT AUTO_INCREMENT PRIMARY KEY,
+    nome_produto VARCHAR(150) NOT NULL,
+    descricao TEXT,
+    marca_id INT NOT NULL,
+    quantidade INT NOT NULL DEFAULT 0,
+    preco DECIMAL(10,2) NOT NULL,
+    categoria_id INT NOT NULL,
+    ativo BOOLEAN DEFAULT TRUE,
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ultima_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_estoque_categoria FOREIGN KEY (categoria_id) REFERENCES categoria(id_categoria) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_estoque_marca FOREIGN KEY (marca_id) REFERENCES marca(id_marca) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE forma_pagamento (
+    id_forma_pagamento INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE vendas (
+    id_vendas INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    data_venda TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    preco_total DECIMAL(10,2) DEFAULT 0,
+    forma_pagamento_id INT,
+    CONSTRAINT fk_vendas_cliente FOREIGN KEY (cliente_id) REFERENCES usuario_cliente(id_cliente) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_vendas_forma_pagamento FOREIGN KEY (forma_pagamento_id) REFERENCES forma_pagamento(id_forma_pagamento) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE itens_venda (
+    id_itens_venda INT AUTO_INCREMENT PRIMARY KEY,
+    venda_id INT NOT NULL,
+    produto_id INT NOT NULL,
+    quantidade INT,
+    preco_unitario DECIMAL(10,2),
+    CONSTRAINT fk_itens_venda_venda FOREIGN KEY (venda_id) REFERENCES vendas(id_vendas) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_itens_venda_produto FOREIGN KEY (produto_id) REFERENCES estoque(id_estoque) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE produto (
+    id_produto INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10,2) NOT NULL,
+    categoria_id INT NOT NULL,
+    marca_id INT NOT NULL,
+    ativo BOOLEAN DEFAULT TRUE,
+    CONSTRAINT fk_produto_categoria FOREIGN KEY (categoria_id) REFERENCES categoria(id_categoria),
+    CONSTRAINT fk_produto_marca FOREIGN KEY (marca_id) REFERENCES marca(id_marca)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE movimentacao_estoque (
+    id_movimentacao INT AUTO_INCREMENT PRIMARY KEY,
+    estoque_id INT NOT NULL,
+    quantidade INT NOT NULL,
+    tipo ENUM('entrada','saida') NOT NULL,
+    observacao TEXT,
+    data_movimentacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_mov_estoque FOREIGN KEY (estoque_id) REFERENCES estoque(id_estoque) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE log_sistema (
+    id_log INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    acao VARCHAR(255) NOT NULL,
+    data_hora DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Novos Comandos e Tabelas Adicionadas
+
+CREATE TABLE fornecedor (
+    id_fornecedor INT AUTO_INCREMENT PRIMARY KEY,
+    razao_social VARCHAR(150) NOT NULL,
+    nome_fantasia VARCHAR(150) DEFAULT NULL,
+    cnpj VARCHAR(18) NOT NULL UNIQUE,
+    email VARCHAR(100) DEFAULT NULL,
+    telefone VARCHAR(20) DEFAULT NULL,
+    ativo TINYINT(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE avaliacao_produto (
+    id_avaliacao INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    produto_id INT NOT NULL,
+    nota INT(1) NOT NULL,
+    comentario TEXT DEFAULT NULL,
+    data_avaliacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_aval_cliente FOREIGN KEY (cliente_id) REFERENCES usuario_cliente(id_cliente) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_aval_produto FOREIGN KEY (produto_id) REFERENCES estoque(id_estoque) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE comentario (
+    id_comentario INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    estoque_id INT NOT NULL,
+    texto TEXT NOT NULL,
+    data_comentario DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_coment_cliente FOREIGN KEY (cliente_id) REFERENCES usuario_cliente(id_cliente) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_coment_estoque FOREIGN KEY (estoque_id) REFERENCES estoque(id_estoque) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE compra_fornecedor (
+    id_compra INT AUTO_INCREMENT PRIMARY KEY,
+    fornecedor_id INT NOT NULL,
+    estoque_id INT NOT NULL,
+    quantidade INT NOT NULL,
+    preco_custo_unitario DECIMAL(10,2) NOT NULL,
+    data_compra DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('Pendente','Recebido','Cancelado') DEFAULT 'Pendente',
+    CONSTRAINT fk_cf_fornecedor FOREIGN KEY (fornecedor_id) REFERENCES fornecedor(id_fornecedor) ON UPDATE CASCADE,
+    CONSTRAINT fk_cf_estoque FOREIGN KEY (estoque_id) REFERENCES estoque(id_estoque) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE vendas 
+ADD COLUMN status_venda ENUM(
+    'Pendente',
+    'Aguardando pagamento',
+    'Pago',
+    'Cancelado',
+    'Estornado'
+) DEFAULT 'Pendente';
+
+CREATE TABLE `envios` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `venda_id` INT NOT NULL,
+    `status_envio` ENUM(
+        'A enviar',
+        'Preparando',
+        'Enviado',
+        'Em trânsito',
+        'Entregue',
+        'Problema no envio'
+    ) DEFAULT 'A enviar',
+    `codigo_rastreio` VARCHAR(100),
+    `data_envio` DATETIME NULL,
+    `data_entrega` DATETIME NULL,
+    `observacoes` TEXT,
+
+    CONSTRAINT `fk_envios_venda`
+        FOREIGN KEY (`venda_id`)
+        REFERENCES `venda` (`id_vendas`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+
+ALTER TABLE vendas 
+ADD COLUMN status_venda ENUM(
+    'Pendente',
+    'Aguardando pagamento',
+    'Pago',
+    'Cancelado',
+    'Estornado'
+) DEFAULT 'Pendente';
+
+CREATE TABLE `envios` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `venda_id` INT NOT NULL,
+    `status_envio` ENUM(
+        'A enviar',
+        'Preparando',
+        'Enviado',
+        'Em trânsito',
+        'Entregue',
+        'Problema no envio'
+    ) DEFAULT 'A enviar',
+    `codigo_rastreio` VARCHAR(100),
+    `data_envio` DATETIME NULL,
+    `data_entrega` DATETIME NULL,
+    `observacoes` TEXT,
+
+    CONSTRAINT `fk_envios_venda`
+        FOREIGN KEY (`venda_id`)
+        REFERENCES `venda` (`id_vendas`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE promocao (
+    id_promocao INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    descricao TEXT,
+    tipo_desconto ENUM('percentual', 'valor_fixo') NOT NULL,
+    valor_desconto DECIMAL(10,2) NOT NULL,
+    data_inicio DATETIME NOT NULL,
+    data_fim DATETIME NOT NULL,
+    status ENUM('Ativa', 'Inativa', 'Encerrada') DEFAULT 'Ativa'
+);
+
+CREATE TABLE cupom_desconto (
+    id_cupom INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(50) NOT NULL UNIQUE,
+    promocao_id INT NULL,
+    valor_minimo DECIMAL(10,2) DEFAULT 0.00,
+    limite_uso INT DEFAULT NULL,
+    quantidade_usada INT DEFAULT 0,
+    data_inicio DATETIME NOT NULL,
+    data_fim DATETIME NOT NULL,
+    status ENUM('Ativo', 'Inativo', 'Expirado') DEFAULT 'Ativo',
+
+    CONSTRAINT fk_cupom_promocao
+        FOREIGN KEY (promocao_id)
+        REFERENCES promocao (id_promocao)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE fornecedor(
+  id_fornecedor INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  razao_social VARCHAR(150) NOT NULL,
+  nome_fantasia VARCHAR(150) DEFAULT NULL,
+  cnpj VARCHAR(18) NOT NULL UNIQUE,
+  email VARCHAR(100) DEFAULT NULL,
+  telefone VARCHAR(20) DEFAULT NULL,
+  ativo TINYINT(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE compra_fornecedor(
+  id_compra INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  fornecedor_id INT(11) NOT NULL,
+  estoque_id INT(11) NOT NULL,
+  quantidade INT(11) NOT NULL,
+  preco_custo_unitario DECIMAL(10,2) NOT NULL,
+  data_compra DATETIME DEFAULT CURRENT_TIMESTAMP,
+  status ENUM('Pendente', 'Recebido', 'Cancelado') DEFAULT 'Pendente',
+    
+  KEY fk_cf_fornecedor (fornecedor_id),
+  KEY fk_cf_estoque (estoque_id),
+  CONSTRAINT fk_cf_fornecedor FOREIGN KEY (fornecedor_id) REFERENCES fornecedor (id_fornecedor) ON UPDATE CASCADE,
+  CONSTRAINT fk_cf_estoque FOREIGN KEY (estoque_id) REFERENCES estoque (id_estoque) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE avaliacao_produto(
+  id_avaliacao INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  cliente_id INT(11) NOT NULL,
+  produto_id INT(11) NOT NULL,
+  nota INT(1) NOT NULL, 
+  comentario TEXT DEFAULT NULL,
+  data_avaliacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+  KEY fk_aval_cliente (cliente_id),
+  KEY fk_aval_produto (produto_id),
+  CONSTRAINT fk_aval_cliente FOREIGN KEY (cliente_id) REFERENCES usuario_cliente (id_cliente) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_aval_produto FOREIGN KEY (produto_id) REFERENCES estoque (id_estoque) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE comentario(
+  id_comentario INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  cliente_id INT(11) NOT NULL,
+  estoque_id INT(11) NOT NULL,
+  texto TEXT NOT NULL,
+  data_comentario DATETIME DEFAULT CURRENT_TIMESTAMP,
+  KEY fk_coment_cliente (cliente_id),
+  KEY fk_coment_estoque (estoque_id),
+  CONSTRAINT fk_coment_cliente FOREIGN KEY (cliente_id) REFERENCES usuario_cliente (id_cliente) ON DELETE CASCADE ON UPDATE
+CASCADE,
+  CONSTRAINT fk_coment_estoque FOREIGN KEY (estoque_id) REFERENCES estoque (id_estoque) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+
+
+
+
+
+
+
+-- INSERTS DE DADOS DE TESTE E DOMÍNIO
+
+INSERT INTO continentes (id_continente, nome_continente, codigo_iso, area_km2, populacao_estimada, slug) VALUES
+(1, 'América do Sul', 'SA', 17840000, 430000000, 'america-sul'),
+(2, 'América do Norte', 'NA', 24709000, 592000000, 'america-norte'),
+(3, 'Europa', 'EU', 10180000, 450000000, 'europa'),
+(4, 'Ásia', 'AS', 44579000, 4600000000, 'asia'),
+(5, 'África', 'AF', 30370000, 1300000000, 'africa'),
+(6, 'Oceania', 'OC', 8526000, 43000000, 'oceania'),
+(7, 'Antártida', 'AN', 14000000, 0, 'antartida'),
+(8, 'América Central', 'AC', 523000, 50000000, 'america-central'),
+(9, 'Oriente Médio', 'OM', 7200000, 250000000, 'oriente-medio'),
+(10, 'Sudeste Asiático', 'SE', 4500000, 670000000, 'sudeste-asiatico');
+
+INSERT INTO paises (id_paises, nome_paises, sigla_iso2, sigla_iso3, codigo_tel, continente_id) VALUES
+(1, 'Brasil', 'BR', 'BRA', '+55', 1),
+(2, 'Argentina', 'AR', 'ARG', '+54', 1),
+(3, 'Estados Unidos', 'US', 'USA', '+1', 2),
+(4, 'Canadá', 'CA', 'CAN', '+1', 2),
+(5, 'Alemanha', 'DE', 'DEU', '+49', 3),
+(6, 'França', 'FR', 'FRA', '+33', 3),
+(7, 'China', 'CN', 'CHN', '+86', 4),
+(8, 'Japão', 'JP', 'JPN', '+81', 4),
+(9, 'África do Sul', 'ZA', 'ZAF', '+27', 5),
+(10, 'Austrália', 'AU', 'AUS', '+61', 6);
+
+INSERT INTO estados (id_estado, nome_estados, uf, pais_id) VALUES
+(1, 'Santa Catarina', 'SC', 1),
+(2, 'São Paulo', 'SP', 1),
+(3, 'Rio de Janeiro', 'RJ', 1),
+(4, 'Buenos Aires', 'BA', 2),
+(5, 'Califórnia', 'CA', 3),
+(6, 'Texas', 'TX', 3),
+(7, 'Ontário', 'ON', 4),
+(8, 'Baviera', 'BY', 5),
+(9, 'Île-de-France', 'IDF', 6),
+(10, 'Tóquio', 'TK', 8);
+
+INSERT INTO cidades (id_cidade, nome_cidades, ibge_code, estado_id) VALUES
+(1, 'Imbituba', 4207300, 1),
+(2, 'Florianópolis', 4205407, 1),
+(3, 'São Paulo', 3550308, 2),
+(4, 'Campinas', 3509502, 2),
+(5, 'Rio de Janeiro', 3304557, 3),
+(6, 'Niterói', 3303302, 3),
+(7, 'Los Angeles', 1234561, 5),
+(8, 'Houston', 1234562, 6),
+(9, 'Toronto', 1234563, 7),
+(10, 'Munique', 1234564, 8);
+
+INSERT INTO bairros (id_bairro, nome_bairro, cidade_id) VALUES
+(1, 'Centro', 1),
+(2, 'Vila Nova', 1),
+(3, 'Praia do Rosa', 1),
+(4, 'Centro', 2),
+(5, 'Trindade', 2),
+(6, 'Moema', 3),
+(7, 'Pinheiros', 3),
+(8, 'Copacabana', 5),
+(9, 'Ipanema', 5),
+(10, 'Downtown', 7),
+(11, 'Hollywood', 7),
+(12, 'Midtown', 8),
+(13, 'North York', 9),
+(14, 'Schwabing', 10),
+(15, 'Centro Histórico', 4);
+
+INSERT INTO tipo_fone (id_tipo_fone, descricao) VALUES
+(1, 'Celular'),
+(2, 'Residencial'),
+(3, 'Comercial'),
+(4, 'WhatsApp'),
+(5, 'Emergência');
+
+INSERT INTO departamento (id_departamento, nome) VALUES
+(1, 'Administrativo'),
+(2, 'Estoque'),
+(3, 'Caixa'),
+(4, 'Compras'),
+(5, 'Segurança'),
+(6, 'Financeiro'),
+(7, 'Recursos Humanos'),
+(8, 'Vendas');
+
+INSERT INTO cargo (nome, departamento_id) VALUES
+('Administrador', 1),
+('Gerente Geral', 1),
+('Supervisor de Loja', 1),
+('Operador de Caixa', 3),
+('Fiscal de Caixa', 3),
+('Repositor', 2),
+('Estoquista', 2),
+('Conferente', 2),
+('Atendente', 8),
+('Empacotador', 8),
+('Auxiliar de Limpeza', 5),
+('Segurança', 5),
+('Comprador', 4),
+('Analista de Estoque', 2),
+('Assistente Administrativo', 1);
+
+INSERT INTO permissao (nome, descricao) VALUES
+('gerenciar_compras', 'Gerenciar compras de mercadorias'),
+('gerenciar_financeiro', 'Gerenciar setor financeiro'),
+('gerenciar_rh', 'Gerenciar recursos humanos'),
+('gerenciar_padaria', 'Gerenciar produtos da padaria'),
+('gerenciar_acougue', 'Gerenciar produtos do açougue'),
+('gerenciar_hortifruti', 'Gerenciar produtos do hortifrúti'),
+('realizar_entregas', 'Realizar entregas'),
+('visualizar_estoque', 'Visualizar estoque'),
+('movimentar_estoque', 'Movimentar estoque'),
+('fechar_caixa', 'Fechar caixa'),
+('gerenciar_usuarios', 'Cadastrar e editar usuários'),
+('gerenciar_cargos', 'Gerenciar cargos'),
+('gerenciar_permissoes', 'Gerenciar permissões'),
+('gerenciar_produtos', 'Cadastrar e editar produtos'),
+('gerenciar_estoque', 'Controlar estoque'),
+('gerenciar_vendas', 'Registrar vendas'),
+('visualizar_relatorios', 'Visualizar relatórios');
+
+INSERT INTO cargo_permissao (cargo_id, permissao_id) VALUES 
+(1,1), (1,2), (1,3), (1,4), (1,5), (1,6), (1,7), (1,8), (1,9), (1,10),
+(3,4), (3,5), (3,6), (3,7), (3,8), (3,9),
+(4,4), (4,5), (4,6), (4,7),
+(5,6),
+(6,6), (6,7),
+(7,5);
+
+INSERT INTO forma_pagamento (id_forma_pagamento, nome) VALUES
+(1, 'Cartão de Crédito'),
+(2, 'Cartão de Débito'),
+(3, 'PIX'),
+(4, 'Boleto Bancário'),
+(5, 'Dinheiro');

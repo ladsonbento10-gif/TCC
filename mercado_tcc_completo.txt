@@ -1,0 +1,1141 @@
+-- ============================================================
+-- TCC - Sistema de Gerenciamento de Supermercado
+-- Banco de dados: mercado_tcc
+-- Arquivo completo com todas as tabelas, dados, índices,
+-- AUTO_INCREMENT e chaves estrangeiras.
+-- ============================================================
+
+CREATE DATABASE IF NOT EXISTS `mercado_tcc`
+  DEFAULT CHARACTER SET utf8mb4
+  COLLATE utf8mb4_general_ci;
+
+USE `mercado_tcc`;
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Banco de dados: `mercado_tcc`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `bairro`
+--
+
+CREATE TABLE `bairro` (
+  `id_bairro` int(11) NOT NULL,
+  `nome_bairro` varchar(100) NOT NULL,
+  `cidade_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `bairro`
+--
+
+INSERT INTO `bairro` (`id_bairro`, `nome_bairro`, `cidade_id`) VALUES
+(1, 'Centro', 1),
+(2, 'Vila Nova', 1),
+(3, 'Praia do Rosa', 1),
+(4, 'Centro', 2),
+(5, 'Trindade', 2),
+(6, 'Moema', 3),
+(7, 'Pinheiros', 3),
+(8, 'Copacabana', 5),
+(9, 'Ipanema', 5),
+(10, 'Downtown', 7),
+(11, 'Hollywood', 7),
+(12, 'Midtown', 8),
+(13, 'North York', 9),
+(14, 'Schwabing', 10),
+(15, 'Centro Histórico', 4),
+(16, 'Revoredo', 11),
+(17, 'çmdsl', 12);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `cargo`
+--
+
+CREATE TABLE `cargo` (
+  `id_cargo` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `departamento_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `cargo`
+--
+
+INSERT INTO `cargo` (`id_cargo`, `nome`, `departamento_id`) VALUES
+(1, 'Administrador', 1),
+(3, 'Gerente Geral', 1),
+(4, 'Supervisor de Loja', 1),
+(5, 'Operador de Caixa', 3),
+(6, 'Fiscal de Caixa', 3),
+(7, 'Repositor', 2),
+(8, 'Estoquista', 2),
+(9, 'Conferente', 2),
+(10, 'Atendente', 8),
+(11, 'Empacotador', 8),
+(12, 'Auxiliar de Limpeza', 5),
+(13, 'Segurança', 5),
+(14, 'Comprador', 4),
+(15, 'Analista de Estoque', 2),
+(16, 'Assistente Administrativo', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `cargo_permissao`
+--
+
+CREATE TABLE `cargo_permissao` (
+  `cargo_id` int(11) NOT NULL,
+  `permissao_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `cargo_permissao`
+--
+
+INSERT INTO `cargo_permissao` (`cargo_id`, `permissao_id`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5),
+(1, 6),
+(1, 7),
+(1, 8),
+(1, 9),
+(1, 10),
+(1, 11),
+(1, 12),
+(1, 13),
+(1, 14),
+(1, 15),
+(1, 16),
+(1, 17),
+(1, 18),
+(1, 19),
+(1, 20),
+(1, 21),
+(1, 22),
+(1, 23),
+(1, 24),
+(1, 25),
+(1, 26),
+(1, 27),
+(1, 28),
+(1, 29),
+(1, 30),
+(1, 31),
+(1, 32),
+(1, 33),
+(1, 34),
+(1, 35),
+(1, 36),
+(1, 37),
+(1, 38),
+(1, 39),
+(1, 40),
+(1, 41),
+(1, 42),
+(1, 43),
+(1, 44),
+(1, 45),
+(1, 46),
+(1, 47),
+(1, 48),
+(1, 49),
+(1, 50),
+(1, 51),
+(1, 52),
+(1, 53),
+(1, 54),
+(1, 55),
+(1, 56),
+(1, 57),
+(1, 58),
+(1, 59),
+(1, 60),
+(1, 61),
+(1, 62),
+(1, 63),
+(1, 64),
+(1, 65),
+(1, 66),
+(1, 67),
+(1, 68),
+(1, 69),
+(1, 70);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `categoria`
+--
+
+CREATE TABLE `categoria` (
+  `id_categoria` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `categoria`
+--
+
+INSERT INTO `categoria` (`id_categoria`, `nome`) VALUES
+(1, 'bebidas');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `cidade`
+--
+
+CREATE TABLE `cidade` (
+  `id_cidade` int(11) NOT NULL,
+  `nome_cidades` varchar(100) NOT NULL,
+  `ibge_code` int(11) NOT NULL,
+  `estado_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `cidade`
+--
+
+INSERT INTO `cidade` (`id_cidade`, `nome_cidades`, `ibge_code`, `estado_id`) VALUES
+(1, 'Imbituba', 4207300, 1),
+(2, 'Florianópolis', 4205407, 1),
+(3, 'São Paulo', 3550308, 2),
+(4, 'Campinas', 3509502, 2),
+(5, 'Rio de Janeiro', 3304557, 3),
+(6, 'Niterói', 3303302, 3),
+(7, 'Los Angeles', 1234561, 5),
+(8, 'Houston', 1234562, 6),
+(9, 'Toronto', 1234563, 7),
+(10, 'Munique', 1234564, 8),
+(11, 'Tubarão', 0, 17),
+(12, 'mlmlç', 0, 18);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `continentes`
+--
+
+CREATE TABLE `continentes` (
+  `id_continente` int(11) NOT NULL,
+  `nome_continente` varchar(200) NOT NULL,
+  `codigo_iso` char(2) DEFAULT NULL,
+  `area_km2` decimal(15,2) NOT NULL,
+  `populacao_estimada` bigint(20) NOT NULL,
+  `slug` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `continentes`
+--
+
+INSERT INTO `continentes` (`id_continente`, `nome_continente`, `codigo_iso`, `area_km2`, `populacao_estimada`, `slug`) VALUES
+(1, 'América do Sul', 'SA', 17840000.00, 430000000, 'america-sul'),
+(2, 'América do Norte', 'NA', 24709000.00, 592000000, 'america-norte'),
+(3, 'Europa', 'EU', 10180000.00, 450000000, 'europa'),
+(4, 'Ásia', 'AS', 44579000.00, 4600000000, 'asia'),
+(5, 'África', 'AF', 30370000.00, 1300000000, 'africa'),
+(6, 'Oceania', 'OC', 8526000.00, 43000000, 'oceania'),
+(7, 'Antártida', 'AN', 14000000.00, 0, 'antartida'),
+(8, 'América Central', 'AC', 523000.00, 50000000, 'america-central'),
+(9, 'Oriente Médio', 'OM', 7200000.00, 250000000, 'oriente-medio'),
+(10, 'Sudeste Asiático', 'SE', 4500000.00, 670000000, 'sudeste-asiatico');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `departamento`
+--
+
+CREATE TABLE `departamento` (
+  `id_departamento` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `departamento`
+--
+
+INSERT INTO `departamento` (`id_departamento`, `nome`) VALUES
+(1, 'Administrativo'),
+(2, 'Estoque'),
+(3, 'Caixa'),
+(4, 'Compras'),
+(5, 'Segurança'),
+(6, 'Financeiro'),
+(7, 'Recursos Humanos'),
+(8, 'Vendas'),
+(26, 'Segurança'),
+(27, 'Financeiro'),
+(28, 'Recursos Humanos'),
+(29, 'Vendas'),
+(30, 'Estoque'),
+(31, 'Caixa'),
+(32, 'Compras'),
+(33, 'Segurança'),
+(34, 'Financeiro'),
+(35, 'Recursos Humanos'),
+(36, 'Vendas'),
+(37, 'Estoque'),
+(38, 'Caixa'),
+(39, 'Compras'),
+(40, 'Segurança'),
+(41, 'Financeiro'),
+(42, 'Recursos Humanos'),
+(43, 'Vendas');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `endereco_cliente`
+--
+
+CREATE TABLE `endereco_cliente` (
+  `id_endereco` int(11) NOT NULL,
+  `cliente_id` int(11) NOT NULL,
+  `bairro_id` int(11) NOT NULL,
+  `rua` varchar(100) DEFAULT NULL,
+  `numero` varchar(10) DEFAULT NULL,
+  `complemento` varchar(100) DEFAULT NULL,
+  `cep` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `endereco_cliente`
+--
+
+INSERT INTO `endereco_cliente` (`id_endereco`, `cliente_id`, `bairro_id`, `rua`, `numero`, `complemento`, `cep`) VALUES
+(2, 1, 16, NULL, 'casa', NULL, NULL),
+(3, 2, 16, NULL, 'casa', NULL, NULL),
+(4, 3, 16, NULL, 'casa', NULL, NULL),
+(5, 4, 17, NULL, 'çlmsvçla', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `estado`
+--
+
+CREATE TABLE `estado` (
+  `id_estado` int(11) NOT NULL,
+  `nome_estados` varchar(100) NOT NULL,
+  `uf` char(2) NOT NULL,
+  `pais_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `estado`
+--
+
+INSERT INTO `estado` (`id_estado`, `nome_estados`, `uf`, `pais_id`) VALUES
+(1, 'Santa Catarina', 'SC', 1),
+(2, 'São Paulo', 'SP', 1),
+(3, 'Rio de Janeiro', 'RJ', 1),
+(4, 'Buenos Aires', 'BA', 2),
+(5, 'Califórnia', 'CA', 3),
+(6, 'Texas', 'TX', 3),
+(7, 'Ontário', 'ON', 4),
+(8, 'Baviera', 'BY', 5),
+(9, 'Île-de-France', 'ID', 6),
+(10, 'Tóquio', 'TK', 8),
+(17, 'SC', '', 1),
+(18, 'mlkds', 'XX', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `estoque`
+--
+
+CREATE TABLE `estoque` (
+  `id_estoque` int(11) NOT NULL,
+  `nome_produto` varchar(150) NOT NULL,
+  `descricao` text DEFAULT NULL,
+  `marca_id` int(11) NOT NULL,
+  `quantidade` int(11) NOT NULL DEFAULT 0,
+  `preco` decimal(10,2) NOT NULL,
+  `categoria_id` int(11) NOT NULL,
+  `ativo` tinyint(1) DEFAULT 1,
+  `data_cadastro` timestamp NOT NULL DEFAULT current_timestamp(),
+  `ultima_atualizacao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `estoque`
+--
+
+INSERT INTO `estoque` (`id_estoque`, `nome_produto`, `descricao`, `marca_id`, `quantidade`, `preco`, `categoria_id`, `ativo`, `data_cadastro`, `ultima_atualizacao`) VALUES
+(1, 'colacola 2l', 'garrafa pet repete', 1, 10000, 19.90, 1, 1, '2026-07-22 10:54:03', '2026-07-22 10:54:03');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `forma_pagamento`
+--
+
+CREATE TABLE `forma_pagamento` (
+  `id_forma_pagamento` int(11) NOT NULL,
+  `nome` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `funcionario`
+--
+
+CREATE TABLE `funcionario` (
+  `id_funcionario` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `telefone` varchar(20) DEFAULT NULL,
+  `data_nascimento` date DEFAULT NULL,
+  `data_admissao` date NOT NULL,
+  `salario` decimal(10,2) DEFAULT NULL,
+  `cargo_id` int(11) NOT NULL,
+  `ativo` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `funcionario`
+--
+
+INSERT INTO `funcionario` (`id_funcionario`, `nome`, `cpf`, `email`, `telefone`, `data_nascimento`, `data_admissao`, `salario`, `cargo_id`, `ativo`) VALUES
+(1, 'João da Silva', '123.456.789-00', 'joao@gmail.com', '(48) 99999-9999', '2000-05-10', '2026-08-10', 2500.00, 5, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `itens_venda`
+--
+
+CREATE TABLE `itens_venda` (
+  `id_itens_venda` int(11) NOT NULL,
+  `venda_id` int(11) NOT NULL,
+  `produto_id` int(11) NOT NULL,
+  `quantidade` int(11) DEFAULT NULL,
+  `preco_unitario` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `log_sistema`
+--
+
+CREATE TABLE `log_sistema` (
+  `id_log` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `acao` varchar(255) NOT NULL,
+  `data_hora` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `marca`
+--
+
+CREATE TABLE `marca` (
+  `id_marca` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `marca`
+--
+
+INSERT INTO `marca` (`id_marca`, `nome`) VALUES
+(1, 'coca-cola');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `movimentacao_estoque`
+--
+
+CREATE TABLE `movimentacao_estoque` (
+  `id_movimentacao` int(11) NOT NULL,
+  `estoque_id` int(11) NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `tipo` enum('entrada','saida') NOT NULL,
+  `observacao` text DEFAULT NULL,
+  `data_movimentacao` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `pais`
+--
+
+CREATE TABLE `pais` (
+  `id_paises` int(11) NOT NULL,
+  `nome_paises` varchar(100) NOT NULL,
+  `sigla_iso2` char(2) NOT NULL,
+  `sigla_iso3` char(3) NOT NULL,
+  `codigo_tel` varchar(5) NOT NULL,
+  `continente_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `pais`
+--
+
+INSERT INTO `pais` (`id_paises`, `nome_paises`, `sigla_iso2`, `sigla_iso3`, `codigo_tel`, `continente_id`) VALUES
+(1, 'Brasil', 'BR', 'BRA', '+55', 1),
+(2, 'Argentina', 'AR', 'ARG', '+54', 1),
+(3, 'Estados Unidos', 'US', 'USA', '+1', 2),
+(4, 'Canadá', 'CA', 'CAN', '+1', 2),
+(5, 'Alemanha', 'DE', 'DEU', '+49', 3),
+(6, 'França', 'FR', 'FRA', '+33', 3),
+(7, 'China', 'CN', 'CHN', '+86', 4),
+(8, 'Japão', 'JP', 'JPN', '+81', 4),
+(9, 'África do Sul', 'ZA', 'ZAF', '+27', 5),
+(10, 'Austrália', 'AU', 'AUS', '+61', 6);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `permissao`
+--
+
+CREATE TABLE `permissao` (
+  `id_permissao` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `descricao` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `permissao`
+--
+
+INSERT INTO `permissao` (`id_permissao`, `nome`, `descricao`) VALUES
+(1, 'gerenciar_compras', 'Gerenciar compras de mercadorias'),
+(2, 'gerenciar_financeiro', 'Gerenciar setor financeiro'),
+(3, 'gerenciar_rh', 'Gerenciar recursos humanos'),
+(4, 'gerenciar_padaria', 'Gerenciar produtos da padaria'),
+(5, 'gerenciar_acougue', 'Gerenciar produtos do açougue'),
+(6, 'gerenciar_hortifruti', 'Gerenciar produtos do hortifrúti'),
+(7, 'realizar_entregas', 'Realizar entregas'),
+(8, 'visualizar_estoque', 'Visualizar estoque'),
+(9, 'movimentar_estoque', 'Movimentar estoque'),
+(10, 'fechar_caixa', 'Fechar caixa'),
+(11, 'gerenciar_usuarios', 'Cadastrar e editar usuários'),
+(12, 'gerenciar_produtos', 'Cadastrar e editar produtos'),
+(13, 'gerenciar_estoque', 'Controlar estoque'),
+(14, 'gerenciar_vendas', 'Controlar vendas'),
+(15, 'visualizar_relatorios', 'Visualizar relatórios'),
+(16, 'gerenciar_financeiro', 'Controlar financeiro'),
+(17, 'gerenciar_rh', 'Controlar recursos humanos'),
+(18, 'gerenciar_compras', 'Controlar compras'),
+(19, 'gerenciar_cargos', 'Gerenciar cargos'),
+(20, 'gerenciar_permissoes', 'Gerenciar permissões'),
+(21, 'gerenciar_usuarios', 'Cadastrar e editar usuários'),
+(22, 'gerenciar_produtos', 'Cadastrar e editar produtos'),
+(23, 'gerenciar_estoque', 'Controlar estoque'),
+(24, 'gerenciar_vendas', 'Controlar vendas'),
+(25, 'visualizar_relatorios', 'Visualizar relatórios'),
+(26, 'gerenciar_financeiro', 'Controlar financeiro'),
+(27, 'gerenciar_rh', 'Controlar recursos humanos'),
+(28, 'gerenciar_compras', 'Controlar compras'),
+(29, 'gerenciar_cargos', 'Gerenciar cargos'),
+(30, 'gerenciar_permissoes', 'Gerenciar permissões'),
+(31, 'gerenciar_usuarios', 'Cadastrar e editar usuários'),
+(32, 'gerenciar_produtos', 'Cadastrar e editar produtos'),
+(33, 'gerenciar_estoque', 'Controlar estoque'),
+(34, 'gerenciar_vendas', 'Controlar vendas'),
+(35, 'visualizar_relatorios', 'Visualizar relatórios'),
+(36, 'gerenciar_financeiro', 'Controlar financeiro'),
+(37, 'gerenciar_rh', 'Controlar recursos humanos'),
+(38, 'gerenciar_compras', 'Controlar compras'),
+(39, 'gerenciar_cargos', 'Gerenciar cargos'),
+(40, 'gerenciar_permissoes', 'Gerenciar permissões'),
+(41, 'gerenciar_usuarios', 'Cadastrar e editar usuários'),
+(42, 'gerenciar_produtos', 'Cadastrar e editar produtos'),
+(43, 'gerenciar_estoque', 'Controlar estoque'),
+(44, 'gerenciar_vendas', 'Controlar vendas'),
+(45, 'visualizar_relatorios', 'Visualizar relatórios'),
+(46, 'gerenciar_financeiro', 'Controlar financeiro'),
+(47, 'gerenciar_rh', 'Controlar recursos humanos'),
+(48, 'gerenciar_compras', 'Controlar compras'),
+(49, 'gerenciar_cargos', 'Gerenciar cargos'),
+(50, 'gerenciar_permissoes', 'Gerenciar permissões'),
+(51, 'gerenciar_usuarios', 'Cadastrar e editar usuários'),
+(52, 'gerenciar_produtos', 'Cadastrar e editar produtos'),
+(53, 'gerenciar_estoque', 'Controlar estoque'),
+(54, 'gerenciar_vendas', 'Controlar vendas'),
+(55, 'visualizar_relatorios', 'Visualizar relatórios'),
+(56, 'gerenciar_financeiro', 'Controlar financeiro'),
+(57, 'gerenciar_rh', 'Controlar recursos humanos'),
+(58, 'gerenciar_compras', 'Controlar compras'),
+(59, 'gerenciar_cargos', 'Gerenciar cargos'),
+(60, 'gerenciar_permissoes', 'Gerenciar permissões'),
+(61, 'gerenciar_usuarios', 'Cadastrar e editar usuários'),
+(62, 'gerenciar_produtos', 'Cadastrar e editar produtos'),
+(63, 'gerenciar_estoque', 'Controlar estoque'),
+(64, 'gerenciar_vendas', 'Controlar vendas'),
+(65, 'visualizar_relatorios', 'Visualizar relatórios'),
+(66, 'gerenciar_financeiro', 'Controlar financeiro'),
+(67, 'gerenciar_rh', 'Controlar recursos humanos'),
+(68, 'gerenciar_compras', 'Controlar compras'),
+(69, 'gerenciar_cargos', 'Gerenciar cargos'),
+(70, 'gerenciar_permissoes', 'Gerenciar permissões');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `produto`
+--
+
+CREATE TABLE `produto` (
+  `id_produto` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `descricao` text DEFAULT NULL,
+  `preco` decimal(10,2) NOT NULL,
+  `categoria_id` int(11) NOT NULL,
+  `marca_id` int(11) NOT NULL,
+  `ativo` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `telefone_cliente`
+--
+
+CREATE TABLE `telefone_cliente` (
+  `id_telefone` int(11) NOT NULL,
+  `cliente_id` int(11) NOT NULL,
+  `dd_fone` varchar(4) DEFAULT NULL,
+  `numero_fone` varchar(15) DEFAULT NULL,
+  `tipo_fone_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tipo_fone`
+--
+
+CREATE TABLE `tipo_fone` (
+  `id_tipo_fone` int(11) NOT NULL,
+  `descricao` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `tipo_fone`
+--
+
+INSERT INTO `tipo_fone` (`id_tipo_fone`, `descricao`) VALUES
+(1, 'Celular'),
+(2, 'Residencial'),
+(3, 'Comercial'),
+(4, 'WhatsApp'),
+(5, 'Emergência');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `usuario_admin`
+--
+
+CREATE TABLE `usuario_admin` (
+  `id_admin` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `senha` varchar(100) NOT NULL,
+  `cargo_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `usuario_admin`
+--
+
+INSERT INTO `usuario_admin` (`id_admin`, `nome`, `email`, `senha`, `cargo_id`) VALUES
+(2, 'kmasd', 'klmdas', '$2y$10$uUfUySCzEvgzX0Bo1w2tfOiXZkOdW4UklmxS7JSEJzyXmoArXFxqG', 1),
+(3, 'Milena', 'milenap@gmail.com', '$2y$10$F6SwrGzybMCes2Flmgfk.ux63g4B28Prps/lzNPleNo5irk8BItUm', 1),
+(4, 'ladson Bento', 'ladsonbento10@gmail.com', '$2y$10$8aZa.xSPcccoqMsoDBBtA.Z2rFXERoX6ZIGIhHcnJx/xMFVVEyGMa', 1),
+(5, 'Julia', 'julia@gmail.com', '$2y$10$C8hmCCywY7b7BbOYooHz3./DzHRioAaAwYpkFXPhnHNHajb6XWPLa', 1),
+(6, 'Patrick', '4541858486@estudante.sed.sc.gov.br', '$2y$10$r5HzU5lHArQ1U6A534MceuORcMZMtDdzl1MXKNLMyb61aE5eLaG/i', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `usuario_cliente`
+--
+
+CREATE TABLE `usuario_cliente` (
+  `id_cliente` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `cpf` varchar(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `data_nascimento` date NOT NULL,
+  `senha` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `usuario_cliente`
+--
+
+INSERT INTO `usuario_cliente` (`id_cliente`, `nome`, `cpf`, `email`, `data_nascimento`, `senha`) VALUES
+(1, 'ladson Bento', '109.418.419', 'ladsonbento10@gmail.com', '2008-05-15', '$2y$10$w0PMIB/IWg/VWuIfKHxO.OMHb2B5bnKt/Gwrhu5.jpx7aRTzaOmkK'),
+(2, 'ladson Bento', '109.418.419', 'ladsonbento10@gmail.com', '2008-05-15', '$2y$10$AIhvYm0SEflnaDeL8e5/IuMlQ8b9yL9qZ6bN4GIoW1gdcyqUrzKWu'),
+(3, 'ladson Bento', '109.418.419', 'ladsonbento10@gmail.com', '2008-05-15', '$2y$10$smMNsgZmNJKZDzEeWoE6jOjfzs95necBqWm.nJgbqapvzHbqHTatu'),
+(4, 'v,', 'lmslç', 'lmvsk', '0000-00-00', '$2y$10$pDURAw2J5OQc3qmTnm6/quQ8nWTV0lWj9g9ou2bZeOonq9yLg0tKS');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `venda`
+--
+
+CREATE TABLE `venda` (
+  `id_vendas` int(11) NOT NULL,
+  `cliente_id` int(11) NOT NULL,
+  `data_venda` timestamp NOT NULL DEFAULT current_timestamp(),
+  `preco_total` decimal(10,2) DEFAULT 0.00,
+  `forma_pagamento_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices de tabela `bairro`
+--
+ALTER TABLE `bairro`
+  ADD PRIMARY KEY (`id_bairro`),
+  ADD KEY `fk_bairro` (`cidade_id`);
+
+--
+-- Índices de tabela `cargo`
+--
+ALTER TABLE `cargo`
+  ADD PRIMARY KEY (`id_cargo`),
+  ADD KEY `fk_cargo_departamento` (`departamento_id`);
+
+--
+-- Índices de tabela `cargo_permissao`
+--
+ALTER TABLE `cargo_permissao`
+  ADD PRIMARY KEY (`cargo_id`,`permissao_id`),
+  ADD KEY `fk_cp_permissao` (`permissao_id`);
+
+--
+-- Índices de tabela `categoria`
+--
+ALTER TABLE `categoria`
+  ADD PRIMARY KEY (`id_categoria`);
+
+--
+-- Índices de tabela `cidade`
+--
+ALTER TABLE `cidade`
+  ADD PRIMARY KEY (`id_cidade`),
+  ADD KEY `fk_cidade` (`estado_id`);
+
+--
+-- Índices de tabela `continentes`
+--
+ALTER TABLE `continentes`
+  ADD PRIMARY KEY (`id_continente`),
+  ADD UNIQUE KEY `nome_continente` (`nome_continente`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD UNIQUE KEY `codigo_iso` (`codigo_iso`);
+
+--
+-- Índices de tabela `departamento`
+--
+ALTER TABLE `departamento`
+  ADD PRIMARY KEY (`id_departamento`);
+
+--
+-- Índices de tabela `endereco_cliente`
+--
+ALTER TABLE `endereco_cliente`
+  ADD PRIMARY KEY (`id_endereco`),
+  ADD KEY `fk_end_cliente` (`cliente_id`),
+  ADD KEY `fk_end_bairro` (`bairro_id`);
+
+--
+-- Índices de tabela `estado`
+--
+ALTER TABLE `estado`
+  ADD PRIMARY KEY (`id_estado`),
+  ADD KEY `fk_estado` (`pais_id`);
+
+--
+-- Índices de tabela `estoque`
+--
+ALTER TABLE `estoque`
+  ADD PRIMARY KEY (`id_estoque`),
+  ADD KEY `fk_estoque_categoria` (`categoria_id`),
+  ADD KEY `fk_estoque_marca` (`marca_id`);
+
+--
+-- Índices de tabela `forma_pagamento`
+--
+ALTER TABLE `forma_pagamento`
+  ADD PRIMARY KEY (`id_forma_pagamento`);
+
+--
+-- Índices de tabela `funcionario`
+--
+ALTER TABLE `funcionario`
+  ADD PRIMARY KEY (`id_funcionario`),
+  ADD UNIQUE KEY `uk_funcionario_cpf` (`cpf`),
+  ADD UNIQUE KEY `uk_funcionario_email` (`email`),
+  ADD KEY `fk_funcionario_cargo` (`cargo_id`);
+
+--
+-- Índices de tabela `itens_venda`
+--
+ALTER TABLE `itens_venda`
+  ADD PRIMARY KEY (`id_itens_venda`),
+  ADD KEY `fk_itens_venda_venda` (`venda_id`),
+  ADD KEY `fk_itens_venda_produto` (`produto_id`);
+
+--
+-- Índices de tabela `log_sistema`
+--
+ALTER TABLE `log_sistema`
+  ADD PRIMARY KEY (`id_log`);
+
+--
+-- Índices de tabela `marca`
+--
+ALTER TABLE `marca`
+  ADD PRIMARY KEY (`id_marca`);
+
+--
+-- Índices de tabela `movimentacao_estoque`
+--
+ALTER TABLE `movimentacao_estoque`
+  ADD PRIMARY KEY (`id_movimentacao`),
+  ADD KEY `fk_mov_estoque` (`estoque_id`);
+
+--
+-- Índices de tabela `pais`
+--
+ALTER TABLE `pais`
+  ADD PRIMARY KEY (`id_paises`),
+  ADD UNIQUE KEY `sigla_iso2` (`sigla_iso2`),
+  ADD UNIQUE KEY `sigla_iso3` (`sigla_iso3`),
+  ADD KEY `fk_pais` (`continente_id`);
+
+--
+-- Índices de tabela `permissao`
+--
+ALTER TABLE `permissao`
+  ADD PRIMARY KEY (`id_permissao`);
+
+--
+-- Índices de tabela `produto`
+--
+ALTER TABLE `produto`
+  ADD PRIMARY KEY (`id_produto`),
+  ADD KEY `categoria_id` (`categoria_id`),
+  ADD KEY `marca_id` (`marca_id`);
+
+--
+-- Índices de tabela `telefone_cliente`
+--
+ALTER TABLE `telefone_cliente`
+  ADD PRIMARY KEY (`id_telefone`),
+  ADD KEY `fk_tel_cliente` (`cliente_id`),
+  ADD KEY `fk_tel_tipo` (`tipo_fone_id`);
+
+--
+-- Índices de tabela `tipo_fone`
+--
+ALTER TABLE `tipo_fone`
+  ADD PRIMARY KEY (`id_tipo_fone`);
+
+--
+-- Índices de tabela `usuario_admin`
+--
+ALTER TABLE `usuario_admin`
+  ADD PRIMARY KEY (`id_admin`),
+  ADD KEY `fk_usuario_admin_cargo` (`cargo_id`);
+
+--
+-- Índices de tabela `usuario_cliente`
+--
+ALTER TABLE `usuario_cliente`
+  ADD PRIMARY KEY (`id_cliente`);
+
+--
+-- Índices de tabela `venda`
+--
+ALTER TABLE `venda`
+  ADD PRIMARY KEY (`id_vendas`),
+  ADD KEY `fk_venda_cliente` (`cliente_id`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `bairro`
+--
+ALTER TABLE `bairro`
+  MODIFY `id_bairro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT de tabela `cargo`
+--
+ALTER TABLE `cargo`
+  MODIFY `id_cargo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT de tabela `categoria`
+--
+ALTER TABLE `categoria`
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `cidade`
+--
+ALTER TABLE `cidade`
+  MODIFY `id_cidade` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT de tabela `continentes`
+--
+ALTER TABLE `continentes`
+  MODIFY `id_continente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de tabela `departamento`
+--
+ALTER TABLE `departamento`
+  MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
+-- AUTO_INCREMENT de tabela `endereco_cliente`
+--
+ALTER TABLE `endereco_cliente`
+  MODIFY `id_endereco` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `estado`
+--
+ALTER TABLE `estado`
+  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT de tabela `estoque`
+--
+ALTER TABLE `estoque`
+  MODIFY `id_estoque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `forma_pagamento`
+--
+ALTER TABLE `forma_pagamento`
+  MODIFY `id_forma_pagamento` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `funcionario`
+--
+ALTER TABLE `funcionario`
+  MODIFY `id_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `itens_venda`
+--
+ALTER TABLE `itens_venda`
+  MODIFY `id_itens_venda` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `log_sistema`
+--
+ALTER TABLE `log_sistema`
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `marca`
+--
+ALTER TABLE `marca`
+  MODIFY `id_marca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `movimentacao_estoque`
+--
+ALTER TABLE `movimentacao_estoque`
+  MODIFY `id_movimentacao` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `pais`
+--
+ALTER TABLE `pais`
+  MODIFY `id_paises` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de tabela `permissao`
+--
+ALTER TABLE `permissao`
+  MODIFY `id_permissao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+
+--
+-- AUTO_INCREMENT de tabela `produto`
+--
+ALTER TABLE `produto`
+  MODIFY `id_produto` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `telefone_cliente`
+--
+ALTER TABLE `telefone_cliente`
+  MODIFY `id_telefone` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `tipo_fone`
+--
+ALTER TABLE `tipo_fone`
+  MODIFY `id_tipo_fone` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `usuario_admin`
+--
+ALTER TABLE `usuario_admin`
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de tabela `usuario_cliente`
+--
+ALTER TABLE `usuario_cliente`
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `venda`
+--
+ALTER TABLE `venda`
+  MODIFY `id_vendas` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restrições para tabelas despejadas
+--
+
+--
+-- Restrições para tabelas `bairro`
+--
+ALTER TABLE `bairro`
+  ADD CONSTRAINT `fk_bairro` FOREIGN KEY (`cidade_id`) REFERENCES `cidade` (`id_cidade`);
+
+--
+-- Restrições para tabelas `cargo`
+--
+ALTER TABLE `cargo`
+  ADD CONSTRAINT `fk_cargo_departamento` FOREIGN KEY (`departamento_id`) REFERENCES `departamento` (`id_departamento`);
+
+--
+-- Restrições para tabelas `cargo_permissao`
+--
+ALTER TABLE `cargo_permissao`
+  ADD CONSTRAINT `fk_cp_cargo` FOREIGN KEY (`cargo_id`) REFERENCES `cargo` (`id_cargo`),
+  ADD CONSTRAINT `fk_cp_permissao` FOREIGN KEY (`permissao_id`) REFERENCES `permissao` (`id_permissao`);
+
+--
+-- Restrições para tabelas `cidade`
+--
+ALTER TABLE `cidade`
+  ADD CONSTRAINT `fk_cidade` FOREIGN KEY (`estado_id`) REFERENCES `estado` (`id_estado`);
+
+--
+-- Restrições para tabelas `endereco_cliente`
+--
+ALTER TABLE `endereco_cliente`
+  ADD CONSTRAINT `fk_end_bairro` FOREIGN KEY (`bairro_id`) REFERENCES `bairro` (`id_bairro`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_end_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `usuario_cliente` (`id_cliente`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Restrições para tabelas `estado`
+--
+ALTER TABLE `estado`
+  ADD CONSTRAINT `fk_estado` FOREIGN KEY (`pais_id`) REFERENCES `pais` (`id_paises`);
+
+--
+-- Restrições para tabelas `estoque`
+--
+ALTER TABLE `estoque`
+  ADD CONSTRAINT `fk_estoque_categoria` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id_categoria`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_estoque_marca` FOREIGN KEY (`marca_id`) REFERENCES `marca` (`id_marca`) ON UPDATE CASCADE;
+
+--
+-- Restrições para tabelas `funcionario`
+--
+ALTER TABLE `funcionario`
+  ADD CONSTRAINT `fk_funcionario_cargo` FOREIGN KEY (`cargo_id`) REFERENCES `cargo` (`id_cargo`) ON UPDATE CASCADE;
+
+--
+-- Restrições para tabelas `itens_venda`
+--
+ALTER TABLE `itens_venda`
+  ADD CONSTRAINT `fk_itens_venda_produto` FOREIGN KEY (`produto_id`) REFERENCES `estoque` (`id_estoque`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_itens_venda_venda` FOREIGN KEY (`venda_id`) REFERENCES `venda` (`id_vendas`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Restrições para tabelas `movimentacao_estoque`
+--
+ALTER TABLE `movimentacao_estoque`
+  ADD CONSTRAINT `fk_mov_estoque` FOREIGN KEY (`estoque_id`) REFERENCES `estoque` (`id_estoque`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Restrições para tabelas `pais`
+--
+ALTER TABLE `pais`
+  ADD CONSTRAINT `fk_pais` FOREIGN KEY (`continente_id`) REFERENCES `continentes` (`id_continente`);
+
+--
+-- Restrições para tabelas `produto`
+--
+ALTER TABLE `produto`
+  ADD CONSTRAINT `produto_ibfk_1` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`id_categoria`),
+  ADD CONSTRAINT `produto_ibfk_2` FOREIGN KEY (`marca_id`) REFERENCES `marca` (`id_marca`);
+
+--
+-- Restrições para tabelas `telefone_cliente`
+--
+ALTER TABLE `telefone_cliente`
+  ADD CONSTRAINT `fk_tel_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `usuario_cliente` (`id_cliente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tel_tipo` FOREIGN KEY (`tipo_fone_id`) REFERENCES `tipo_fone` (`id_tipo_fone`) ON UPDATE CASCADE;
+
+--
+-- Restrições para tabelas `usuario_admin`
+--
+ALTER TABLE `usuario_admin`
+  ADD CONSTRAINT `fk_usuario_admin_cargo` FOREIGN KEY (`cargo_id`) REFERENCES `cargo` (`id_cargo`);
+
+--
+-- Restrições para tabelas `venda`
+--
+ALTER TABLE `venda`
+  ADD CONSTRAINT `fk_venda_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `usuario_cliente` (`id_cliente`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -1,187 +1,432 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Carrinho — Mercadinho</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap"rel="stylesheet"/>
-    <link rel="stylesheet" href="cliente.css" />
-    <script src="cliente.js"></script>
-  </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Cliente — KLP.NUNES</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cliente.css">
+</head>
 <body>
-    <header class="topo">
-      <div class="marca">🌿 Mercadinho <span>Bairro</span></div>
-      <nav class="menu-cliente">
-        <div class="botao">📄 Meus Dados</div>
-        <div class="botao">📦 Meus Pedidos</div>
-        <div class="botao ativo">🛒 Carrinho</div>
-        <div class="botao">🔒 Alterar Senha</div>
-        <div class="botao sair">🚪 Sair</div>
-      </nav>
-    </header>
 
-    <div class="faixa-titulo">
-      <div class="eyebrow">Sacola de compras</div>
-      <h1 class="titulo-carrinho">Seu carrinho</h1>
-      <p class="sub-titulo" id="resumo-topo">
-        4 itens selecionados, prontos para a entrega.
-      </p>
-    </div>
-
-    <div class="layout">
-      <!-- lista de itens -->
-      <section class="lista-itens" id="lista-itens">
-        <div class="lista-cabecalho">
-          <span></span>
-          <span>Produto</span>
-          <span style="text-align: center">Quantidade</span>
-          <span style="text-align: right">Preço</span>
-          <span></span>
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-cog"></i>
+            <span>TCC</span>
+            <small> MERCADO KLP.NUNES </small>
         </div>
 
-        <div class="item" data-preco="7.90" data-nome="Tomate italiano">
-          <div class="miniatura">🍅</div>
-          <div class="info">
-            <div class="nome">Tomate italiano</div>
-            <div class="detalhe">Feira Orgânica São João</div>
-            <div class="unit">R$ 7,90 / kg</div>
-          </div>
-          <div class="qtd">
-            <button class="menos" aria-label="Diminuir quantidade">−</button>
-            <input
-              type="text"
-              value="1"
-              inputmode="numeric"
-              aria-label="Quantidade"
-            />
-            <button class="mais" aria-label="Aumentar quantidade">+</button>
-          </div>
-          <div class="preco"><span class="valor-item">R$ 7,90</span></div>
-          <button class="remover" aria-label="Remover item">✕</button>
+        <ul class="menu" id="menu">
+            <li data-aba="inicio"><a href="#inicio"><i class="fas fa-home"></i><span>Início</span></a></li>
+            <li data-aba="produtos"><a href="#produtos"><i class="fas fa-store"></i><span>Produtos</span></a></li>
+            <li data-aba="dados"><a href="#dados"><i class="fas fa-id-card"></i><span>Meus Dados</span></a></li>
+            <li><a href="#"><i class="fas fa-box"></i><span>Meus Pedidos</span></a></li>
+            <li data-aba="carrinho"><a href="#carrinho"><i class="fas fa-shopping-cart"></i><span>Carrinho</span></a></li>
+            <li data-aba="senha"><a href="#senha"><i class="fas fa-lock"></i><span>Alterar Senha</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="#" class="logout-btn" data-acao="sair"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
         </div>
+    </aside>
 
-        <div
-          class="item"
-          data-preco="12.50"
-          data-nome="Pão de fermentação natural"
-        >
-          <div class="miniatura">🍞</div>
-          <div class="info">
-            <div class="nome">Pão de fermentação natural</div>
-            <div class="detalhe">Padoca do Zé — unidade 500g</div>
-            <div class="unit">R$ 12,50 / un</div>
-          </div>
-          <div class="qtd">
-            <button class="menos" aria-label="Diminuir quantidade">−</button>
-            <input
-              type="text"
-              value="2"
-              inputmode="numeric"
-              aria-label="Quantidade"
-            />
-            <button class="mais" aria-label="Aumentar quantidade">+</button>
-          </div>
-          <div class="preco">
-            <span class="antigo">R$ 27,80</span>
-            <span class="valor-item">R$ 25,00</span>
-          </div>
-          <button class="remover" aria-label="Remover item">✕</button>
-        </div>
+    <main class="main-content">
+        <header class="top-header">
+            <button id="menuToggle" class="menu-toggle" aria-label="Abrir menu"><i class="fas fa-bars"></i></button>
+            <div class="header-title"><h1 id="titulo">Área do Cliente</h1></div>
+            <div class="busca">
+                <input id="busca" type="search" placeholder="O que você procura hoje?" aria-label="Buscar produtos">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="header-actions">
+                <a href="#carrinho" class="carrinho-topo" aria-label="Ver carrinho"><i class="fas fa-shopping-cart"></i><b id="badge">0</b></a>
+                <div class="user-profile">
+                    <i class="far fa-user-circle"></i>
+                    <span id="nomeTopo">Cliente</span>
+                </div>
+            </div>
+        </header>
 
-        <div class="item" data-preco="4.30" data-nome="Leite integral 1L">
-          <div class="miniatura">🥛</div>
-          <div class="info">
-            <div class="nome">Leite integral 1L</div>
-            <div class="detalhe">Fazenda Boa Vista</div>
-            <div class="unit">R$ 4,30 / un</div>
-          </div>
-          <div class="qtd">
-            <button class="menos" aria-label="Diminuir quantidade">−</button>
-            <input
-              type="text"
-              value="3"
-              inputmode="numeric"
-              aria-label="Quantidade"
-            />
-            <button class="mais" aria-label="Aumentar quantidade">+</button>
-          </div>
-          <div class="preco"><span class="valor-item">R$ 12,90</span></div>
-          <button class="remover" aria-label="Remover item">✕</button>
-        </div>
+        <div class="faixa">🚚 Frete grátis em compras acima de R$ 100,00 · Use o cupom <b>KLP10</b> e ganhe 10% de desconto</div>
 
-        <div
-          class="item"
-          data-preco="15.90"
-          data-nome="Café torrado em grãos 250g"
-        >
-          <div class="miniatura">☕</div>
-          <div class="info">
-            <div class="nome">Café torrado em grãos 250g</div>
-            <div class="detalhe">Torrefação Serra Alta</div>
-            <div class="unit">R$ 15,90 / un</div>
-          </div>
-          <div class="qtd">
-            <button class="menos" aria-label="Diminuir quantidade">−</button>
-            <input
-              type="text"
-              value="1"
-              inputmode="numeric"
-              aria-label="Quantidade"
-            />
-            <button class="mais" aria-label="Aumentar quantidade">+</button>
-          </div>
-          <div class="preco"><span class="valor-item">R$ 15,90</span></div>
-          <button class="remover" aria-label="Remover item">✕</button>
-        </div>
+        <div class="content-body" id="conteudo"></div>
+    </main>
 
-        <div class="rodape-lista">
-          <a href="#" class="continuar">← Continuar comprando</a>
-          <button class="esvaziar" id="esvaziar">Esvaziar carrinho</button>
-        </div>
-      </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // ===== CONFIGURE AQUI A CHAVE PIX DO MERCADO =====
+        const PIX_CHAVE  = 'COLOQUE_A_CHAVE_PIX_AQUI';  // CPF/CNPJ (só números), e-mail, telefone (+5548...) ou chave aleatória
+        const PIX_NOME   = 'MERCADO KLP NUNES';          // máx. 25 letras
+        const PIX_CIDADE = 'TUBARAO';                    // máx. 15 letras
+        const PIX_CONFIGURADO = PIX_CHAVE !== 'COLOQUE_A_CHAVE_PIX_AQUI';
 
-      <!-- estado vazio (oculto por padrão) -->
-      <section class="lista-itens vazio" id="carrinho-vazio">
-        <div class="icone">🧺</div>
-        <h3>Seu carrinho está vazio</h3>
-        <p>Que tal dar uma volta pelas hortaliças da semana?</p>
-        <a href="#">Ver produtos</a>
-      </section>
+        // ===== Catálogo (sem banco de dados) =====
+        const CATEGORIAS = [
+            { id: 'hortifruti', nome: 'Hortifruti', ico: '🍎' },
+            { id: 'acougue', nome: 'Açougue', ico: '🥩' },
+            { id: 'laticinios', nome: 'Laticínios', ico: '🥛' },
+            { id: 'padaria', nome: 'Padaria', ico: '🥖' },
+            { id: 'mercearia', nome: 'Mercearia', ico: '🍚' },
+            { id: 'bebidas', nome: 'Bebidas', ico: '🧃' },
+            { id: 'limpeza', nome: 'Limpeza', ico: '🧼' }
+        ];
+        // antigo = preço antes da oferta (opcional)
+        const PRODUTOS = [
+            { id: 1, nome: 'Banana prata (kg)', preco: 4.99, antigo: 6.99, cat: 'hortifruti', ico: '🍌' },
+            { id: 2, nome: 'Maçã gala (kg)', preco: 8.90, cat: 'hortifruti', ico: '🍎' },
+            { id: 3, nome: 'Tomate (kg)', preco: 6.49, cat: 'hortifruti', ico: '🍅' },
+            { id: 4, nome: 'Acém bovino (kg)', preco: 24.90, antigo: 32.90, cat: 'acougue', ico: '🥩' },
+            { id: 5, nome: 'Peito de frango (kg)', preco: 16.90, cat: 'acougue', ico: '🍗' },
+            { id: 6, nome: 'Leite integral 1 L', preco: 4.99, antigo: 5.89, cat: 'laticinios', ico: '🥛' },
+            { id: 7, nome: 'Queijo mussarela (kg)', preco: 39.90, cat: 'laticinios', ico: '🧀' },
+            { id: 8, nome: 'Pão francês (kg)', preco: 14.99, antigo: 16.90, cat: 'padaria', ico: '🥖' },
+            { id: 9, nome: 'Arroz tipo 1 – 5 kg', preco: 27.90, cat: 'mercearia', ico: '🍚' },
+            { id: 10, nome: 'Feijão carioca 1 kg', preco: 7.90, cat: 'mercearia', ico: '🫘' },
+            { id: 11, nome: 'Suco de uva 1 L', preco: 8.50, antigo: 10.90, cat: 'bebidas', ico: '🍇' },
+            { id: 12, nome: 'Detergente 500 ml', preco: 2.79, cat: 'limpeza', ico: '🧴' }
+        ];
+        const TITULOS = { inicio: 'Área do Cliente', produtos: 'Produtos', dados: 'Meus Dados', carrinho: 'Carrinho', senha: 'Alterar Senha', pagamento: 'Pagamento' };
+        const FRETE_GRATIS = 100, FRETE = 9.90, CUPOM = 'KLP10';
 
-      <!-- nota fiscal / resumo -->
-      <aside class="nota">
-        <h2>Resumo do pedido</h2>
-        <div class="num-pedido">SACOLA Nº 0842 — 17/08/2026</div>
+        // ===== Utilitários =====
+        function ler(chave, padrao) { try { const v = localStorage.getItem(chave); return v ? JSON.parse(v) : padrao; } catch (e) { return padrao; } }
+        function gravar(chave, valor) { try { localStorage.setItem(chave, JSON.stringify(valor)); } catch (e) {} }
+        function nomeLogin() { try { return localStorage.getItem('nomeCliente') || 'Cliente'; } catch (e) { return 'Cliente'; } }
+        function h(t) { return String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+        function real(v) { return 'R$ ' + v.toFixed(2).replace('.', ','); }
 
-        <div class="linha-nota">
-          <span>Subtotal</span>
-          <span id="subtotal">R$ 61,70</span>
-        </div>
-        <div class="linha-nota">
-          <span>Desconto</span>
-          <span id="desconto">− R$ 2,80</span>
-        </div>
-        <div class="linha-nota frete">
-          <span>Entrega</span>
-          <span id="frete">Grátis</span>
-        </div>
 
-        <div class="perfuracao"></div>
+        // Carrinho e cupom separados por cliente (id gravado no login)
+        function K(n) { try { return n + '_' + (localStorage.getItem('idCliente') || ''); } catch (e) { return n; } }
 
-        <div class="linha-total">
-          <span class="rotulo">Total</span>
-          <span class="valor" id="total">R$ 58,90</span>
-        </div>
+        // PIX "copia e cola" (BR Code)
+        function tlv(id, v) { return id + String(v.length).padStart(2, '0') + v; }
+        function limpa(t, max) { return t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9 ]/g, '').toUpperCase().slice(0, max); }
+        function crc16(t) {
+            let c = 0xFFFF;
+            for (let i = 0; i < t.length; i++) { c ^= t.charCodeAt(i) << 8; for (let b = 0; b < 8; b++) c = (c & 0x8000) ? ((c << 1) ^ 0x1021) & 0xFFFF : (c << 1) & 0xFFFF; }
+            return c.toString(16).toUpperCase().padStart(4, '0');
+        }
+        function gerarPix(valor, txid) {
+            const corpo = tlv('00', '01') + tlv('01', '12') +
+                tlv('26', tlv('00', 'br.gov.bcb.pix') + tlv('01', PIX_CHAVE)) +
+                tlv('52', '0000') + tlv('53', '986') + tlv('54', valor.toFixed(2)) + tlv('58', 'BR') +
+                tlv('59', limpa(PIX_NOME, 25)) + tlv('60', limpa(PIX_CIDADE, 15)) + tlv('62', tlv('05', txid)) + '6304';
+            return corpo + crc16(corpo);
+        }
+        let pagto = null; // pagamento gerado nesta tela: { metodo, payload, total }
 
-        <div class="cupom">
-          <input type="text" placeholder="Cupom de desconto" />
-          <button>Aplicar</button>
-        </div>
+        let aviso = '', avisoTipo = 'ok';
+        let filtroCat = '', termo = '';
 
-        <button class="btn-finalizar">Finalizar compra →</button>
-        <div class="selo-seguranca">🔒 Pagamento processado com segurança</div>
-      </aside>
-    </div>
-  </body>
+        // ===== Componentes =====
+        function cartao(p) {
+            const desc = p.antigo ? Math.round((1 - p.preco / p.antigo) * 100) : 0;
+            return `<div class="prod">
+                ${desc ? `<span class="etq">-${desc}%</span>` : ''}
+                <div class="prod-ico">${p.ico}</div>
+                <strong>${h(p.nome)}</strong>
+                <div class="preco">${p.antigo ? `<s>${real(p.antigo)}</s>` : ''}<b>${real(p.preco)}</b></div>
+                <button class="btn" data-add="${p.id}"><i class="fas fa-cart-plus"></i> Adicionar</button>
+            </div>`;
+        }
+
+        function totais() {
+            const itens = ler(K('klp_carrinho'), []);
+            const sub = itens.reduce((s, i) => s + i.preco * i.qtd, 0);
+            const desc = ler(K('klp_cupom'), '') === CUPOM ? sub * 0.10 : 0;
+            const frete = !itens.length || sub >= FRETE_GRATIS ? 0 : FRETE;
+            return { itens, sub, desc, frete, total: sub - desc + frete };
+        }
+
+        // ===== Telas =====
+        const telas = {
+            inicio() {
+                const ofertas = PRODUTOS.filter(p => p.antigo).slice(0, 4).map(cartao).join('');
+                const cats = CATEGORIAS.map(c => `<a class="cat" href="#produtos" data-cat="${c.id}"><span>${c.ico}</span>${c.nome}</a>`).join('');
+                return `
+                <div class="hero">
+                    <div>
+                        <h2>Olá, ${h(nomeLogin())}! 👋</h2>
+                        <p>Compre do jeito mais fácil: escolha seus produtos e monte seu carrinho.</p>
+                        <a class="btn" href="#produtos">Ver produtos</a>
+                    </div>
+                    <div class="selo">OFERTAS<small>da semana</small></div>
+                </div>
+                <h3 class="secao">Categorias</h3>
+                <div class="cats">${cats}</div>
+                <h3 class="secao">Ofertas da semana</h3>
+                <div class="vitrine">${ofertas}</div>
+                <h3 class="secao">Sua conta</h3>
+                <div class="atalhos">
+                    <a class="botao" href="#dados">📄 Meus Dados</a>
+                    <a class="botao" href="#">📦 Meus Pedidos</a>
+                    <a class="botao" href="#carrinho">🛒 Carrinho</a>
+                    <a class="botao" href="#senha">🔒 Alterar Senha</a>
+                    <a class="botao sair" href="#" data-acao="sair">🚪 Sair</a>
+                </div>`;
+            },
+
+            produtos() {
+                const lista = PRODUTOS.filter(p =>
+                    (!filtroCat || p.cat === filtroCat) &&
+                    p.nome.toLowerCase().includes(termo.toLowerCase()));
+                const chips = [{ id: '', nome: 'Todos', ico: '🛍️' }, ...CATEGORIAS].map(c =>
+                    `<button class="chip ${filtroCat === c.id ? 'on' : ''}" data-cat="${c.id}">${c.ico} ${c.nome}</button>`).join('');
+                return `
+                <div class="chips">${chips}</div>
+                ${lista.length ? `<div class="vitrine">${lista.map(cartao).join('')}</div>`
+                    : '<p class="vazio-claro">Nenhum produto encontrado. Tente outro nome ou categoria.</p>'}`;
+            },
+
+            dados() {
+                const d = ler(K('klp_dados'), { cpf: '', email: '' });
+                return `
+                <div class="cartao">
+                    <h2>Meus Dados</h2>
+                    <form data-form="dados">
+                        <label for="nome">Nome</label>
+                        <input id="nome" type="text" name="nome" value="${h(nomeLogin() === 'Cliente' ? '' : nomeLogin())}" required>
+                        <label for="cpf">CPF</label>
+                        <input id="cpf" type="text" name="cpf" value="${h(d.cpf)}" inputmode="numeric" maxlength="14" placeholder="000.000.000-00">
+                        <label for="email">E-mail</label>
+                        <input id="email" type="email" name="email" value="${h(d.email)}" required>
+                        <button class="btn" type="submit">Salvar alterações</button>
+                    </form>
+                </div>`;
+            },
+
+            carrinho() {
+                const t = totais();
+                if (!t.itens.length) {
+                    return `<div class="cartao"><h2>Meu Carrinho</h2>
+                        <p class="vazio">Seu carrinho está vazio.</p>
+                        <p style="text-align:center"><a class="btn" href="#produtos" style="display:inline-block;text-decoration:none">Ir às compras</a></p></div>`;
+                }
+                const falta = Math.max(0, FRETE_GRATIS - t.sub);
+                const pct = Math.min(100, t.sub / FRETE_GRATIS * 100);
+                const linhas = t.itens.map(i => `<tr>
+                    <td>${i.ico} ${h(i.nome)}</td>
+                    <td>${real(i.preco)}</td>
+                    <td><input type="number" min="1" value="${i.qtd}" data-qtd="${i.id}" aria-label="Quantidade de ${h(i.nome)}"></td>
+                    <td>${real(i.preco * i.qtd)}</td>
+                    <td><button class="btn perigo" data-remover="${i.id}">Remover</button></td></tr>`).join('');
+                return `
+                <div class="cartao">
+                    <h2>Meu Carrinho</h2>
+                    <div class="frete">
+                        <span>${falta ? `Faltam <b>${real(falta)}</b> para o frete grátis` : '🎉 Você ganhou frete grátis!'}</span>
+                        <div class="barra"><i style="width:${pct}%"></i></div>
+                    </div>
+                    <div class="tabela-wrap"><table>
+                        <thead><tr><th>Produto</th><th>Preço</th><th>Qtd.</th><th>Subtotal</th><th></th></tr></thead>
+                        <tbody>${linhas}</tbody></table></div>
+                    <form class="cupom" data-form="cupom">
+                        <input type="text" name="cupom" placeholder="Cupom de desconto" value="${h(ler(K('klp_cupom'), ''))}" aria-label="Cupom">
+                        <button class="btn" type="submit">Aplicar</button>
+                    </form>
+                    <div class="resumo">
+                        <p><span>Subtotal</span><span>${real(t.sub)}</span></p>
+                        ${t.desc ? `<p class="verde"><span>Desconto (${CUPOM})</span><span>- ${real(t.desc)}</span></p>` : ''}
+                        <p><span>Frete</span><span>${t.frete ? real(t.frete) : 'Grátis'}</span></p>
+                        <p class="total"><span>Total</span><span>${real(t.total)}</span></p>
+                    </div>
+                    <div class="acoes">
+                        <button class="btn perigo" data-acao="limpar">Esvaziar carrinho</button>
+                        <button class="btn" data-acao="finalizar"><i class="fas fa-check"></i> Finalizar compra</button>
+                    </div>
+                </div>`;
+            },
+
+            pagamento() {
+                const t = totais();
+                if (pagto) {
+                    const qr = pagto.metodo === 'qr';
+                    return `
+                    <div class="cartao">
+                        <h2>${qr ? 'Pague com QR Code PIX' : 'Pague com PIX copia e cola'}</h2>
+                        ${PIX_CONFIGURADO ? '' : '<div class="aviso erro">Modo demonstração: a chave PIX do mercado ainda não foi configurada.</div>'}
+                        <p style="color:#1e293b;margin-bottom:12px">Total: <b>${real(pagto.total)}</b></p>
+                        ${qr ? '<div id="qr" style="display:inline-block;padding:12px;border:1px solid var(--border-color);border-radius:12px"></div>'
+                             : `<textarea id="codigo" readonly style="width:100%;min-height:96px;padding:10px;border:1px solid var(--border-color);border-radius:8px;font:0.78rem monospace;resize:none;background:#f1f5f9;color:#334155">${h(pagto.payload)}</textarea>
+                                <button class="btn" data-acao="copiar"><i class="fas fa-copy"></i> Copiar código PIX</button>`}
+                        <p style="font-size:0.8rem;color:#64748b;margin-top:12px">${qr ? 'No app do seu banco, escolha PIX e aponte a câmera para o QR Code.' : 'No app do seu banco, escolha PIX › Pagar com copia e cola.'} Depois de pagar, clique em "Já fiz o pagamento".</p>
+                        <div class="acoes">
+                            <button class="btn perigo" data-acao="trocar">${qr ? 'Usar copia e cola' : 'Usar QR Code'}</button>
+                            <button class="btn" data-acao="paguei"><i class="fas fa-check"></i> Já fiz o pagamento</button>
+                        </div>
+                    </div>`;
+                }
+                if (!t.itens.length) {
+                    return `<div class="cartao"><h2>Pagamento</h2><p class="vazio">Seu carrinho está vazio.</p>
+                        <p style="text-align:center"><a class="btn" href="#produtos" style="display:inline-block;text-decoration:none">Ir às compras</a></p></div>`;
+                }
+                const op = 'display:flex;align-items:center;gap:10px;border:1px solid var(--border-color);border-radius:10px;padding:14px;margin:8px 0;cursor:pointer';
+                return `
+                <div class="cartao">
+                    <h2>Forma de pagamento</h2>
+                    <div class="resumo" style="margin:0 0 12px">
+                        <p><span>Subtotal</span><span>${real(t.sub)}</span></p>
+                        ${t.desc ? `<p class="verde"><span>Desconto (${CUPOM})</span><span>- ${real(t.desc)}</span></p>` : ''}
+                        <p><span>Frete</span><span>${t.frete ? real(t.frete) : 'Grátis'}</span></p>
+                        <p class="total"><span>Total</span><span>${real(t.total)}</span></p>
+                    </div>
+                    <label style="${op}"><input type="radio" name="metodo" value="pix" checked style="width:auto"> 💠 PIX copia e cola</label>
+                    <label style="${op}"><input type="radio" name="metodo" value="qr" style="width:auto"> 📱 QR Code PIX</label>
+                    <div class="acoes">
+                        <a class="btn perigo" href="#carrinho" style="text-decoration:none">← Voltar ao carrinho</a>
+                        <button class="btn" data-acao="gerar"><i class="fas fa-qrcode"></i> Gerar pagamento</button>
+                    </div>
+                </div>`;
+            },
+
+            senha() {
+                return `
+                <div class="cartao">
+                    <h2>Alterar Senha</h2>
+                    <form data-form="senha">
+                        <label for="senha_atual">Senha atual</label>
+                        <input id="senha_atual" type="password" name="atual" required>
+                        <label for="senha_nova">Nova senha (mínimo 6 caracteres)</label>
+                        <input id="senha_nova" type="password" name="nova" minlength="6" required>
+                        <label for="senha_conf">Confirmar nova senha</label>
+                        <input id="senha_conf" type="password" name="conf" minlength="6" required>
+                        <button class="btn" type="submit">Alterar senha</button>
+                    </form>
+                </div>`;
+            }
+        };
+
+        // ===== Navegação =====
+        function abaAtual() { const a = location.hash.replace('#', ''); return telas[a] ? a : 'inicio'; }
+
+        function desenhar() {
+            const aba = abaAtual();
+            document.getElementById('titulo').textContent = TITULOS[aba];
+            document.getElementById('nomeTopo').textContent = nomeLogin();
+            document.getElementById('badge').textContent = ler(K('klp_carrinho'), []).reduce((s, i) => s + i.qtd, 0);
+            document.title = TITULOS[aba] + ' — KLP.NUNES';
+            document.querySelectorAll('#menu li[data-aba]').forEach(li => li.classList.toggle('active', li.dataset.aba === aba || (aba === 'pagamento' && li.dataset.aba === 'carrinho')));
+            const msg = aviso ? `<div class="aviso ${avisoTipo}" role="alert">${h(aviso)}</div>` : '';
+            aviso = '';
+            document.getElementById('conteudo').innerHTML = msg + telas[aba]();
+            if (aba === 'pagamento' && pagto && pagto.metodo === 'qr') {
+                const alvo = document.getElementById('qr');
+                if (typeof QRCode === 'undefined') alvo.textContent = 'Não foi possível carregar o QR Code (sem internet?). Use o PIX copia e cola.';
+                else new QRCode(alvo, { text: pagto.payload, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
+            }
+            document.querySelector('.sidebar').classList.remove('active');
+        }
+        function avisar(texto, tipo) { aviso = texto; avisoTipo = tipo || 'ok'; desenhar(); }
+
+        // ===== Ações =====
+        document.addEventListener('click', e => {
+            const alvo = e.target.closest('[data-acao],[data-add],[data-remover],[data-cat]');
+            if (!alvo) return;
+            const carrinho = ler(K('klp_carrinho'), []);
+
+            if (alvo.dataset.cat !== undefined) {
+                filtroCat = alvo.dataset.cat;
+                if (abaAtual() === 'produtos') desenhar();
+            } else if (alvo.dataset.add) {
+                const p = PRODUTOS.find(x => x.id == alvo.dataset.add);
+                const ja = carrinho.find(x => x.id === p.id);
+                if (ja) ja.qtd++; else carrinho.push({ id: p.id, nome: p.nome, preco: p.preco, ico: p.ico, qtd: 1 });
+                gravar(K('klp_carrinho'), carrinho);
+                avisar(p.nome + ' adicionado ao carrinho.');
+            } else if (alvo.dataset.remover) {
+                gravar(K('klp_carrinho'), carrinho.filter(x => x.id != alvo.dataset.remover));
+                avisar('Item removido do carrinho.');
+            } else if (alvo.dataset.acao === 'limpar') {
+                gravar(K('klp_carrinho'), []); gravar(K('klp_cupom'), '');
+                avisar('Carrinho esvaziado.');
+            } else if (alvo.dataset.acao === 'finalizar') {
+                pagto = null;
+                if (location.hash !== '#pagamento') location.hash = '#pagamento'; else desenhar();
+            } else if (alvo.dataset.acao === 'gerar') {
+                const t = totais();
+                if (!t.itens.length) return avisar('Seu carrinho está vazio.', 'erro');
+                const metodo = (document.querySelector('input[name=metodo]:checked') || {}).value || 'pix';
+                const txid = ('KLP' + Date.now().toString(36).toUpperCase()).slice(0, 25);
+                pagto = { metodo, total: t.total, payload: gerarPix(t.total, txid) };
+                desenhar();
+            } else if (alvo.dataset.acao === 'trocar') {
+                pagto.metodo = pagto.metodo === 'qr' ? 'pix' : 'qr';
+                desenhar();
+            } else if (alvo.dataset.acao === 'copiar') {
+                const campo = document.getElementById('codigo');
+                const ok = () => avisar('Código PIX copiado! Cole no app do seu banco.');
+                const antigo = () => { campo.select(); try { document.execCommand('copy'); ok(); } catch (err) { avisar('Não deu para copiar. Selecione e copie manualmente.', 'erro'); } };
+                if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(campo.value).then(ok, antigo); else antigo();
+            } else if (alvo.dataset.acao === 'paguei') {
+                const total = pagto.total;
+                pagto = null;
+                gravar(K('klp_carrinho'), []); gravar(K('klp_cupom'), '');
+                aviso = 'Pagamento informado! Total de ' + real(total) + '. O mercado vai conferir o recebimento do PIX.';
+                avisoTipo = 'ok';
+                if (location.hash !== '#inicio') location.hash = '#inicio'; else desenhar();
+            } else if (alvo.dataset.acao === 'sair') {
+                e.preventDefault();
+                try { localStorage.removeItem('nomeCliente'); localStorage.removeItem('idCliente'); } catch (err) {}
+                window.location.href = 'Logout.php'; // encerra a sessão no servidor
+            }
+        });
+
+        document.addEventListener('change', e => {
+            if (!e.target.dataset.qtd) return;
+            const carrinho = ler(K('klp_carrinho'), []);
+            const item = carrinho.find(x => x.id == e.target.dataset.qtd);
+            if (item) item.qtd = Math.max(1, parseInt(e.target.value, 10) || 1);
+            gravar(K('klp_carrinho'), carrinho);
+            avisar('Quantidade atualizada.');
+        });
+
+        document.addEventListener('submit', e => {
+            const tipo = e.target.dataset.form;
+            if (!tipo) return;
+            e.preventDefault();
+            const f = new FormData(e.target);
+
+            if (tipo === 'dados') {
+                const nome = f.get('nome').trim();
+                if (!nome) return avisar('Informe seu nome.', 'erro');
+                try { localStorage.setItem('nomeCliente', nome); } catch (err) {}
+                gravar(K('klp_dados'), { cpf: f.get('cpf').trim(), email: f.get('email').trim() });
+                avisar('Dados atualizados com sucesso!');
+            } else if (tipo === 'cupom') {
+                const c = f.get('cupom').trim().toUpperCase();
+                if (c === CUPOM) { gravar(K('klp_cupom'), CUPOM); avisar('Cupom aplicado: 10% de desconto!'); }
+                else { gravar(K('klp_cupom'), ''); avisar('Cupom inválido.', 'erro'); }
+            } else if (tipo === 'senha') {
+                if (f.get('nova').length < 6) return avisar('A nova senha precisa ter pelo menos 6 caracteres.', 'erro');
+                if (f.get('nova') !== f.get('conf')) return avisar('A confirmação não é igual à nova senha.', 'erro');
+                avisar('Senha validada! Simulação: a troca real só acontece quando houver banco de dados.');
+            }
+        });
+
+        window.addEventListener('hashchange', desenhar);
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.querySelector('.sidebar');
+            document.getElementById('menuToggle').addEventListener('click', () => sidebar.classList.toggle('active'));
+            document.getElementById('busca').addEventListener('input', e => {
+                termo = e.target.value; filtroCat = '';
+                if (abaAtual() === 'produtos') desenhar(); else location.hash = '#produtos';
+            });
+            // Acesso: só abre se houver login válido na sessão do servidor
+            fetch('sessao_cliente.php', { credentials: 'same-origin', cache: 'no-store' })
+                .then(r => r.ok ? r.json() : Promise.reject())
+                .then(d => {
+                    if (!d.logado) return Promise.reject();
+                    try { localStorage.setItem('nomeCliente', d.nome); localStorage.setItem('idCliente', d.id); } catch (e) {}
+                    const salvo = ler(K('klp_dados'), { cpf: '', email: '' });
+                    gravar(K('klp_dados'), { cpf: salvo.cpf || d.cpf, email: salvo.email || d.email });
+                    desenhar();
+                })
+                .catch(() => window.location.replace('Pagina_de_Login_Cliente.html'));
+        });
+
+        // Voltar pelo botão do navegador após sair não mostra a página em cache
+        window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
+    </script>
+</body>
 </html>

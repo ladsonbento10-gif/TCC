@@ -83,13 +83,13 @@ document.addEventListener("DOMContentLoaded", () => {
                             callback: function(value) {
                                 return "R$ " + value.toLocaleString("pt-BR");
                             },
-                            color: "#64748b",
+                            color: "#5a7a63",
                             font: { size: 11 }
                         },
-                        grid: { color: "#f1f5f9" }
+                        grid: { color: "#edf7f0" }
                     },
                     x: {
-                        ticks: { color: "#64748b", font: { size: 11 } },
+                        ticks: { color: "#5a7a63", font: { size: 11 } },
                         grid: { display: false }
                     }
                 }

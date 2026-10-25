@@ -126,7 +126,7 @@ const pageStyle = {
   minHeight: '100vh',
   display: 'flex' as const,
   flexDirection: 'column' as const,
-  background: 'linear-gradient(150deg, #0d4a1f 0%, #126b2c 35%, #1a7a35 65%, #27ae60 100%)',
+  background: 'linear-gradient(150deg, #0c4f26 0%, #157a3d 35%, #157a3d 65%, #1f9c50 100%)',
   position: 'relative' as const,
   overflow: 'hidden' as const,
   fontFamily: 'Arial, sans-serif',
@@ -162,7 +162,7 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
           flexDirection: 'column',
           alignItems: 'center',
           gap: '20px',
-          background: 'rgba(245, 230, 211, 0.88)',
+          background: 'rgba(229,245,234, 0.88)',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(255,255,255,0.35)',
           borderRadius: '28px',
@@ -173,14 +173,14 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
             <h1 style={{
               fontSize: '24px',
               fontWeight: 'bold',
-              color: '#1a1a1a',
+              color: '#173322',
               margin: 0,
             }}>
               Área Inicial
             </h1>
             <p style={{
               fontSize: '14px',
-              color: '#555',
+              color: '#405048',
               marginTop: '6px',
             }}>
               Selecione como deseja acessar o sistema
@@ -192,8 +192,8 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
             emoji="📋"
             label="Cadastro"
             description="Criar nova conta"
-            color="#27ae60"
-            hoverColor="#2ecc71"
+            color="#1f9c50"
+            hoverColor="#23a358"
             isHovered={hovered === 'cadastro'}
             onHover={setHovered}
             onClick={() => onNavigate('cadastro')}
@@ -212,8 +212,8 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               emoji="🔒"
               label="Administrador"
               description="Acesso de gestão"
-              color="#2c3e50"
-              hoverColor="#34495e"
+              color="#173322"
+              hoverColor="#0f5c2d"
               isHovered={hovered === 'admin'}
               onHover={setHovered}
               onClick={() => onNavigate('admin')}
@@ -223,8 +223,8 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
               emoji="👤"
               label="Cliente"
               description="Minha conta"
-              color="#3498db"
-              hoverColor="#2980b9"
+              color="#1f9c50"
+              hoverColor="#157a3d"
               isHovered={hovered === 'cliente'}
               onHover={setHovered}
               onClick={() => onNavigate('cliente')}
@@ -268,7 +268,7 @@ function CadastroPage({ onBack }: { onBack: () => void }) {
 
   const field = (key: keyof CadastroForm, label: string, type = 'text', placeholder = '') => (
     <div style={{ width: '100%' }}>
-      <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#2c3e50', marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#173322', marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {label}
       </label>
       <input
@@ -280,7 +280,7 @@ function CadastroPage({ onBack }: { onBack: () => void }) {
           width: '100%',
           padding: '11px 14px',
           borderRadius: '10px',
-          border: errors[key] ? '2px solid #e74c3c' : '2px solid rgba(44,62,80,0.15)',
+          border: errors[key] ? '2px solid #e74c3c' : '2px solid rgba(6,59,28,0.15)',
           fontSize: '0.95rem',
           fontFamily: "'Nunito', sans-serif",
           background: 'white',
@@ -288,8 +288,8 @@ function CadastroPage({ onBack }: { onBack: () => void }) {
           transition: 'border 0.2s',
           boxSizing: 'border-box',
         }}
-        onFocus={ev => { ev.target.style.border = '2px solid #27ae60' }}
-        onBlur={ev => { ev.target.style.border = errors[key] ? '2px solid #e74c3c' : '2px solid rgba(44,62,80,0.15)' }}
+        onFocus={ev => { ev.target.style.border = '2px solid #1f9c50' }}
+        onBlur={ev => { ev.target.style.border = errors[key] ? '2px solid #e74c3c' : '2px solid rgba(6,59,28,0.15)' }}
       />
       {errors[key] && <span style={{ fontSize: '0.75rem', color: '#e74c3c', marginTop: '3px', display: 'block' }}>{errors[key]}</span>}
     </div>
@@ -302,7 +302,7 @@ function CadastroPage({ onBack }: { onBack: () => void }) {
       <Header onBack={onBack} showBack />
       <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', zIndex: 10, position: 'relative' }}>
         <div style={{
-          background: 'rgba(245, 230, 211, 0.92)',
+          background: 'rgba(229,245,234, 0.92)',
           backdropFilter: 'blur(20px)',
           borderRadius: '28px',
           padding: '40px 40px',
@@ -321,7 +321,7 @@ function CadastroPage({ onBack }: { onBack: () => void }) {
               <button
                 onClick={onBack}
                 style={{
-                  background: '#27ae60', color: 'white', border: 'none',
+                  background: '#1f9c50', color: 'white', border: 'none',
                   borderRadius: '12px', padding: '13px 32px',
                   fontSize: '1rem', fontWeight: 800, cursor: 'pointer',
                   fontFamily: "'Nunito', sans-serif",
@@ -367,7 +367,7 @@ function CadastroPage({ onBack }: { onBack: () => void }) {
               <button
                 type="submit"
                 style={{
-                  background: '#27ae60',
+                  background: '#1f9c50',
                   color: 'white',
                   border: 'none',
                   borderRadius: '12px',
@@ -380,8 +380,8 @@ function CadastroPage({ onBack }: { onBack: () => void }) {
                   transition: 'background 0.2s',
                   width: '100%',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#1e8449')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#27ae60')}
+                onMouseEnter={e => (e.currentTarget.style.background = '#157a3d')}
+                onMouseLeave={e => (e.currentTarget.style.background = '#1f9c50')}
               >
                 Criar Conta
               </button>
@@ -391,7 +391,7 @@ function CadastroPage({ onBack }: { onBack: () => void }) {
                 <button
                   type="button"
                   onClick={onBack}
-                  style={{ background: 'none', border: 'none', color: '#27ae60', fontWeight: 800, cursor: 'pointer', fontSize: '0.85rem', fontFamily: "'Nunito', sans-serif", padding: 0 }}
+                  style={{ background: 'none', border: 'none', color: '#1f9c50', fontWeight: 800, cursor: 'pointer', fontSize: '0.85rem', fontFamily: "'Nunito', sans-serif", padding: 0 }}
                 >
                   Voltar ao início
                 </button>
@@ -426,8 +426,8 @@ function LoginPage({ type, onBack }: { type: 'admin' | 'cliente'; onBack: () => 
     setLoggedIn(true)
   }
 
-  const color = isAdmin ? '#2c3e50' : '#3498db'
-  const hoverColor = isAdmin ? '#1a252f' : '#1a6fa8'
+  const color = isAdmin ? '#173322' : '#1f9c50'
+  const hoverColor = isAdmin ? '#063b1c' : '#0f5c2d'
   const emoji = isAdmin ? '🔐' : '👤'
   const label = isAdmin ? 'Administrador' : 'Cliente'
 
@@ -438,7 +438,7 @@ function LoginPage({ type, onBack }: { type: 'admin' | 'cliente'; onBack: () => 
       <Header onBack={onBack} showBack />
       <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 24px', zIndex: 10, position: 'relative' }}>
         <div style={{
-          background: 'rgba(245, 230, 211, 0.92)',
+          background: 'rgba(229,245,234, 0.92)',
           backdropFilter: 'blur(20px)',
           borderRadius: '28px',
           padding: '44px 40px',
@@ -481,7 +481,7 @@ function LoginPage({ type, onBack }: { type: 'admin' | 'cliente'; onBack: () => 
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#2c3e50', marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#173322', marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   E-mail
                 </label>
                 <input
@@ -491,17 +491,17 @@ function LoginPage({ type, onBack }: { type: 'admin' | 'cliente'; onBack: () => 
                   placeholder="seuemail@exemplo.com"
                   style={{
                     width: '100%', padding: '11px 14px', borderRadius: '10px',
-                    border: '2px solid rgba(44,62,80,0.15)', fontSize: '0.95rem',
+                    border: '2px solid rgba(6,59,28,0.15)', fontSize: '0.95rem',
                     fontFamily: "'Nunito', sans-serif", background: 'white', outline: 'none',
                     boxSizing: 'border-box',
                   }}
                   onFocus={e => (e.target.style.border = `2px solid ${color}`)}
-                  onBlur={e => (e.target.style.border = '2px solid rgba(44,62,80,0.15)')}
+                  onBlur={e => (e.target.style.border = '2px solid rgba(6,59,28,0.15)')}
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#2c3e50', marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#173322', marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Senha
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -512,12 +512,12 @@ function LoginPage({ type, onBack }: { type: 'admin' | 'cliente'; onBack: () => 
                     placeholder="Digite sua senha"
                     style={{
                       width: '100%', padding: '11px 44px 11px 14px', borderRadius: '10px',
-                      border: '2px solid rgba(44,62,80,0.15)', fontSize: '0.95rem',
+                      border: '2px solid rgba(6,59,28,0.15)', fontSize: '0.95rem',
                       fontFamily: "'Nunito', sans-serif", background: 'white', outline: 'none',
                       boxSizing: 'border-box',
                     }}
                     onFocus={e => (e.target.style.border = `2px solid ${color}`)}
-                    onBlur={e => (e.target.style.border = '2px solid rgba(44,62,80,0.15)')}
+                    onBlur={e => (e.target.style.border = '2px solid rgba(6,59,28,0.15)')}
                   />
                   <button
                     type="button"
@@ -562,7 +562,7 @@ function LoginPage({ type, onBack }: { type: 'admin' | 'cliente'; onBack: () => 
                 <button
                   type="button"
                   onClick={onBack}
-                  style={{ background: 'none', border: 'none', color: '#27ae60', fontWeight: 800, cursor: 'pointer', fontSize: '0.85rem', fontFamily: "'Nunito', sans-serif", padding: 0 }}
+                  style={{ background: 'none', border: 'none', color: '#1f9c50', fontWeight: 800, cursor: 'pointer', fontSize: '0.85rem', fontFamily: "'Nunito', sans-serif", padding: 0 }}
                 >
                   Criar conta grátis
                 </button>

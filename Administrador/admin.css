@@ -387,8 +387,8 @@ body {
 }
 
 .card-icon.blue { background: #1f9c50; }
-.card-icon.green { background: #12b886; }
-.card-icon.purple { background: #2f855a; }
+.card-icon.green { background: #23a358; }
+.card-icon.purple { background: #157a3d; }
 .card-icon.orange { background: #f59e0b; }
 
 .card-title {
@@ -501,8 +501,8 @@ tbody tr:hover {
 }
 
 .status-badge.success {
-    background: #dcfce7;
-    color: #15803d;
+    background: #e5f5ea;
+    color: #157a3d;
 }
 
 .status-badge.warning {
@@ -543,9 +543,9 @@ tbody tr:hover {
 }
 
 .activity-icon.blue { background: #1f9c50; }
-.activity-icon.green { background: #12b886; }
+.activity-icon.green { background: #23a358; }
 .activity-icon.orange { background: #f59e0b; }
-.activity-icon.purple { background: #2f855a; }
+.activity-icon.purple { background: #157a3d; }
 
 .activity-details {
     flex: 1;

@@ -44,14 +44,33 @@
                 <i class="fas fa-search"></i>
             </div>
             <div class="header-actions">
-                <div class="notifications">
-                    <i class="far fa-bell"></i>
-                    <span class="badge">3</span>
+                <div class="notifications" id="notificacoes">
+                    <button type="button" class="icon-btn" id="btnSino" aria-label="Notificações" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-bell"></i>
+                        <span class="badge" id="badgeNotificacoes" hidden>0</span>
+                    </button>
+                    <div class="dropdown notif-dropdown" id="menuNotificacoes" hidden>
+                        <div class="dropdown-header">
+                            <strong>Notificações</strong>
+                            <button type="button" class="btn-link-sm" id="btnMarcarLidas">Marcar como lidas</button>
+                        </div>
+                        <ul class="notif-list" id="listaNotificacoes">
+                            <li class="notif-vazia">Carregando...</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="user-profile">
-                    <i class="far fa-user-circle"></i>
-                    <span id="nomeAdminHeader">Administrador</span>
-                    <i class="fas fa-chevron-down"></i>
+                <div class="user-profile" id="perfilUsuario">
+                    <button type="button" class="user-btn" id="btnUsuario" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-user-circle"></i>
+                        <span id="nomeAdminHeader">Administrador</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown user-dropdown" id="menuUsuario" hidden>
+                        <button type="button" data-perfil="dados"><i class="far fa-id-card"></i> Meus dados</button>
+                        <button type="button" data-perfil="editar"><i class="far fa-edit"></i> Alterar dados pessoais</button>
+                        <button type="button" data-perfil="senha"><i class="fas fa-key"></i> Alterar senha</button>
+                        <a href="logout.php" id="btnSairMenu"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                    </div>
                 </div>
             </div>
         </header>
@@ -67,7 +86,7 @@
                     <div class="card-icon blue"><i class="fas fa-cube"></i></div>
                     <div class="card-info">
                         <span class="card-title">PRODUTOS</span>
-                        <h3>325</h3>
+                        <h3 id="cardProdutos">325</h3>
                         <small>Itens cadastrados</small>
                     </div>
                 </div>
@@ -76,7 +95,7 @@
                     <div class="card-icon green"><i class="fas fa-users"></i></div>
                     <div class="card-info">
                         <span class="card-title">CLIENTES</span>
-                        <h3>108</h3>
+                        <h3 id="cardClientes">108</h3>
                         <small>Clientes cadastrados</small>
                     </div>
                 </div>
@@ -85,7 +104,7 @@
                     <div class="card-icon purple"><i class="fas fa-shopping-cart"></i></div>
                     <div class="card-info">
                         <span class="card-title">PEDIDOS</span>
-                        <h3>52</h3>
+                        <h3 id="cardPedidos">52</h3>
                         <small>Pedidos este mês</small>
                     </div>
                 </div>
@@ -94,7 +113,7 @@
                     <div class="card-icon orange"><i class="fas fa-exclamation-triangle"></i></div>
                     <div class="card-info">
                         <span class="card-title">ESTOQUE BAIXO</span>
-                        <h3>7</h3>
+                        <h3 id="cardEstoqueBaixo">7</h3>
                         <small>Itens com estoque baixo</small>
                     </div>
                 </div>
@@ -116,7 +135,7 @@
                 <div class="panel">
                     <div class="panel-header">
                         <h3>PRODUTOS RECENTES</h3>
-                        <a href="#" class="btn-link">Ver todos</a>
+                        <a href="../Estoque/estoque.html#painel-lista" class="btn-link">Ver todos</a>
                     </div>
                     <div class="table-responsive">
                         <table>
@@ -130,7 +149,7 @@
                                     <th>STATUS</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tabelaProdutosRecentes">
                                 <tr>
                                     <td>#1256</td>
                                     <td>Filtro de Óleo</td>
@@ -182,7 +201,7 @@
                     <div class="panel-header">
                         <h3>ATIVIDADES RECENTES</h3>
                     </div>
-                    <ul class="activity-list">
+                    <ul class="activity-list" id="listaAtividades">
                         <li>
                             <div class="activity-icon blue"><i class="fas fa-cube"></i></div>
                             <div class="activity-details">
@@ -226,5 +245,38 @@
         </div>
     </main>
 
+    <div class="modal-overlay" id="modalPerfil" hidden>
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalPerfilTitulo">
+            <div class="modal-head">
+                <h3 id="modalPerfilTitulo">Meus dados</h3>
+                <button type="button" class="modal-close" id="modalPerfilFechar" aria-label="Fechar"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="modal-body" data-vista="dados">
+                <dl class="dados-lista">
+                    <dt>Nome</dt><dd id="pfNome">-</dd>
+                    <dt>E-mail</dt><dd id="pfEmail">-</dd>
+                    <dt>Cargo</dt><dd id="pfCargo">-</dd>
+                </dl>
+            </div>
+
+            <form class="modal-body" data-vista="editar" id="formDados" hidden>
+                <label>Nome <input type="text" name="nome" id="editNome" required maxlength="100"></label>
+                <label>E-mail <input type="email" name="email" id="editEmail" required maxlength="100"></label>
+                <p class="form-msg" id="msgDados" role="alert"></p>
+                <button type="submit" class="btn-primario">Salvar alterações</button>
+            </form>
+
+            <form class="modal-body" data-vista="senha" id="formSenha" hidden>
+                <label>Senha atual <input type="password" name="senha_atual" required autocomplete="current-password"></label>
+                <label>Nova senha <input type="password" name="senha_nova" required minlength="6" autocomplete="new-password"></label>
+                <label>Confirmar nova senha <input type="password" name="senha_confirmar" required minlength="6" autocomplete="new-password"></label>
+                <p class="form-msg" id="msgSenha" role="alert"></p>
+                <button type="submit" class="btn-primario">Alterar senha</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin_painel.js"></script>
 </body>
 </html>

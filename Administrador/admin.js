@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         gradient.addColorStop(0, "rgba(31, 156, 80, 0.30)");
         gradient.addColorStop(1, "rgba(31, 156, 80, 0.0)");
 
-        new Chart(ctx, {
+        window.salesChartInst = new Chart(ctx, {
             type: "line",
             data: {
                 labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"],

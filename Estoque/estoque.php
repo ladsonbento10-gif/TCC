@@ -59,6 +59,13 @@ if($acao === "salvar_categoria"){
     }
     try{
 
+        $existe = $conn->prepare("SELECT COUNT(*) FROM categoria WHERE LOWER(nome) = LOWER(:nome)");
+        $existe->execute([":nome" => $nome]);
+        if ((int) $existe->fetchColumn() > 0) {
+            echo json_encode(["sucesso" => false, "mensagem" => "Já existe uma categoria com esse nome."]);
+            exit();
+        }
+
         $sql = "INSERT INTO categoria (nome) VALUES (:nome)";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(":nome",$nome);
@@ -74,6 +81,58 @@ if($acao === "salvar_categoria"){
     }
 }
 // SALVAR PRODUTO
+// Editar categoria (renomear)
+if ($acao === "editar_categoria") {
+    $id   = (int) ($_POST["id_categoria"] ?? 0);
+    $nome = trim($_POST["nome"] ?? "");
+
+    if ($id <= 0 || $nome === "") {
+        echo json_encode(["sucesso" => false, "mensagem" => "Informe o novo nome da categoria."]);
+        exit();
+    }
+    try {
+        $existe = $conn->prepare("SELECT COUNT(*) FROM categoria WHERE LOWER(nome) = LOWER(:nome) AND id_categoria <> :id");
+        $existe->execute([":nome" => $nome, ":id" => $id]);
+        if ((int) $existe->fetchColumn() > 0) {
+            echo json_encode(["sucesso" => false, "mensagem" => "Já existe uma categoria com esse nome."]);
+            exit();
+        }
+        $stmt = $conn->prepare("UPDATE categoria SET nome = :nome WHERE id_categoria = :id");
+        $stmt->execute([":nome" => $nome, ":id" => $id]);
+        echo json_encode(["sucesso" => true, "mensagem" => "Categoria atualizada com sucesso!"]);
+        exit();
+    } catch (PDOException $e) {
+        echo json_encode(["sucesso" => false, "mensagem" => "Erro ao atualizar categoria: " . $e->getMessage()]);
+        exit();
+    }
+}
+
+// Excluir categoria (só se nenhum produto usar)
+if ($acao === "excluir_categoria") {
+    $id = (int) ($_POST["id_categoria"] ?? 0);
+
+    if ($id <= 0) {
+        echo json_encode(["sucesso" => false, "mensagem" => "Categoria inválida."]);
+        exit();
+    }
+    try {
+        $uso = $conn->prepare("SELECT COUNT(*) FROM estoque WHERE categoria_id = :id");
+        $uso->execute([":id" => $id]);
+        $qtd = (int) $uso->fetchColumn();
+        if ($qtd > 0) {
+            echo json_encode(["sucesso" => false, "mensagem" => "Não é possível excluir: " . $qtd . " produto(s) usam esta categoria."]);
+            exit();
+        }
+        $stmt = $conn->prepare("DELETE FROM categoria WHERE id_categoria = :id");
+        $stmt->execute([":id" => $id]);
+        echo json_encode(["sucesso" => true, "mensagem" => "Categoria excluída com sucesso!"]);
+        exit();
+    } catch (PDOException $e) {
+        echo json_encode(["sucesso" => false, "mensagem" => "Não foi possível excluir a categoria (ela está em uso)."]);
+        exit();
+    }
+}
+
 if($acao === "salvar_produto"){
 
     $nomeProduto = trim($_POST["nome_produto"] ?? "");

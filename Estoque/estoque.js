@@ -148,9 +148,61 @@ function mostrarCategorias(categorias){
     }
     categorias.forEach(function (categoria){
         const span = document.createElement("span");
-        span.className = "tag";
-        span.textContent = categoria.nome;
+        span.className = "tag tag-categoria";
+
+        const nome = document.createElement("span");
+        nome.textContent = categoria.nome;
+        span.appendChild(nome);
+
+        const editar = document.createElement("button");
+        editar.type = "button";
+        editar.className = "tag-btn";
+        editar.title = "Renomear categoria";
+        editar.textContent = "✏️";
+        editar.addEventListener("click", function () { editarCategoria(categoria); });
+        span.appendChild(editar);
+
+        const excluir = document.createElement("button");
+        excluir.type = "button";
+        excluir.className = "tag-btn";
+        excluir.title = "Excluir categoria";
+        excluir.textContent = "🗑️";
+        excluir.addEventListener("click", function () { excluirCategoria(categoria); });
+        span.appendChild(excluir);
+
         lista.appendChild(span);
+    });
+}
+// Renomear categoria
+function editarCategoria(categoria){
+    const novoNome = prompt("Novo nome da categoria:", categoria.nome);
+    if (novoNome === null || novoNome.trim() === "" || novoNome.trim() === categoria.nome) return;
+
+    const dados = new FormData();
+    dados.append("acao", "editar_categoria");
+    dados.append("id_categoria", categoria.id_categoria);
+    dados.append("nome", novoNome.trim());
+    enviarAcaoCategoria(dados);
+}
+// Excluir categoria
+function excluirCategoria(categoria){
+    if (!confirm('Excluir a categoria "' + categoria.nome + '"?')) return;
+
+    const dados = new FormData();
+    dados.append("acao", "excluir_categoria");
+    dados.append("id_categoria", categoria.id_categoria);
+    enviarAcaoCategoria(dados);
+}
+function enviarAcaoCategoria(dados){
+    fetch("estoque.php", { method: "POST", body: dados })
+    .then(function (resposta){ return resposta.json(); })
+    .then(function (resultado){
+        if (!resultado.sucesso) throw new Error(resultado.mensagem);
+        mostrarMensagem("mensagem-categoria", resultado.mensagem, "sucesso");
+        carregarDados();
+    })
+    .catch(function (erro){
+        mostrarMensagem("mensagem-categoria", erro.message, "erro");
     });
 }
 //Enviar Formulário

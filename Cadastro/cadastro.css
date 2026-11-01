@@ -414,3 +414,13 @@ select {
     .col-span-2    { grid-column: span 1; }
     .painel-direito { padding: 28px 18px; }
 }
+
+.voltar {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  color: #157a3d;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: bold;
+}

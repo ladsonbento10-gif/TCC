@@ -24,14 +24,19 @@
             // Verifica a senha descriptografada
             if (password_verify($senha, $cliente['senha'])) {
                 
-                // Salva os dados na sessão usando as colunas exatas do seu banco de dados
+                session_regenerate_id(true);
                 $_SESSION['id_cliente'] = $cliente['id_cliente']; 
                 $_SESSION['nome'] = $cliente['nome'];
-    
-                // Redirecionamento (Ajuste o nome do arquivo .html/.php para a página correta do cliente)
+
+                // json_encode protege contra aspas/tags no nome (antes quebrava ou abria brecha de XSS)
+                $f = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE;
+                $nomeJs = json_encode($cliente['nome'], $f);
+                $idJs   = json_encode((string) $cliente['id_cliente'], $f);
+
                 echo "
                 <script>
-                    localStorage.setItem('nomeCliente', '".$cliente['nome']."');
+                    localStorage.setItem('nomeCliente', $nomeJs);
+                    localStorage.setItem('idCliente', $idJs);
                     alert('✅ Login efetuado com sucesso!');
                     window.location.href='Area_do_Cliente.html'; 
                 </script>";

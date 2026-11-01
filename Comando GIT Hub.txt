@@ -1,0 +1,14 @@
+//Não - Configurada a URL
+
+git init > Inicializar
+git add . > Adicionar os arquivos.
+git commit -m "exmeplo" > Nome do Salvamento.
+git branch -M main > Definir branch principal.
+git remote add origin https://github.com > Link do git e repositório.
+git push -u origin main > Subir os arquivo de uma vez.
+
+// URL Configurada - Envio direto.
+
+git add .
+git commit -m "Explique aqui o que você mudou ou atualizou"
+git push

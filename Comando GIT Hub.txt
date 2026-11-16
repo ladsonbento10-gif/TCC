@@ -11,4 +11,4 @@ git push -u origin main > Subir os arquivo de uma vez.
 
 git add .
 git commit -m "Explique aqui o que você mudou ou atualizou"
-git push
+git push origin main

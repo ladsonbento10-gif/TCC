@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         gradient.addColorStop(0, "rgba(31, 156, 80, 0.30)");
         gradient.addColorStop(1, "rgba(31, 156, 80, 0.0)");
 
-        new Chart(ctx, {
+        window.salesChartInst = new Chart(ctx, {
             type: "line",
             data: {
                 labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"],
@@ -83,13 +83,13 @@ document.addEventListener("DOMContentLoaded", () => {
                             callback: function(value) {
                                 return "R$ " + value.toLocaleString("pt-BR");
                             },
-                            color: "#64748b",
+                            color: "#5a7a63",
                             font: { size: 11 }
                         },
-                        grid: { color: "#f1f5f9" }
+                        grid: { color: "#edf7f0" }
                     },
                     x: {
-                        ticks: { color: "#64748b", font: { size: 11 } },
+                        ticks: { color: "#5a7a63", font: { size: 11 } },
                         grid: { display: false }
                     }
                 }

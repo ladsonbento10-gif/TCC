@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Gerenciamento de MERCADO KLP.NUNES</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="admin.css">
+    <script src="admin_menu.js"></script>
     <script src="admin.js"></script>
 </head>
 <body>
@@ -22,8 +23,8 @@
             <li class="active"><a href="Area_do_Admin.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
             <li><a href="../Estoque/estoque.html#painel-categoria"><i class="fas fa-tags"></i><span>Categorias</span></a></li>
             <li><a href="../Estoque/estoque.html#painel-marca"><i class="fas fa-copyright"></i><span>Marcas</span></a></li>
-            <li><a href="../Estoque/estoque.html#painel-lista"><i class="fas fa-boxes"></i><span>Cadastro de Produtos</span></a></li>
-            <li><a href="../Estoque/estoque.html"><i class="fas fa-cube"></i><span>Estoque</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-produto"><i class="fas fa-box-open"></i><span>Cadastro de Produtos</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-lista"><i class="fas fa-boxes"></i><span>Lista de Produtos</span></a></li>
             <li><a href="Clientes.html"><i class="fas fa-users"></i><span>Clientes</span></a></li>
             <li><a href="../Funcionario/funcionario.html"><i class="fas fa-user-tie"></i><span>Funcionários</span></a></li>
             <li><a href="../Relatorio/relatorio.html"><i class="fas fa-chart-line"></i><span>Relatórios</span></a></li>
@@ -31,7 +32,7 @@
         </ul>
 
         <div class="sidebar-footer">
-            <a href="logout.php" class="logout-btn" id="btnSair"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+            <a href="logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
         </div>
     </aside>
 
@@ -69,7 +70,6 @@
                         <button type="button" data-perfil="dados"><i class="far fa-id-card"></i> Meus dados</button>
                         <button type="button" data-perfil="editar"><i class="far fa-edit"></i> Alterar dados pessoais</button>
                         <button type="button" data-perfil="senha"><i class="fas fa-key"></i> Alterar senha</button>
-                        <a href="logout.php" id="btnSairMenu"><i class="fas fa-sign-out-alt"></i> Sair</a>
                     </div>
                 </div>
             </div>
@@ -135,7 +135,7 @@
                 <div class="panel">
                     <div class="panel-header">
                         <h3>PRODUTOS RECENTES</h3>
-                        <a href="../Estoque/estoque.html#painel-lista" class="btn-link">Ver todos</a>
+                        <a href="../Estoque/estoque.html#painel-lista" class="btn-link">Ver lista</a>
                     </div>
                     <div class="table-responsive">
                         <table>

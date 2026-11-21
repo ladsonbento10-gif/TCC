@@ -8,26 +8,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <aside class="sidebar collapsed">
-        <div class="logo"><i class="fas fa-shopping-cart"></i><span>TCC</span><small>MERCADO KLP.NUNES</small></div>
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-shopping-cart"></i>
+            <span>TCC</span>
+            <small>MERCADO KLP.NUNES</small>
+        </div>
+
         <ul class="menu">
-            <li><a href="Area_do_Admin.html"><i class="fas fa-home"></i><span> Dashboard </span></a></li>
-            <li><a href="../Estoque/estoque.html#painel-categoria"><i class="fas fa-tags"></i><span> Categorias </span></a></li>
-            <li><a href="../Estoque/estoque.html#painel-marca"><i class="fas fa-copyright"></i><span> Marcas </span></a></li>
-            <li><a href="../Estoque/estoque.html#painel-lista"><i class="fas fa-cube"></i><span> Cadastro de Produtos</span></a></li>
-            <li><a href="../Estoque/estoque.html"><i class="fas fa-boxes"></i><span>Estoque</span></a></li>
-            <li class="active"><a href="Clientes.html"><i class="fas fa-users"></i><span> Clientes </span></a></li>
-            <li><a href="../Funcionario/funcionario.html"><i class="fas fa-user-tie"></i><span> Funcionários </span></a></li>
-            <li><a href="#"><i class="fas fa-chart-line"></i><span> Relatórios </span></a></li>
-            <li><a href="#"><i class="fas fa-cog"></i><span> Configurações </span></a></li>
+            <li><a href="Area_do_Admin.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-categoria"><i class="fas fa-tags"></i><span>Categorias</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-marca"><i class="fas fa-copyright"></i><span>Marcas</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-produto"><i class="fas fa-box-open"></i><span>Cadastro de Produtos</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-lista"><i class="fas fa-boxes"></i><span>Lista de Produtos</span></a></li>
+            <li class="active"><a href="Clientes.html"><i class="fas fa-users"></i><span>Clientes</span></a></li>
+            <li><a href="../Funcionario/funcionario.html"><i class="fas fa-user-tie"></i><span>Funcionários</span></a></li>
+            <li><a href="../Relatorio/relatorio.html"><i class="fas fa-chart-line"></i><span>Relatórios</span></a></li>
+            <li><a href="../Configuracao/configuracao.html"><i class="fas fa-cog"></i><span>Configurações</span></a></li>
         </ul>
-        <div class="sidebar-footer"><a href="logout.php" class="logout-btn" id="btnSair"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a></div>
+
+        <div class="sidebar-footer">
+            <a href="logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+        </div>
     </aside>
     <main class="main-content">
         <header class="top-header">
             <button id="menuToggle" class="menu-toggle"><i class="fas fa-bars"></i></button>
             <div class="search-bar"><input type="text" placeholder="Pesquisar..."><i class="fas fa-search"></i></div>
-            <div class="header-actions"><div class="user-profile"><i class="far fa-user-circle"></i><span id="nomeAdminHeader">Administrador</span><i class="fas fa-chevron-down"></i></div></div>
+            <div class="header-actions"><div class="user-profile"><i class="far fa-user-circle"></i><span id="nomeAdminHeader">Administrador</span></div></div>
         </header>
         <div class="content-body">
             <div class="welcome-banner"><h2>Clientes</h2><p>Área destinada ao gerenciamento dos clientes do Mercado KLP.NUNES.</p></div>
@@ -64,6 +72,7 @@
             </div>
         </div>
     </main>
+    <script src="admin_menu.js"></script>
     <script src="admin.js"></script>
     <script src="clientes.js"></script>
 </body>

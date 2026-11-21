@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funcionários - Mercado KLP.NUNES</title>
+    <title>Configurações - Mercado KLP.NUNES</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../Administrador/admin.css">
     <link rel="stylesheet" href="configuracao.css">
-    <script src="configuracao.js"></script>
+    <script src="../Administrador/admin_menu.js"></script>
+    <script src="configuracao.js" defer></script>
 </head>
 <body>
 
@@ -18,15 +20,15 @@
         </div>
 
         <ul class="menu">
-            <li><a href="../Administrador/Area_do_Admin.html"><i class="fas fa-home"></i><span> Dashboard </span></a></li>
-            <li><a href="../Estoque/estoque.html#painel-categoria"><i class="fas fa-tags"></i><span> Categorias </span></a></li>
-            <li><a href="../Estoque/estoque.html#painel-marca"><i class="fas fa-copyright"></i><span> Marcas </span></a></li>
-            <li><a href="../Estoque/estoque.html#painel-lista"><i class="fas fa-boxes"></i><span> Cadastro de Produtos </span></a></li>
-            <li><a href="../Estoque/estoque.html"><i class="fas fa-cube"></i><span>Estoque </span></a></li>
-            <li><a href="../Administrador/Clientes.html"><i class="fas fa-users"></i><span> Clientes </span></a></li>
-            <li><a href="../Funcionario/funcionario.html"><i class="fas fa-user-tie"></i><span> Funcionários </span></a></li>
-            <li><a href="../Relatorio/relatorio.html"><i class="fas fa-chart-line"></i><span> Relatórios </span></a></li>
-            <li class="active"><a href="configuracao.html"><i class="fas fa-cog"></i><span> Configurações </span></a></li>
+            <li><a href="../Administrador/Area_do_Admin.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-categoria"><i class="fas fa-tags"></i><span>Categorias</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-marca"><i class="fas fa-copyright"></i><span>Marcas</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-produto"><i class="fas fa-box-open"></i><span>Cadastro de Produtos</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-lista"><i class="fas fa-boxes"></i><span>Lista de Produtos</span></a></li>
+            <li><a href="../Administrador/Clientes.html"><i class="fas fa-users"></i><span>Clientes</span></a></li>
+            <li><a href="../Funcionario/funcionario.html"><i class="fas fa-user-tie"></i><span>Funcionários</span></a></li>
+            <li><a href="../Relatorio/relatorio.html"><i class="fas fa-chart-line"></i><span>Relatórios</span></a></li>
+            <li class="active"><a href="../Configuracao/configuracao.html"><i class="fas fa-cog"></i><span>Configurações</span></a></li>
         </ul>
 
         <div class="sidebar-footer">
@@ -44,20 +46,60 @@
             <div class="header-actions">
                 <div class="user-profile">
                     <i class="far fa-user-circle"></i>
-                    <span>Configurações</span>
+                    <span id="nomeAdminHeader">Administrador</span>
                 </div>
             </div>
         </header>
 
         <div class="content-body">
             <div class="welcome-banner">
-                <h2>Gerenciamento de Configurações</h2>
-                <p>Esta área está em desenvolvimento.</p>
+                <h2>Configurações da Loja</h2>
+                <p>Estes valores valem para toda a loja: frete, cupom, PIX, parcelas e o alerta de estoque baixo.</p>
             </div>
 
-            <div class="panel">
-                <p class="em-construcao"><i class="fas fa-tools"></i> Painel de configurações em construção.</p>
-            </div>
+            <form class="config-form" id="formConfig" novalidate>
+                <fieldset>
+                    <legend>Loja</legend>
+                    <div class="form-grid">
+                        <label class="col-2">Nome da loja <input type="text" name="nome_loja" maxlength="80"></label>
+                        <label>E-mail da loja <input type="email" name="email_loja" maxlength="100"></label>
+                        <label>Telefone <input type="text" name="telefone_loja" maxlength="20" placeholder="(48) 3000-0000"></label>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Entrega</legend>
+                    <div class="form-grid">
+                        <label>Valor do frete (R$) <input type="number" name="frete_valor" min="0" step="0.01"></label>
+                        <label>Frete grátis a partir de (R$) <input type="number" name="frete_gratis_acima" min="0" step="0.01"><small>Use 0 para nunca cobrar frete.</small></label>
+                        <label>Prazo de entrega (dias) <input type="number" name="prazo_entrega_dias" min="0" max="30" step="1"></label>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Pagamento e cupom</legend>
+                    <div class="form-grid">
+                        <label>Máximo de parcelas no crédito <input type="number" name="parcelas_max" min="1" max="12" step="1"></label>
+                        <label>Código do cupom <input type="text" name="cupom_codigo" maxlength="30" placeholder="Ex.: KLP10"><small>Deixe vazio para desativar o cupom.</small></label>
+                        <label>Desconto do cupom (%) <input type="number" name="cupom_percentual" min="0" max="100" step="0.5"></label>
+                        <label>Chave PIX da loja <input type="text" name="pix_chave" maxlength="77" placeholder="CPF, CNPJ, e-mail, telefone ou chave aleatória"></label>
+                        <label>Nome do recebedor PIX <input type="text" name="pix_nome" maxlength="25"></label>
+                        <label>Cidade do recebedor PIX <input type="text" name="pix_cidade" maxlength="15"></label>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Estoque</legend>
+                    <div class="form-grid">
+                        <label>Avisar estoque baixo quando a quantidade for até <input type="number" name="estoque_baixo" min="0" step="1"></label>
+                    </div>
+                </fieldset>
+
+                <div class="rodape-form">
+                    <button type="submit" class="btn-primario btn-auto">Salvar configurações</button>
+                    <p class="form-msg" id="msgConfig" role="alert"></p>
+                </div>
+            </form>
         </div>
     </main>
 </body>

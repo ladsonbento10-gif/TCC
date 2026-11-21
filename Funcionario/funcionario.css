@@ -261,3 +261,10 @@ tbody tr:last-child td {
     font-size: 0.9rem;
     font-weight: 400;
 }
+
+/* tabela de funcionários: sem quebrar linha; rola para o lado em telas pequenas */
+.tabela-scroll { overflow-x: auto; }
+.tabela-scroll th, .tabela-scroll td { white-space: nowrap; }
+.acoes-linha { display: flex; gap: 6px; }
+.tabela-scroll { padding: 0; }
+.tabela-scroll th, .tabela-scroll td { padding-left: 12px; padding-right: 12px; }

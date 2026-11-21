@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funcionários - Mercado KLP.NUNES</title>
+    <title>Relatórios - Mercado KLP.NUNES</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../Administrador/admin.css">
     <link rel="stylesheet" href="relatorio.css">
-    <script src="relatorio.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="../Administrador/admin_menu.js"></script>
+    <script src="relatorio.js" defer></script>
 </head>
 <body>
 
@@ -18,15 +21,15 @@
         </div>
 
         <ul class="menu">
-            <li><a href="../Administrador/Area_do_Admin.html"><i class="fas fa-home"></i><span> Dashboard </span></a></li>
-            <li><a href="../Estoque/estoque.html#painel-categoria"><i class="fas fa-tags"></i><span> Categorias </span></a></li>
-            <li><a href="../Estoque/estoque.html#painel-marca"><i class="fas fa-copyright"></i><span> Marcas </span></a></li>
-            <li><a href="../Estoque/estoque.html#painel-lista"><i class="fas fa-boxes"></i><span> Cadastro de Produtos </span></a></li> 
-            <li><a href="../Estoque/estoque.html"><i class="fas fa-cube"></i><span> Estoque </span></a></li>
-            <li><a href="../Administrador/Clientes.html"><i class="fas fa-users"></i><span> Clientes </span></a></li>
-            <li><a href="../Funcionario/funcionario.html"><i class="fas fa-user-tie"></i><span> Funcionários </span></a></li>
-            <li class="active"><a href="relatorio.html"><i class="fas fa-chart-line"></i><span> Relatórios </span></a></li>
-            <li><a href="../Configuracao/configuracao.html"><i class="fas fa-cog"></i><span> Configurações </span></a></li>
+            <li><a href="../Administrador/Area_do_Admin.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-categoria"><i class="fas fa-tags"></i><span>Categorias</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-marca"><i class="fas fa-copyright"></i><span>Marcas</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-produto"><i class="fas fa-box-open"></i><span>Cadastro de Produtos</span></a></li>
+            <li><a href="../Estoque/estoque.html#painel-lista"><i class="fas fa-boxes"></i><span>Lista de Produtos</span></a></li>
+            <li><a href="../Administrador/Clientes.html"><i class="fas fa-users"></i><span>Clientes</span></a></li>
+            <li><a href="../Funcionario/funcionario.html"><i class="fas fa-user-tie"></i><span>Funcionários</span></a></li>
+            <li class="active"><a href="../Relatorio/relatorio.html"><i class="fas fa-chart-line"></i><span>Relatórios</span></a></li>
+            <li><a href="../Configuracao/configuracao.html"><i class="fas fa-cog"></i><span>Configurações</span></a></li>
         </ul>
 
         <div class="sidebar-footer">
@@ -44,19 +47,73 @@
             <div class="header-actions">
                 <div class="user-profile">
                     <i class="far fa-user-circle"></i>
-                    <span>Administrador</span>
+                    <span id="nomeAdminHeader">Administrador</span>
                 </div>
             </div>
         </header>
 
         <div class="content-body">
             <div class="welcome-banner">
-                <h2>Gerenciamento de Relatórios</h2>
-                <p>Esta área está em desenvolvimento.</p>
+                <h2>Relatórios de Vendas</h2>
+                <p>Veja o desempenho do mercado por período, acompanhe os pedidos e exporte os dados.</p>
             </div>
 
             <div class="panel">
-                <p class="em-construcao"><i class="fas fa-tools"></i> Painel de relatórios em construção.</p>
+                <div class="barra-ferramentas">
+                    <div class="filtro-rapido" id="atalhosPeriodo">
+                        <button type="button" class="btn-sec" data-dias="0">Hoje</button>
+                        <button type="button" class="btn-sec" data-dias="6">7 dias</button>
+                        <button type="button" class="btn-sec" data-dias="29">30 dias</button>
+                        <button type="button" class="btn-sec ativo" data-mes="1">Este mês</button>
+                    </div>
+                    <div class="filtro-rapido">
+                        <label class="rotulo-filtro">De <input type="date" id="filtroDe"></label>
+                        <label class="rotulo-filtro">Até <input type="date" id="filtroAte"></label>
+                        <button type="button" class="btn-primario btn-auto" id="btnFiltrar">Filtrar</button>
+                        <button type="button" class="btn-sec" id="btnCsv"><i class="fas fa-file-csv"></i> Exportar CSV</button>
+                    </div>
+                </div>
+                <p class="form-msg erro" id="msgRelatorio" role="alert"></p>
+            </div>
+
+            <div class="cards-grid" style="margin-top:20px">
+                <div class="card"><div class="card-icon green"><i class="fas fa-dollar-sign"></i></div><div class="card-info"><h3 id="kpiFaturamento">—</h3><small>Faturamento</small></div></div>
+                <div class="card"><div class="card-icon blue"><i class="fas fa-receipt"></i></div><div class="card-info"><h3 id="kpiPedidos">—</h3><small>Pedidos</small></div></div>
+                <div class="card"><div class="card-icon purple"><i class="fas fa-chart-pie"></i></div><div class="card-info"><h3 id="kpiTicket">—</h3><small>Ticket médio</small></div></div>
+                <div class="card"><div class="card-icon orange"><i class="fas fa-boxes"></i></div><div class="card-info"><h3 id="kpiItens">—</h3><small>Itens vendidos</small></div></div>
+            </div>
+
+            <div class="panel" style="margin-top:20px">
+                <h3>Vendas por dia</h3>
+                <div class="grafico-box"><canvas id="graficoDias"></canvas></div>
+                <p class="aviso-relatorio" id="semDados" hidden>Nenhuma venda no período escolhido.</p>
+            </div>
+
+            <div class="grade-2">
+                <div class="panel">
+                    <h3>Produtos mais vendidos</h3>
+                    <div class="tabela-scroll"><table><thead><tr><th>Produto</th><th class="num">Qtd.</th><th class="num">Total</th></tr></thead>
+                    <tbody id="tbTop"></tbody></table></div>
+                </div>
+                <div class="panel">
+                    <h3>Formas de pagamento</h3>
+                    <div class="tabela-scroll"><table><thead><tr><th>Forma</th><th class="num">Pedidos</th><th class="num">Total</th></tr></thead>
+                    <tbody id="tbPagamento"></tbody></table></div>
+                </div>
+            </div>
+
+            <div class="panel" style="margin-top:20px">
+                <h3>Estoque baixo <small id="limiteEstoque" class="aviso-relatorio"></small></h3>
+                <div class="tabela-scroll"><table><thead><tr><th>Produto</th><th class="num">Quantidade</th></tr></thead>
+                <tbody id="tbBaixo"></tbody></table></div>
+            </div>
+
+            <div class="panel" style="margin-top:20px">
+                <h3>Pedidos do período</h3>
+                <div class="tabela-scroll"><table><thead><tr>
+                    <th>Pedido</th><th>Data</th><th>Cliente</th><th>Pagamento</th><th class="num">Total</th><th>Status do pedido</th><th>Entrega</th><th>Rastreio</th>
+                </tr></thead><tbody id="tbPedidos"></tbody></table></div>
+                <p class="aviso-relatorio">Mostra os 100 pedidos mais recentes do período. Ao mudar o status para Cancelado ou Estornado, os produtos voltam para o estoque.</p>
             </div>
         </div>
     </main>

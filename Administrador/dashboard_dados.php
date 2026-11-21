@@ -3,6 +3,7 @@
 // O painel (admin_painel.js) consulta este arquivo a cada poucos segundos para atualizar em tempo real.
 session_start();
 include("../conexao_tcc.php");
+include("../config_loja.php");
 
 header("Content-Type: application/json; charset=UTF-8");
 header("Cache-Control: no-store");
@@ -13,8 +14,9 @@ if (!isset($_SESSION['id_admin'])) {
     exit();
 }
 
-// Quantidade igual ou abaixo da qual o produto é considerado com estoque baixo.
-const LIMITE_ESTOQUE_BAIXO = 10;
+// Quantidade igual ou abaixo da qual o produto é considerado com estoque baixo (tela Configurações).
+$limiteBaixo = max(0, (int) carregar_config($conn)['estoque_baixo']);
+define('LIMITE_ESTOQUE_BAIXO', $limiteBaixo);
 
 try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

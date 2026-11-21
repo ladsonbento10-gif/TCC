@@ -1,44 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const menuToggle = document.getElementById("menuToggle");
-    const sidebar = document.querySelector(".sidebar");
-
-    // Menu lateral: recolhe/expande mantendo apenas os ícones quando recolhido.
-    if (menuToggle && sidebar) {
-        menuToggle.addEventListener("click", () => {
-            sidebar.classList.toggle("collapsed");
-            localStorage.setItem("menuAdminRecolhido", sidebar.classList.contains("collapsed") ? "1" : "0");
-        });
-
-        if (localStorage.getItem("menuAdminRecolhido") === "1") {
-            sidebar.classList.add("collapsed");
-        }
-    }
-
-    // Mostra o nome do administrador que acabou de entrar.
-    const nomeAdmin = localStorage.getItem("nomeAdmin");
-    if (nomeAdmin) {
-        const nomeHeader = document.getElementById("nomeAdminHeader");
-        const nomeBoasVindas = document.getElementById("nomeAdminBoasVindas");
-
-        if (nomeHeader) nomeHeader.textContent = nomeAdmin;
-        if (nomeBoasVindas) nomeBoasVindas.textContent = nomeAdmin;
-    }
-
-    // Confirmação antes de sair.
-    const btnSair = document.getElementById("btnSair");
-    if (btnSair) {
-        btnSair.addEventListener("click", (event) => {
-            const confirmou = confirm("Tem certeza que deseja sair da Área do Administrador?");
-
-            if (!confirmou) {
-                event.preventDefault();
-            }
-        });
-    }
-
+    // O menu lateral, o nome do administrador e o "Sair" ficam em admin_menu.js.
     // Gráfico dos 6 meses.
     const canvas = document.getElementById("salesChart");
-    if (canvas) {
+    if (canvas && window.Chart) { // sem internet o gráfico não carrega, mas o resto da página funciona
         const ctx = canvas.getContext("2d");
         const gradient = ctx.createLinearGradient(0, 0, 0, 250);
         gradient.addColorStop(0, "rgba(31, 156, 80, 0.30)");
@@ -47,10 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
         window.salesChartInst = new Chart(ctx, {
             type: "line",
             data: {
-                labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"],
+                labels: [], // preenchido pelo banco (admin_painel.js)
                 datasets: [{
                     label: "Vendas (R$)",
-                    data: [8000, 10000, 13000, 10000, 15000, 22000],
+                    data: [],
                     borderColor: "#1f9c50",
                     borderWidth: 3,
                     backgroundColor: gradient,

@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const resp = await fetch("dashboard_dados.php", { cache: "no-store", credentials: "same-origin" });
             if (resp.status === 401) {
-                window.location.replace("../Cliente/Pagina_de_Login_Cliente.html");
+                window.location.replace("Pagina_de_Login_Administrador.html");
                 return;
             }
             const dados = await resp.json();
@@ -233,13 +233,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const btnLidas = $("btnMarcarLidas");
     if (btnLidas) btnLidas.addEventListener("click", marcarTodasLidas);
-
-    const sairMenu = $("btnSairMenu");
-    if (sairMenu) {
-        sairMenu.addEventListener("click", (e) => {
-            if (!confirm("Tem certeza que deseja sair da Área do Administrador?")) e.preventDefault();
-        });
-    }
 
     // ---------- Perfil do administrador ----------
     const modal = $("modalPerfil");

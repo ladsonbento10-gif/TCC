@@ -26,12 +26,29 @@ try {
         exit();
     }
 
+    // Primeiro telefone e primeiro endereço cadastrados (usados para preencher a entrega)
+    $tel = $conn->prepare("SELECT dd_fone, numero_fone FROM telefone_cliente WHERE cliente_id = :id ORDER BY id_telefone LIMIT 1");
+    $tel->execute([':id' => $c['id_cliente']]);
+    $t = $tel->fetch(PDO::FETCH_ASSOC) ?: [];
+
+    $end = $conn->prepare("SELECT e.rua, e.numero, e.complemento, e.cep, b.nome_bairro AS bairro, ci.nome_cidades AS cidade, es.uf
+                           FROM endereco_cliente e
+                           LEFT JOIN bairro b  ON b.id_bairro = e.bairro_id
+                           LEFT JOIN cidade ci ON ci.id_cidade = b.cidade_id
+                           LEFT JOIN estado es ON es.id_estado = ci.estado_id
+                           WHERE e.cliente_id = :id ORDER BY e.id_endereco LIMIT 1");
+    $end->execute([':id' => $c['id_cliente']]);
+    $e = $end->fetch(PDO::FETCH_ASSOC) ?: [];
+    if (($e['uf'] ?? '') === 'XX') $e['uf'] = ''; // UF desconhecida: o cliente preenche na entrega
+
     echo json_encode([
-        'logado' => true,
-        'id'     => (string) $c['id_cliente'],
-        'nome'   => $c['nome'],
-        'cpf'    => $c['cpf'] ?? '',
-        'email'  => $c['email'] ?? ''
+        'logado'   => true,
+        'id'       => (string) $c['id_cliente'],
+        'nome'     => $c['nome'],
+        'cpf'      => $c['cpf'] ?? '',
+        'email'    => $c['email'] ?? '',
+        'telefone' => trim(($t['dd_fone'] ?? '') . ' ' . ($t['numero_fone'] ?? '')),
+        'endereco' => $e ?: null
     ], JSON_UNESCAPED_UNICODE);
 } catch (PDOException $e) {
     error_log($e->getMessage());

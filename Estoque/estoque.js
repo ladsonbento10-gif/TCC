@@ -1,42 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const menuToggle = document.getElementById("menuToggle");
-    const sidebar = document.querySelector(".sidebar");
+    // O menu lateral (recolher, item ativo, sair) fica em ../Administrador/admin_menu.js
 
-    if (menuToggle && sidebar) {
-        menuToggle.addEventListener("click", () => {
-            sidebar.classList.toggle("collapsed");
-            localStorage.setItem("menuAdminRecolhido", sidebar.classList.contains("collapsed") ? "1" : "0");
-        });
-
-        if (localStorage.getItem("menuAdminRecolhido") === "1") {
-            sidebar.classList.add("collapsed");
-        }
+    function abrirAba(painel) {
+        const aba = document.querySelector('.aba[data-painel="' + painel + '"]');
+        if (!aba) return;
+        document.querySelectorAll(".aba").forEach(function (item) { item.classList.remove("ativa"); });
+        document.querySelectorAll(".painel").forEach(function (item) { item.classList.remove("ativo"); });
+        aba.classList.add("ativa");
+        document.getElementById("painel-" + painel).classList.add("ativo");
+        if (painel === "lista") carregarProdutos();
     }
 
-    document.querySelectorAll(".menu a[data-aba]").forEach(function (link) {
-        link.addEventListener("click", function () {
-            const aba = document.querySelector('.aba[data-painel="' + this.dataset.aba + '"]');
-            if (aba) aba.click();
+    document.querySelectorAll(".aba").forEach(function (aba) {
+        aba.addEventListener("click", function () {
+            // atualiza o endereço (#painel-...) para o menu lateral marcar o item certo
+            const novo = "#painel-" + this.dataset.painel;
+            if (location.hash !== novo) history.replaceState(null, "", novo);
+            window.dispatchEvent(new HashChangeEvent("hashchange"));
         });
     });
 
-    const abas = document.querySelectorAll(".aba");
-
-    abas.forEach(function (aba) {
-        aba.addEventListener("click", function () {
-            const painel = this.dataset.painel;
-        document.querySelectorAll(".aba") .forEach(function (item) {
-            item.classList.remove("ativa");
-        });
-        document.querySelectorAll(".painel") .forEach(function (item) {
-            item.classList.remove("ativo");
-        });
-            this.classList.add("ativa");
-        document.getElementById("painel-" + painel) .classList.add("ativo");
-            if (painel === "lista"){
-                carregarProdutos();
-            }
-        });
+    // Clique no menu lateral (mesma página) troca a aba
+    window.addEventListener("hashchange", function () {
+        const painel = location.hash.replace("#painel-", "");
+        if (painel) abrirAba(painel);
     });
 
     const toggle = document.getElementById("toggle-ativo");
@@ -52,12 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Abre automaticamente a aba indicada pelo menu do administrador.
     const hash = window.location.hash.replace("#painel-", "");
-    if (hash) {
-        const abaInicial = document.querySelector('.aba[data-painel="' + hash + '"]');
-        if (abaInicial) {
-            abaInicial.click();
-        }
-    }
+    if (hash) abrirAba(hash);
 
     document.getElementById("form-produto").addEventListener("submit", function (event) {
             event.preventDefault();
@@ -241,7 +223,11 @@ function enviarFormulario(formulario, elementoMensagem){
 function mostrarMensagem( elemento, mensagem, tipo){
 
     const div = document.getElementById(elemento);
-    div.innerHTML = `<div class="${tipo}">${mensagem}</div>`;
+    const aviso = document.createElement("div");
+    aviso.className = tipo;
+    aviso.textContent = mensagem; // textContent: mensagem do servidor nunca vira HTML
+    div.innerHTML = "";
+    div.appendChild(aviso);
 
     setTimeout(function (){ div.innerHTML = ""; }, 4000);
 }
@@ -311,7 +297,7 @@ function carregarProdutos(){
             lista.innerHTML = html;
         })
         .catch(function (erro) {
-            lista.innerHTML = `<div class="erro">${erro.message}</div>`;
+            lista.innerHTML = `<div class="erro">${escapeHtml(erro.message)}</div>`;
         });
 }
 function escapeHtml(texto){

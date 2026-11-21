@@ -1,6 +1,8 @@
 <?php
 
 include("../conexao_tcc.php");
+include("../Administrador/controle_acesso.php");
+exigir_admin(); // só o administrador logado cadastra/lista/edita aqui
 
 header("Content-Type: application/json; charset=UTF-8");
 

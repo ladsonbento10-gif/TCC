@@ -15,9 +15,7 @@
     $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($admin) {
-
         if (password_verify($senha, $admin['senha'])) {
-
             $_SESSION['id_admin'] = $admin['id_admin'];
             $_SESSION['nome'] = $admin['nome'];
 

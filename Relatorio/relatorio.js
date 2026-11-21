@@ -1,5 +1,5 @@
-// relatorio.js - relatórios de vendas com dados do banco (relatorio.php).
-// O menu lateral fica em ../Administrador/admin_menu.js
+    // relatorio.js - relatórios de vendas com dados do banco (relatorio.php).
+    // O menu lateral fica em ../Administrador/admin_menu.js
 document.addEventListener("DOMContentLoaded", () => {
     const $ = (id) => document.getElementById(id);
     const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         $("kpiTicket").textContent = reais(j.resumo.ticket_medio);
         $("kpiItens").textContent = j.resumo.itens;
 
-        // gráfico
+    // gráfico
         const dias = j.por_dia.map((d) => d.dia.split("-").reverse().slice(0, 2).join("/"));
         const totais = j.por_dia.map((d) => Number(d.total));
         $("semDados").hidden = totais.length > 0;
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${esc(p.codigo_rastreio || "—")}</td></tr>`);
     }
 
-    // mudar status de um pedido
+// mudar status de um pedido
     $("tbPedidos").addEventListener("change", async (e) => {
         const sel = e.target.closest("select[data-campo]");
         if (!sel) return;

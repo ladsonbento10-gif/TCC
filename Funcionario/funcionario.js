@@ -1,5 +1,5 @@
-// funcionario.js - lista, cadastra, edita e ativa/desativa funcionários (dados do banco).
-// O menu lateral fica em ../Administrador/admin_menu.js
+    // funcionario.js - lista, cadastra, edita e ativa/desativa funcionários (dados do banco).
+    // O menu lateral fica em ../Administrador/admin_menu.js
 document.addEventListener("DOMContentLoaded", () => {
     const $ = (id) => document.getElementById(id);
     let funcionarios = [];
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ----- modal -----
+// ----- modal -----
     const modal = $("modalFuncionario");
     const form = $("formFuncionario");
     const msg = $("msgFuncionario");

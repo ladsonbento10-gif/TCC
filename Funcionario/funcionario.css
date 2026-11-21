@@ -261,7 +261,6 @@ tbody tr:last-child td {
     font-size: 0.9rem;
     font-weight: 400;
 }
-
 /* tabela de funcionários: sem quebrar linha; rola para o lado em telas pequenas */
 .tabela-scroll { overflow-x: auto; }
 .tabela-scroll th, .tabela-scroll td { white-space: nowrap; }

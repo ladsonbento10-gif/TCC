@@ -1,7 +1,7 @@
 <?php
-    // pedidos_cliente.php - pedidos do cliente logado.
-    //   GET                          -> lista (mais recentes primeiro)
-    //   POST {acao:"reenviar", id}   -> envia o comprovante por e-mail de novo
+// pedidos_cliente.php - pedidos do cliente logado.
+//   GET                          -> lista (mais recentes primeiro)
+//   POST {acao:"reenviar", id}   -> envia o comprovante por e-mail de novo
     include("cliente_comum.php");
     include("pedido_helper.php");
     $idCliente = exigir_cliente();
@@ -23,7 +23,7 @@
             $pedidos[] = buscar_pedido($conn, (int) $id, $idCliente);
         }
         responder(["sucesso" => true, "pedidos" => $pedidos]);
-    } catch(PDOException $e){
+    }catch(PDOException $e){
         error_log($e->getMessage());
         responder(["sucesso" => false, "mensagem" => "Não foi possível carregar os pedidos."], 500);
     }

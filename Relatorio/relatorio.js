@@ -1,5 +1,5 @@
-    // relatorio.js - relatórios de vendas com dados do banco (relatorio.php).
-    // O menu lateral fica em ../Administrador/admin_menu.js
+// relatorio.js - relatórios de vendas com dados do banco (relatorio.php).
+// O menu lateral fica em ../Administrador/admin_menu.js
 document.addEventListener("DOMContentLoaded", () => {
     const $ = (id) => document.getElementById(id);
     const esc = (t) => String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));

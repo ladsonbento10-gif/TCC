@@ -1,10 +1,9 @@
 <?php
     include("../conexao_tcc.php");
 
-    $sql = "SELECT e.id_estoque,e.nome_produto,e.descricao,e.quantidade,e.preco,
-        e.ativo,e.data_cadastro, c.nome AS categoria, m.nome AS marca
-        FROM estoque e INNER JOIN categoria c ON e.categoria_id = c.id_categoria
-        INNER JOIN marca m     ON e.marca_id     = m.id_marca ORDER BY e.id_estoque DESC";
+    $sql = "SELECT e.id_estoque,e.nome_produto,e.descricao,e.quantidade,e.preco, e.ativo,e.data_cadastro, c.nome AS categoria, m.nome AS marca
+    FROM estoque e INNER JOIN categoria c ON e.categoria_id = c.id_categoria INNER JOIN marca m     
+    ON e.marca_id = m.id_marca ORDER BY e.id_estoque DESC";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();

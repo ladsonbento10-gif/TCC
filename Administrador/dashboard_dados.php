@@ -1,6 +1,6 @@
 <?php
-    // dashboard_dados.php - devolve em JSON os dados do painel principal (somente administrador logado).
-    // O painel (admin_painel.js) consulta este arquivo a cada poucos segundos para atualizar em tempo real.
+// dashboard_dados.php - devolve em JSON os dados do painel principal (somente administrador logado).
+// O painel (admin_painel.js) consulta este arquivo a cada poucos segundos para atualizar em tempo real.
     session_start();
     include("../conexao_tcc.php");
     include("../config_loja.php");
@@ -32,7 +32,7 @@
         $iniMes = date("Y-m-01 00:00:00");
         $fimMes = date("Y-m-01 00:00:00", strtotime("first day of next month"));
         $stmt = $conn->prepare("SELECT COUNT(*) FROM venda WHERE data_venda >= :ini AND data_venda < :fim
-        AND (status_venda IS NULL OR status_venda NOT IN ('Cancelado','Estornado'))");
+                            AND (status_venda IS NULL OR status_venda NOT IN ('Cancelado','Estornado'))");
         $stmt->execute([":ini" => $iniMes, ":fim" => $fimMes]);
         $pedidos = (int) $stmt->fetchColumn();
         $stmt = $conn->prepare("SELECT COUNT(*) FROM estoque WHERE ativo = 1 AND quantidade <= :lim");
@@ -60,21 +60,20 @@
 
     // Produtos recentes 
         $produtosRecentes = $conn->query(
-        "SELECT e.id_estoque AS id, e.nome_produto AS produto, m.nome AS marca, c.nome AS categoria, e.quantidade AS estoque
-         FROM estoque e LEFT JOIN marca m ON m.id_marca = e.marca_id LEFT JOIN categoria c ON c.id_categoria = e.categoria_id
-         WHERE e.ativo = 1 ORDER BY e.id_estoque DESC LIMIT 5"
+            "SELECT e.id_estoque AS id, e.nome_produto AS produto, m.nome AS marca, c.nome AS categoria, e.quantidade AS estoque
+            FROM estoque e LEFT JOIN marca m ON m.id_marca = e.marca_id LEFT JOIN categoria c ON c.id_categoria = e.categoria_id
+            WHERE e.ativo = 1 ORDER BY e.id_estoque DESC LIMIT 5"
         )->fetchAll(PDO::FETCH_ASSOC);
 
     // Atividades recentes e notificações 
         $atividades = [];
 
         $rows = $conn->query("SELECT nome_produto, data_cadastro FROM estoque ORDER BY id_estoque DESC LIMIT 4")->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($rows as $r) {
+        foreach ($rows as $r) {
             $atividades[] = ["tipo" => "produto", "texto" => "Novo produto cadastrado: " . $r["nome_produto"], "data" => $r["data_cadastro"]];
         }
-        $rows = $conn->query("SELECT v.id_vendas, v.data_venda, v.preco_total, c.nome FROM venda v LEFT JOIN 
-        usuario_cliente c ON c.id_cliente = v.cliente_id ORDER BY v.id_vendas DESC LIMIT 4")->fetchAll(PDO::FETCH_ASSOC);
-        
+
+        $rows = $conn->query("SELECT v.id_vendas, v.data_venda, v.preco_total, c.nome FROM venda v LEFT JOIN usuario_cliente c ON c.id_cliente = v.cliente_id ORDER BY v.id_vendas DESC LIMIT 4")->fetchAll(PDO::FETCH_ASSOC);
         foreach ($rows as $r) {
             $atividades[] = [
                 "tipo"  => "pedido",
@@ -85,18 +84,19 @@
         }
 
         $stmt = $conn->prepare("SELECT id_estoque, nome_produto, quantidade, ultima_atualizacao FROM estoque
-        WHERE ativo = 1 AND quantidade <= :lim ORDER BY quantidade ASC, id_estoque DESC LIMIT 6");
-        
+                            WHERE ativo = 1 AND quantidade <= :lim ORDER BY quantidade ASC, id_estoque DESC LIMIT 6");
         $stmt->execute([":lim" => LIMITE_ESTOQUE_BAIXO]);
         $baixos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($baixos as $r) {
             $atividades[] = ["tipo" => "estoque", "texto" => "Estoque baixo: " . $r["nome_produto"], "data" => $r["ultima_atualizacao"]];
         }
+
         $clientesNovos = $conn->query("SELECT id_cliente, nome FROM usuario_cliente ORDER BY id_cliente DESC LIMIT 3")->fetchAll(PDO::FETCH_ASSOC);
+
         usort($atividades, fn($a, $b) => strcmp($b["data"] ?? "", $a["data"] ?? ""));
         $atividades = array_slice($atividades, 0, 5);
 
-        // Notificações (sininho): cada uma tem um tipo, um título e a descrição do que aconteceu.
+    // Notificações (sininho): cada uma tem um tipo, um título e a descrição do que aconteceu.
         $notificacoes = [];
         foreach ($baixos as $r) {
             $qtd = (int) $r["quantidade"];
@@ -107,12 +107,11 @@
                 "descricao" => $qtd === 0
                     ? $r["nome_produto"] . " está sem unidades em estoque."
                     : $r["nome_produto"] . ": restam apenas " . $qtd . " unidade(s).",
-                "data"=> $r["ultima_atualizacao"]
+                "data"      => $r["ultima_atualizacao"]
             ];
         }
-        $stmt = $conn->prepare("SELECT v.id_vendas, v.data_venda, v.preco_total, c.nome
-        FROM venda v LEFT JOIN usuario_cliente c ON c.id_cliente = v.cliente_id WHERE v.data_venda >= :desde
-        ORDER BY v.id_vendas DESC LIMIT 4");
+        $stmt = $conn->prepare("SELECT v.id_vendas, v.data_venda, v.preco_total, c.nome FROM venda v LEFT JOIN usuario_cliente c ON c.id_cliente = v.cliente_id
+        WHERE v.data_venda >= :desde ORDER BY v.id_vendas DESC LIMIT 4");
     
         $stmt->execute([":desde" => date("Y-m-d H:i:s", strtotime("-7 days"))]);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -148,7 +147,7 @@
             "atividades"        => $atividades,
             "notificacoes"      => $notificacoes
         ], JSON_UNESCAPED_UNICODE);
-    } catch (PDOException $e){
+    } catch(PDOException $e){
         http_response_code(500);
         echo json_encode(["sucesso" => false, "mensagem" => "Erro ao carregar o painel: " . $e->getMessage()]);
     }

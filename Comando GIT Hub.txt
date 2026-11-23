@@ -1,4 +1,4 @@
-// Não - Configurada a URL
+//Não - Configurada a URL
 
 git init > Inicializar
 git add . > Adicionar os arquivos.

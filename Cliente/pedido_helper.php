@@ -1,13 +1,14 @@
 <?php
-    // pedido_helper.php - busca um pedido e monta/envia o e-mail de comprovante.
+// pedido_helper.php - busca um pedido e monta/envia o e-mail de comprovante.
     include_once __DIR__ . "/../enviar_email.php";
 
     function buscar_pedido(PDO $conn, int $idVenda, int $idCliente): ?array {
-        $st = $conn->prepare("SELECT v.id_vendas AS id, v.data_venda, v.preco_total AS total, v.subtotal, v.desconto, 
-        v.frete, v.cupom, v.status_venda, v.endereco_entrega, v.pagamento_detalhe, v.parcelas, v.troco_para, v.email_status,
-        v.forma_pagamento_id, f.nome AS forma_nome, e.status_envio, e.codigo_rastreio, e.previsao_entrega, e.data_envio,
-        e.data_entrega FROM venda v LEFT JOIN forma_pagamento f ON f.id_forma_pagamento = v.forma_pagamento_id
-        LEFT JOIN envios e ON e.venda_id = v.id_vendas WHERE v.id_vendas = :v AND v.cliente_id = :c");
+        $st = $conn->prepare("SELECT v.id_vendas AS id, v.data_venda, v.preco_total AS total, v.subtotal, v.desconto, v.frete, v.cupom,
+        v.status_venda, v.endereco_entrega, v.pagamento_detalhe, v.parcelas, v.troco_para, v.email_status, v.forma_pagamento_id, f.nome 
+        AS forma_nome, e.status_envio, e.codigo_rastreio, e.previsao_entrega, e.data_envio, e.data_entrega FROM venda v
+        LEFT JOIN forma_pagamento f ON f.id_forma_pagamento = v.forma_pagamento_id LEFT JOIN envios e ON e.venda_id = v.id_vendas
+        WHERE v.id_vendas = :v AND v.cliente_id = :c");
+        
         $st->execute([":v" => $idVenda, ":c" => $idCliente]);
         $p = $st->fetch(PDO::FETCH_ASSOC);
         if (!$p) return null;
@@ -33,8 +34,8 @@
         $linhas = "";
         foreach ($p["itens"] as $i) {
             $linhas .= "<tr><td style='padding:6px 8px;border-bottom:1px solid #e3efe7'>" . _h($i["nome"]) . "</td>"
-                    . "<td style='padding:6px 8px;border-bottom:1px solid #e3efe7;text-align:center'>" . (int) $i["qtd"] . "</td>"
-                    . "<td style='padding:6px 8px;border-bottom:1px solid #e3efe7;text-align:right'>" . _r($i["preco"]) . "</td>"
+                     . "<td style='padding:6px 8px;border-bottom:1px solid #e3efe7;text-align:center'>" . (int) $i["qtd"] . "</td>"
+                     . "<td style='padding:6px 8px;border-bottom:1px solid #e3efe7;text-align:right'>" . _r($i["preco"]) . "</td>"
                     . "<td style='padding:6px 8px;border-bottom:1px solid #e3efe7;text-align:right'>" . _r($i["preco"] * $i["qtd"]) . "</td></tr>";
         }
         $desc = $p["desconto"] > 0 ? "<tr><td colspan='3' style='text-align:right;padding:4px 8px'>Desconto" . ($p["cupom"] ? " (" . _h($p["cupom"]) . ")" : "") . "</td><td style='text-align:right;padding:4px 8px'>- " . _r($p["desconto"]) . "</td></tr>" : "";
@@ -44,19 +45,19 @@
         switch ($p["status_venda"]) {
             case "Aguardando pagamento":
                 $instrucao = "Seu pedido está aguardando o pagamento. Abra <strong>Meus Pedidos</strong> na loja para ver o QR Code / código PIX ou a linha digitável do boleto.";
-                break;
+            break;
             case "Pagar na entrega":
                 $instrucao = "Pagamento em dinheiro na entrega." . ($p["troco_para"] ? " Troco para " . _r($p["troco_para"]) . "." : "") . " Tenha o valor em mãos.";
-                break;
+            break;
             case "Pago":
                 $instrucao = "Pagamento confirmado. Já estamos separando o seu pedido.";
-                break;
-            }
+            break;
+        }
         $prev = $p["previsao_entrega"] ? date("d/m/Y", strtotime($p["previsao_entrega"])) : "a combinar";
 
         return "<!DOCTYPE html><html lang='pt-BR'><head><meta charset='UTF-8'></head>"
-            . "<body style='margin:0;background:#edf7f0;font-family:Arial,Helvetica,sans-serif;color:#173322'>"
-            . "<div style='max-width:620px;margin:0 auto;background:#fff'>"
+        . "<body style='margin:0;background:#edf7f0;font-family:Arial,Helvetica,sans-serif;color:#173322'>"
+        . "<div style='max-width:620px;margin:0 auto;background:#fff'>"
         . "<div style='background:#063b1c;color:#fff;padding:20px 24px'><div style='font-size:20px;font-weight:bold'>🛒 $loja</div>"
         . "<div style='font-size:13px;color:#cfe9d7'>Comprovante de compra</div></div>"
         . "<div style='padding:22px 24px'>"
@@ -77,7 +78,8 @@
         . "<p style='margin:24px 0 0;font-size:12px;color:#718078'>Acompanhe tudo em <strong>Meus Pedidos</strong> na loja. Guarde este e-mail como comprovante.</p>"
         . "</div></div></body></html>";
     }
-// Envia o comprovante e guarda o resultado em venda.email_status. Devolve 'enviado' | 'simulado' | 'falhou'.
+
+// Envia o comprovante e guarda o resultado em venda.email_status. Devolve 'enviado' | 'simulado' | 'falhou'.   
     function enviar_comprovante(PDO $conn, int $idVenda, int $idCliente): string {
         $p = buscar_pedido($conn, $idVenda, $idCliente);
         $c = $conn->prepare("SELECT nome, email FROM usuario_cliente WHERE id_cliente = :c");
@@ -89,5 +91,5 @@
         $status = enviar_email($cliente["email"], "Comprovante do pedido #" . $p["id"] . " - " . $cfg["nome_loja"], html_comprovante($p, $cliente, $cfg));
         $conn->prepare("UPDATE venda SET email_status = :s WHERE id_vendas = :v")->execute([":s" => $status, ":v" => $idVenda]);
         return $status;
-    }
+    } 
 ?>

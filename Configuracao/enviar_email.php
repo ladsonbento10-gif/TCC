@@ -1,6 +1,6 @@
 <?php
     // enviar_email.php - envia e-mail HTML (SMTP se configurado, senão mail()).
-    // Se nada funcionar, guarda uma cópia em logs_email/ e devolve "simulado".
+    // Se nada funcionar, guarda uma cópia em logs_email/ e devolve "simulado". 
     // enviar_email($para, $assunto, $html) devolve: 'enviado' | 'simulado' | 'falhou'
 
     function _email_cabecalho_texto(string $t): string {
@@ -30,35 +30,34 @@
         if (!$sock) return false;
         stream_set_timeout($sock, 12);
         $ok = false;
-        
-        try{
-            if ((int) substr(_smtp_ler($sock), 0, 3) !== 220) throw new Exception('banner');
-            $nome = $_SERVER['SERVER_NAME'] ?? 'localhost';
-            if (!_smtp_cmd($sock, "EHLO $nome", [250])) throw new Exception('ehlo');
-            if (!$ssl && $c['smtp_seguranca'] === 'tls') {
-                if (!_smtp_cmd($sock, 'STARTTLS', [220])) throw new Exception('starttls');
-                if (!stream_socket_enable_crypto($sock, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) throw new Exception('tls');
-                if (!_smtp_cmd($sock, "EHLO $nome", [250])) throw new Exception('ehlo2');
-            }
-            if ($c['smtp_usuario'] !== '') {
-                if (!_smtp_cmd($sock, 'AUTH LOGIN', [334])) throw new Exception('auth');
-                if (!_smtp_cmd($sock, base64_encode($c['smtp_usuario']), [334])) throw new Exception('user');
-                if (!_smtp_cmd($sock, base64_encode($c['smtp_senha']), [235])) throw new Exception('senha');
-            }
-            $de = $c['smtp_usuario'] !== '' && filter_var($c['smtp_usuario'], FILTER_VALIDATE_EMAIL) ? $c['smtp_usuario'] : $c['remetente_email'];
-            if (!_smtp_cmd($sock, "MAIL FROM:<$de>", [250])) throw new Exception('from');
-            if (!_smtp_cmd($sock, "RCPT TO:<$para>", [250, 251])) throw new Exception('rcpt');
-            if (!_smtp_cmd($sock, 'DATA', [354])) throw new Exception('data');
-            $dados = str_replace("\n.", "\n..", $corpoMime);
-            fwrite($sock, $dados . "\r\n.\r\n");
-            $ok = (int) substr(_smtp_ler($sock), 0, 3) === 250;
-            _smtp_cmd($sock, 'QUIT', [221]);
-        } catch(Exception $e) {
-            $ok = false;
+    try{
+        if ((int) substr(_smtp_ler($sock), 0, 3) !== 220) throw new Exception('banner');
+        $nome = $_SERVER['SERVER_NAME'] ?? 'localhost';
+        if (!_smtp_cmd($sock, "EHLO $nome", [250])) throw new Exception('ehlo');
+        if (!$ssl && $c['smtp_seguranca'] === 'tls') {
+            if (!_smtp_cmd($sock, 'STARTTLS', [220])) throw new Exception('starttls');
+            if (!stream_socket_enable_crypto($sock, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) throw new Exception('tls');
+            if (!_smtp_cmd($sock, "EHLO $nome", [250])) throw new Exception('ehlo2');
         }
-            fclose($sock);
-            return $ok;
+        if ($c['smtp_usuario'] !== '') {
+            if (!_smtp_cmd($sock, 'AUTH LOGIN', [334])) throw new Exception('auth');
+            if (!_smtp_cmd($sock, base64_encode($c['smtp_usuario']), [334])) throw new Exception('user');
+            if (!_smtp_cmd($sock, base64_encode($c['smtp_senha']), [235])) throw new Exception('senha');
+        }
+        $de = $c['smtp_usuario'] !== '' && filter_var($c['smtp_usuario'], FILTER_VALIDATE_EMAIL) ? $c['smtp_usuario'] : $c['remetente_email'];
+        if (!_smtp_cmd($sock, "MAIL FROM:<$de>", [250])) throw new Exception('from');
+        if (!_smtp_cmd($sock, "RCPT TO:<$para>", [250, 251])) throw new Exception('rcpt');
+        if (!_smtp_cmd($sock, 'DATA', [354])) throw new Exception('data');
+        $dados = str_replace("\n.", "\n..", $corpoMime);
+        fwrite($sock, $dados . "\r\n.\r\n");
+        $ok = (int) substr(_smtp_ler($sock), 0, 3) === 250;
+        _smtp_cmd($sock, 'QUIT', [221]);
+    } catch (Exception $e) {
+        $ok = false;
     }
+    fclose($sock);
+    return $ok;
+}
 
     function _guardar_copia_email(string $para, string $assunto, string $html): void {
         $dir = __DIR__ . '/logs_email';

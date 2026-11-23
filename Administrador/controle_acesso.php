@@ -1,6 +1,7 @@
 <?php
-    // controle_acesso.php - garante que só o administrador logado acessa o arquivo PHP que incluir este.
-    // Uso:   include("../Administrador/controle_acesso.php");  exigir_admin();
+// controle_acesso.php - garante que só o administrador logado acessa o arquivo PHP que incluir este.
+//
+// Uso:   include("../Administrador/controle_acesso.php");  exigir_admin();
     function exigir_admin(): void {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();

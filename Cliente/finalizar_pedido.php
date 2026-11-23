@@ -1,7 +1,7 @@
 <?php
-    // finalizar_pedido.php - grava o pedido do cliente logado.
-    // O navegador manda só QUAIS produtos e QUANTOS: preços, desconto, frete e total são recalculados aqui
-    // com os dados do banco (nunca se confia no valor que vem do navegador).
+// finalizar_pedido.php - grava o pedido do cliente logado.
+// O navegador manda só QUAIS produtos e QUANTOS: preços, desconto, frete e total são recalculados aqui
+// com os dados do banco (nunca se confia no valor que vem do navegador).
     include("cliente_comum.php");
     include("pedido_helper.php");
     $idCliente = exigir_cliente();
@@ -10,7 +10,7 @@
     $j = ler_json();
     $cfg = carregar_config($conn);
 
-    // ---------- itens ----------
+// Itens 
     $itensIn = $j["itens"] ?? [];
     if (!is_array($itensIn) || !count($itensIn) || count($itensIn) > 80) responder(["sucesso" => false, "mensagem" => "Seu carrinho está vazio."], 400);
     $pedido = [];
@@ -21,7 +21,7 @@
         $pedido[$id] = ($pedido[$id] ?? 0) + $qtd;
     }
 
-    // ---------- endereço ----------
+// Endereço 
     $e = is_array($j["endereco"] ?? null) ? $j["endereco"] : [];
     $rua = trim((string) ($e["rua"] ?? ""));
     $numero = trim((string) ($e["numero"] ?? ""));
@@ -38,7 +38,7 @@
     }
     $enderecoTxt = "$rua, $numero" . ($compl !== "" ? " - $compl" : "") . " - $bairro - $cidade/$uf - CEP " . substr($cep, 0, 5) . "-" . substr($cep, 5);
 
-    // ---------- forma de pagamento ----------
+// Forma de pagamento 
     $formaId = (int) ($j["forma_pagamento_id"] ?? 0);
     $st = $conn->prepare("SELECT nome FROM forma_pagamento WHERE id_forma_pagamento = :f");
     $st->execute([":f" => $formaId]);
@@ -70,7 +70,7 @@
         $conn->beginTransaction();
         $lock = sql_for_update($conn);
 
-        // Confere estoque e calcula o subtotal 
+    // Confere estoque e calcula o subtotal 
         $subtotal = 0.0;
         $linhas = [];
         $busca = $conn->prepare("SELECT id_estoque, nome_produto, preco, quantidade, ativo FROM estoque WHERE id_estoque = :id" . $lock);
@@ -92,7 +92,7 @@
         }
         $subtotal = round($subtotal, 2);
 
-        // Cupom, frete e total 
+    // Cupom, frete e total 
         $cupomIn = strtoupper(trim((string) ($j["cupom"] ?? "")));
         $desconto = 0.0;
         $cupomUsado = null;
@@ -116,6 +116,7 @@
                 responder(["sucesso" => false, "mensagem" => "O valor para troco precisa ser maior ou igual ao total do pedido."], 400);
             }
         }
+
     // Status e descrição do pagamento 
         $statusVenda = ["credito" => "Pago", "debito" => "Pago", "vale" => "Pago", "pix" => "Aguardando pagamento", "boleto" => "Aguardando pagamento", "dinheiro" => "Pagar na entrega"][$tipo];
         $detalhe = match ($tipo) {
@@ -127,11 +128,11 @@
             "dinheiro" => "Dinheiro na entrega" . ($troco ? " (troco para R$ " . number_format($troco, 2, ",", ".") . ")" : ""),
         };
 
-    // Grava venda, itens (o gatilho baixa o estoque) e envio
+    // Grava venda, itens (o gatilho baixa o estoque) e envio 
         $conn->prepare("INSERT INTO venda (cliente_id, preco_total, forma_pagamento_id, status_venda, subtotal, desconto, frete, cupom, endereco_entrega, pagamento_detalhe, parcelas, troco_para)
-                    VALUES (:c, :t, :f, :s, :sub, :d, :fr, :cu, :en, :pd, :pa, :tr)")
-        ->execute([":c" => $idCliente, ":t" => $total, ":f" => $formaId, ":s" => $statusVenda, ":sub" => $subtotal, ":d" => $desconto, ":fr" => $frete,
-                    ":cu" => $cupomUsado, ":en" => $enderecoTxt, ":pd" => $detalhe, ":pa" => $parcelas, ":tr" => $troco]);
+                        VALUES (:c, :t, :f, :s, :sub, :d, :fr, :cu, :en, :pd, :pa, :tr)")
+            ->execute([":c" => $idCliente, ":t" => $total, ":f" => $formaId, ":s" => $statusVenda, ":sub" => $subtotal, ":d" => $desconto, ":fr" => $frete,
+                        ":cu" => $cupomUsado, ":en" => $enderecoTxt, ":pd" => $detalhe, ":pa" => $parcelas, ":tr" => $troco]);
         $idVenda = (int) $conn->lastInsertId();
 
         $insItem = $conn->prepare("INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco_unitario) VALUES (:v, :p, :q, :pr)");
@@ -143,17 +144,17 @@
         $prazo = max(0, (int) $cfg["prazo_entrega_dias"]);
         $previsao = date("Y-m-d", strtotime("+$prazo day"));
         $conn->prepare("INSERT INTO envios (venda_id, status_envio, codigo_rastreio, previsao_entrega, observacoes) VALUES (:v, 'A enviar', :r, :p, :o)")
-        ->execute([":v" => $idVenda, ":r" => $rastreio, ":p" => $previsao, ":o" => $enderecoTxt]);
+             ->execute([":v" => $idVenda, ":r" => $rastreio, ":p" => $previsao, ":o" => $enderecoTxt]);
 
         $conn->commit();
     } catch(Throwable $ex){
         if ($conn->inTransaction()) $conn->rollBack();
         error_log("finalizar_pedido: " . $ex->getMessage());
         responder(["sucesso" => false, "mensagem" => "Não foi possível finalizar o pedido agora. Nada foi cobrado. Tente novamente."], 500);
-    } 
-    // E-mail depois de gravar: se falhar, o pedido continua valendo.
+    }
+// E-mail depois de gravar: se falhar, o pedido continua valendo.
     $emailStatus = "falhou";
-    try { $emailStatus = enviar_comprovante($conn, $idVenda, $idCliente); } catch (Throwable $ex) { error_log("comprovante: " . $ex->getMessage()); }
+    try{ $emailStatus = enviar_comprovante($conn, $idVenda, $idCliente); } catch (Throwable $ex) { error_log("comprovante: " . $ex->getMessage()); }
 
     $c = $conn->prepare("SELECT email FROM usuario_cliente WHERE id_cliente = :c");
     $c->execute([":c" => $idCliente]);

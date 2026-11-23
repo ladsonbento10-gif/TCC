@@ -1,4 +1,4 @@
-<?php
+<?php   
     // config_loja.php - configurações da loja (tabela `configuracao`), com valores padrão.
     // Usado pelo painel do administrador (Configurações) e pela loja do cliente.
 
@@ -22,17 +22,16 @@
 
     function carregar_config(PDO $conn): array {
         $cfg = config_padrao();
-        try {
+        try{
             $linhas = $conn->query("SELECT chave, valor FROM configuracao")->fetchAll(PDO::FETCH_KEY_PAIR);
             foreach ($linhas as $k => $v) {
-                if (array_key_exists($k, $cfg)) $cfg[$k] = (string) $v;
+                if(array_key_exists($k, $cfg)) $cfg[$k] = (string) $v;
             }
-        } catch (PDOException $e){
+        }catch(PDOException $e){
             // tabela ainda não criada: usa os valores padrão
         }
         return $cfg;
     }
-
 // Só o que a loja do cliente pode ver (nada de e-mail interno etc.)
     function config_publica(array $cfg): array {
         return [

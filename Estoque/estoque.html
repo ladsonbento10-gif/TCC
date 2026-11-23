@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produtos - Mercado KLP.NUNES</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../Administrador/admin.css">
     <link rel="stylesheet" href="estoque.css">
     <script src="../Administrador/admin_menu.js"></script>
-    <script src="estoque.js"></script>
+    <script src="estoque.js" defer></script>
 </head>
 <body>
 
@@ -38,7 +39,7 @@
     <main class="main-content">
 
         <header class="top-header">
-            <button id="menuToggle" class="menu-toggle"><i class="fas fa-bars"></i></button>
+            <button id="menuToggle" class="menu-toggle" aria-label="Abrir ou fechar o menu"><i class="fas fa-bars"></i></button>
             <div class="header-title">
                 <h1>Produtos</h1>
             </div>
@@ -50,148 +51,202 @@
             </div>
         </header>
 
-    <div class="content-body">
-        <div class="container">
-            <div class="abas">
-                <button class="aba" data-painel="categoria"> 📂 Categoria </button>
-                <button class="aba" data-painel="marca"> 🏷️ Marca </button>
-                <button class="aba ativa" data-painel="produto"> 📦 Cadastro de Produtos </button>
-                <button class="aba" data-painel="lista"> 📋 Lista de Produtos </button>
+        <div class="content-body">
+
+            <div class="abas" role="tablist" aria-label="Produtos, marcas e categorias">
+                <button type="button" class="aba" role="tab" data-painel="categoria">📂 Categorias <span class="aba-qtd" id="qtd-categoria"></span></button>
+                <button type="button" class="aba" role="tab" data-painel="marca">🏷️ Marcas <span class="aba-qtd" id="qtd-marca"></span></button>
+                <button type="button" class="aba ativa" role="tab" data-painel="produto">📦 Cadastro de Produtos</button>
+                <button type="button" class="aba" role="tab" data-painel="lista">📋 Lista de Produtos <span class="aba-qtd" id="qtd-lista"></span></button>
             </div>
 
-            <div class="card">
-                <section id="painel-produto" class="painel ativo">
-                    <div class="titulo">
-                        <h1>Cadastro de Produtos</h1>
-                        <p> Sistema de Controle de Estoque </p>
-                    </div>
-
-                    <div id="mensagem-produto"></div>
-
-                    <form id="form-produto">
-                        <input type="hidden" name="acao" value="salvar_produto">
-
-                        <div class="form-group">
-                            <label for="nome_produto"> Nome do Produto </label>
-                            <input type="text" id="nome_produto" name="nome_produto" placeholder="Digite o nome do produto" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="descricao"> Descrição </label>
-                            <input type="text" id="descricao" name="descricao" placeholder="Digite a descrição">
-                        </div>
-
-                        <div class="linha">
-                            <div class="form-group">
-                                <label for="marca_id"> Marca </label>
-
-                            <select id="marca_id" name="marca_id" required >
-                                <option value=""> Carregando marcas... </option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="categoria_id"> Categoria </label>
-
-                            <select id="categoria_id" name="categoria_id" required >
-                                <option value=""> Carregando categorias... </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="linha">
-                        <div class="form-group">
-                            <label for="quantidade"> Quantidade </label>
-                            <input type="number" id="quantidade" name="quantidade" min="0" value="0" required >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="preco"> Preço (R$) </label>
-                            <input type="number"id="preco" name="preco" step="0.01" min="0" placeholder="0,00" required >
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label> Status </label>
-                    
-                        <div class="status-group">
-                            <label class="toggle">
-                                <input type="checkbox" id="toggle-ativo" checked >
-                                <span class="toggle-slider"></span>
+            <!-- ===================== CATEGORIAS ===================== -->
+            <section id="painel-categoria" class="painel" data-tipo="categoria">
+                <div class="est-duas-colunas">
+                    <div class="est-card">
+                        <h2>Nova categoria</h2>
+                        <p class="est-sub">As categorias organizam a loja do cliente (ex.: Hortifruti, Bebidas, Limpeza).</p>
+                        <form class="form-simples" novalidate>
+                            <label class="est-campo">Nome da categoria *
+                                <input type="text" name="nome" maxlength="100" required placeholder="Ex.: Bebidas" autocomplete="off">
                             </label>
-
-                            <span class="status-label"> Produto
-                                <strong id="status-texto"> Ativo </strong>
-                            </span>
-                            <input type="hidden" name="ativo" id="ativo" value="1">
+                            <button type="submit" class="btn-primario">Adicionar categoria</button>
+                        </form>
+                    </div>
+                    <div class="est-card">
+                        <div class="est-cab-lista">
+                            <h2>Categorias cadastradas <span class="est-contagem" data-contagem></span></h2>
+                            <input type="search" class="est-busca" data-busca placeholder="Buscar categoria..." aria-label="Buscar categoria">
+                        </div>
+                        <div class="tabela-scroll">
+                            <table class="est-tabela">
+                                <thead><tr><th>Nome</th><th>Produtos</th><th>Ações</th></tr></thead>
+                                <tbody data-corpo><tr><td colspan="3" class="est-vazio">Carregando...</td></tr></tbody>
+                            </table>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn-principal"> Salvar Produto</button>
-                </form>
-            </section>
-
-            <section id="painel-marca" class="painel">
-
-                <div class="titulo">
-                    <h1>Cadastro de Marcas</h1>
-                    <p> Adicione novas marcas ao sistema </p>
-                </div>
-
-                <div id="mensagem-marca"></div>
-
-                <form id="form-marca">
-                    <input type="hidden" name="acao" value="salvar_marca">
-
-                    <div class="form-group">
-                        <label for="nome_marca"> Nome da Marca </label>
-                        <input type="text" id="nome_marca" name="nome" placeholder="Ex: Coca-Cola" required>
-                    </div>
-
-                    <button type="submit" class="btn-principal"> Salvar Marca </button>
-                </form>
-
-                <div class="lista-tags">
-                    <h3> Marcas cadastradas </h3>
-                    <div id="lista-marcas" class="tags"></div>
                 </div>
             </section>
 
-            <section id="painel-categoria" class="painel">
-                <div class="titulo">
-                    <h1>Cadastro de Categorias</h1>
-                    <p> Adicione novas categorias ao sistema </p>
-                </div>
-
-                <div id="mensagem-categoria"></div>
-
-                <form id="form-categoria">
-                    <input type="hidden" name="acao" value="salvar_categoria">
-
-                    <div class="form-group">
-                        <label for="nome_categoria"> Nome da Categoria </label>
-                        <input type="text" id="nome_categoria" name="nome" placeholder="Ex: Bebidas" required >
+            <!-- ===================== MARCAS ===================== -->
+            <section id="painel-marca" class="painel" data-tipo="marca">
+                <div class="est-duas-colunas">
+                    <div class="est-card">
+                        <h2>Nova marca</h2>
+                        <p class="est-sub">Cadastre a marca antes de cadastrar os produtos dela.</p>
+                        <form class="form-simples" novalidate>
+                            <label class="est-campo">Nome da marca *
+                                <input type="text" name="nome" maxlength="100" required placeholder="Ex.: Coca-Cola" autocomplete="off">
+                            </label>
+                            <button type="submit" class="btn-primario">Adicionar marca</button>
+                        </form>
                     </div>
-
-                    <button type="submit" class="btn-principal"> Salvar Categoria </button>
-                </form>
-
-                    <div class="lista-tags">
-                        <h3> Categorias cadastradas </h3>
-                        <div id="lista-categorias" class="tags"></div>
-                    </div>
-                </section>
-
-                <section id="painel-lista" class="painel">
-                    <div class="titulo">
-                        <h1> Lista de Produtos </h1>
-                        <p> Todos os produtos cadastrados e o estoque de cada um </p>
-                    </div>
-                    <div id="lista-produtos"></div>
-                </section>
+                    <div class="est-card">
+                        <div class="est-cab-lista">
+                            <h2>Marcas cadastradas <span class="est-contagem" data-contagem></span></h2>
+                            <input type="search" class="est-busca" data-busca placeholder="Buscar marca..." aria-label="Buscar marca">
+                        </div>
+                        <div class="tabela-scroll">
+                            <table class="est-tabela">
+                                <thead><tr><th>Nome</th><th>Produtos</th><th>Ações</th></tr></thead>
+                                <tbody data-corpo><tr><td colspan="3" class="est-vazio">Carregando...</td></tr></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+            </section>
+
+            <!-- ===================== CADASTRO DE PRODUTOS ===================== -->
+            <section id="painel-produto" class="painel ativo">
+                <div class="est-duas-colunas est-produto-grid">
+                    <div class="est-card">
+                        <h2>Cadastro de produto</h2>
+                        <p class="est-sub">Campos com * são obrigatórios. O produto só aparece na loja se estiver <strong>ativo</strong> e com <strong>estoque maior que zero</strong>.</p>
+                        <form id="form-produto" novalidate>
+                            <div class="est-campos" id="campos-novo"></div>
+                            <label class="est-manter"><input type="checkbox" id="manterSelecao"> Vou cadastrar vários: manter marca e categoria depois de salvar</label>
+                            <div class="est-botoes">
+                                <button type="submit" class="btn-primario">Salvar produto</button>
+                                <button type="button" class="btn-secundario" id="btnLimpar">Limpar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="est-lateral">
+                        <div class="est-card">
+                            <h3>Como vai aparecer na loja</h3>
+                            <div class="est-previa" id="previa"></div>
+                        </div>
+                        <div class="est-card">
+                            <h3>Últimos cadastrados</h3>
+                            <ul class="est-recentes" id="recentes"><li class="est-vazio">Carregando...</li></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== LISTA DE PRODUTOS ===================== -->
+            <section id="painel-lista" class="painel">
+                <div class="est-resumo" id="resumo"></div>
+
+                <div class="est-card">
+                    <div class="est-filtros">
+                        <input type="search" id="fBusca" placeholder="Buscar por nome, marca ou descrição..." aria-label="Buscar produto">
+                        <select id="fCategoria" aria-label="Filtrar por categoria"></select>
+                        <select id="fMarca" aria-label="Filtrar por marca"></select>
+                        <select id="fSituacao" aria-label="Filtrar por situação">
+                            <option value="">Todas as situações</option>
+                            <option value="ativos">Ativos na loja</option>
+                            <option value="inativos">Inativos</option>
+                            <option value="baixo">Estoque baixo</option>
+                            <option value="zerado">Sem estoque</option>
+                        </select>
+                        <select id="fOrdem" aria-label="Ordenar">
+                            <option value="recentes">Mais recentes</option>
+                            <option value="nome">Nome (A–Z)</option>
+                            <option value="estoque_asc">Menor estoque</option>
+                            <option value="estoque_desc">Maior estoque</option>
+                            <option value="preco_asc">Menor preço</option>
+                            <option value="preco_desc">Maior preço</option>
+                        </select>
+                        <button type="button" class="btn-secundario" id="fLimpar">Limpar filtros</button>
+                    </div>
+
+                    <div class="tabela-scroll">
+                        <table class="est-tabela">
+                            <thead>
+                                <tr><th>Produto</th><th>Marca</th><th>Categoria</th><th class="num">Estoque</th><th class="num">Preço</th><th>Na loja</th><th>Ações</th></tr>
+                            </thead>
+                            <tbody id="corpoProdutos"><tr><td colspan="7" class="est-vazio">Carregando produtos...</td></tr></tbody>
+                        </table>
+                    </div>
+                    <div class="est-paginacao" id="paginacao"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ===================== JANELAS ===================== -->
+    <div class="modal-overlay" id="modalNome" hidden>
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalNomeTitulo">
+            <div class="modal-head">
+                <h3 id="modalNomeTitulo">Nome</h3>
+                <button type="button" class="modal-close" data-fechar aria-label="Fechar"><i class="fas fa-times"></i></button>
             </div>
-        </main>
-    </body>
+            <form class="est-modal-corpo" id="formNome" novalidate>
+                <label class="est-campo"><span id="modalNomeRotulo">Nome</span>
+                    <input type="text" name="nome" maxlength="100" required autocomplete="off">
+                </label>
+                <p class="form-msg erro" id="modalNomeMsg" role="alert"></p>
+                <button type="submit" class="btn-primario" id="modalNomeBotao">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalProduto" hidden>
+        <div class="modal-box est-modal-largo" role="dialog" aria-modal="true" aria-labelledby="modalProdutoTitulo">
+            <div class="modal-head">
+                <h3 id="modalProdutoTitulo">Editar produto</h3>
+                <button type="button" class="modal-close" data-fechar aria-label="Fechar"><i class="fas fa-times"></i></button>
+            </div>
+            <form class="est-modal-corpo" id="formEditar" novalidate>
+                <input type="hidden" name="id_estoque">
+                <div class="est-campos" id="campos-editar"></div>
+                <p class="form-msg erro" id="modalProdutoMsg" role="alert"></p>
+                <div class="est-botoes">
+                    <button type="submit" class="btn-primario">Salvar alterações</button>
+                    <button type="button" class="btn-secundario" data-fechar>Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalRepor" hidden>
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalReporTitulo">
+            <div class="modal-head">
+                <h3 id="modalReporTitulo">Repor estoque</h3>
+                <button type="button" class="modal-close" data-fechar aria-label="Fechar"><i class="fas fa-times"></i></button>
+            </div>
+            <form class="est-modal-corpo" id="formRepor" novalidate>
+                <input type="hidden" name="id_estoque">
+                <p class="est-repor-produto" id="reporProduto"></p>
+                <label class="est-campo">Quantidade que chegou *
+                    <span class="est-stepper">
+                        <button type="button" data-passo="-10" aria-label="Menos 10">−10</button>
+                        <input type="number" name="quantidade" min="1" max="100000" value="10" required>
+                        <button type="button" data-passo="10" aria-label="Mais 10">+10</button>
+                    </span>
+                </label>
+                <label class="est-campo">Observação (opcional)
+                    <input type="text" name="observacao" maxlength="200" placeholder="Ex.: nota fiscal 1234">
+                </label>
+                <p class="est-repor-resultado" id="reporResultado"></p>
+                <p class="form-msg erro" id="modalReporMsg" role="alert"></p>
+                <button type="submit" class="btn-primario">Confirmar reposição</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="est-toasts" id="toasts" role="status" aria-live="polite"></div>
+</body>
 </html>

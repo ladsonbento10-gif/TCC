@@ -1,5 +1,5 @@
 <?php
-    // login.php - login único: entra como administrador ou como cliente, pelo e-mail e senha.
+// login.php - login único: entra como administrador ou como cliente, pelo e-mail e senha.
     session_start();
     include("../conexao_tcc.php");
 
@@ -58,6 +58,7 @@
                 ]);
             }
         }
+
         responder(["sucesso" => false, "mensagem" => "E-mail ou senha incorretos. Tente novamente."], 401);
     } catch(PDOException $e){
         error_log($e->getMessage());

@@ -1,5 +1,5 @@
 <?php
-    // cliente_comum.php - base dos arquivos PHP da loja do cliente (sessão, conexão, JSON).
+// cliente_comum.php - base dos arquivos PHP da loja do cliente (sessão, conexão, JSON).
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -16,7 +16,7 @@
         exit();
     }
 
-// Devolve o id do cliente logado ou responde 401.  
+// Devolve o id do cliente logado ou responde 401.
     function exigir_cliente(): int {
         if (empty($_SESSION['id_cliente'])) {
             responder(["sucesso" => false, "logado" => false, "mensagem" => "Faça login para continuar."], 401);

@@ -28,16 +28,14 @@
         if ($acao === "listar") {
             $funcionarios = $conn->query(
                 "SELECT f.id_funcionario, f.nome, f.cpf, f.email, f.telefone, f.data_nascimento, f.data_admissao,
-                f.salario, f.cargo_id, f.ativo, c.nome AS nome_cargo FROM funcionario f INNER JOIN cargo c ON f.cargo_id = c.id_cargo
-                ORDER BY f.ativo DESC, f.nome ASC"
+                f.salario, f.cargo_id, f.ativo, c.nome AS nome_cargo FROM funcionario f INNER JOIN cargo c 
+                ON f.cargo_id = c.id_cargo ORDER BY f.ativo DESC, f.nome ASC"
         )->fetchAll(PDO::FETCH_ASSOC);
-            $cargos = $conn->query("SELECT id_cargo, nome FROM cargo ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
-            responder(["sucesso" => true, "funcionarios" => $funcionarios, "cargos" => $cargos]);
+        $cargos = $conn->query("SELECT id_cargo, nome FROM cargo ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+        responder(["sucesso" => true, "funcionarios" => $funcionarios, "cargos" => $cargos]);
         }
 
-        if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            responder(["sucesso" => false, "mensagem" => "Método inválido."], 405);
-        }
+        if ($_SERVER["REQUEST_METHOD"] !== "POST") { responder(["sucesso" => false, "mensagem" => "Método inválido."], 405); }
 
         if ($acao === "alternar") {
             $id = (int) ($_POST["id"] ?? 0);
@@ -45,7 +43,7 @@
             $stmt = $conn->prepare("UPDATE funcionario SET ativo = IF(ativo = 1, 0, 1) WHERE id_funcionario = :id");
             $stmt->execute([":id" => $id]);
             responder(["sucesso" => true, "mensagem" => "Situação do funcionário atualizada."]);
-        }
+        }   
 
         if ($acao === "salvar") {
             $id         = (int) ($_POST["id"] ?? 0);
@@ -71,7 +69,7 @@
             $cargoOk->execute([":c" => $cargoId]);
             if (!(int) $cargoOk->fetchColumn()) responder(["sucesso" => false, "mensagem" => "Cargo inválido."], 400);
 
-        // CPF guardado no formato 000.000.000-00 (igual aos dados que já existem)
+            // CPF guardado no formato 000.000.000-00 (igual aos dados que já existem)
             $cpf = substr($cpfNum, 0, 3) . "." . substr($cpfNum, 3, 3) . "." . substr($cpfNum, 6, 3) . "-" . substr($cpfNum, 9, 2);
 
             $dup = $conn->prepare("SELECT COUNT(*) FROM funcionario WHERE (cpf = :cpf OR email = :email) AND id_funcionario <> :id");
@@ -89,16 +87,16 @@
             if ($id > 0) {
                 $dados[":id"] = $id;
                 $conn->prepare("UPDATE funcionario SET nome=:nome, cpf=:cpf, email=:email, telefone=:telefone, data_nascimento=:nasc,
-                            data_admissao=:adm, salario=:sal, cargo_id=:cargo, ativo=:ativo WHERE id_funcionario=:id")->execute($dados);
+                data_admissao=:adm, salario=:sal, cargo_id=:cargo, ativo=:ativo WHERE id_funcionario=:id")->execute($dados);
                 responder(["sucesso" => true, "mensagem" => "Funcionário atualizado com sucesso!"]);
             }
             $conn->prepare("INSERT INTO funcionario (nome, cpf, email, telefone, data_nascimento, data_admissao, salario, cargo_id, ativo)
-                        VALUES (:nome, :cpf, :email, :telefone, :nasc, :adm, :sal, :cargo, :ativo)")->execute($dados);
+            VALUES (:nome, :cpf, :email, :telefone, :nasc, :adm, :sal, :cargo, :ativo)")->execute($dados);
             responder(["sucesso" => true, "mensagem" => "Funcionário cadastrado com sucesso!"]);
-        }
+            }
 
         responder(["sucesso" => false, "mensagem" => "Ação inválida."], 400);
-    } catch (PDOException $e) {
+    } catch (PDOException $e){
         error_log($e->getMessage());
         responder(["sucesso" => false, "mensagem" => "Erro no banco de dados. Tente novamente."], 500);
     }

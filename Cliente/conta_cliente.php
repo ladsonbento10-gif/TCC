@@ -1,4 +1,4 @@
-<?php
+<?php   
     // conta_cliente.php - o cliente altera os próprios dados e a senha (de verdade, no banco).
     //   POST {acao:"dados", nome, email}
     //   POST {acao:"senha", atual, nova}
@@ -38,7 +38,7 @@
         }
 
         responder(["sucesso" => false, "mensagem" => "Ação inválida."], 400);
-    } catch(PDOException $e){
+    } catch (PDOException $e){
         error_log($e->getMessage());
         responder(["sucesso" => false, "mensagem" => "Erro ao salvar. Tente novamente."], 500);
     }

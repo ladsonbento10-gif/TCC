@@ -27,7 +27,7 @@ body{
     );
 }
 
-/* Decoração do Fundo */
+/* DECORAÇÃO DO FUNDO */
 
 .fundo-animado{
     position: fixed;
@@ -50,7 +50,7 @@ body{
     animation-iteration-count: infinite;
 }
 
-/* Posições dos Emojis */
+/* POSIÇÕES DOS EMOJIS */
 
 .fundo-animado span:nth-child(1){ top: 10%; left: 5%; }
 .fundo-animado span:nth-child(2){ top: 30%; left: 20%; }
@@ -95,7 +95,7 @@ body{
     100%{ transform: translate(0, 0) rotate(360deg) scale(1); }
 }
 
-/* Cabeçalho */
+/* CABEÇALHO */
 
 header{
     position: static;
@@ -140,7 +140,7 @@ header{
     color: rgba(255, 255, 255, 0.65);
 }
 
-/* Àrea Principal */
+/* ÁREA PRINCIPAL */
 
 main{
     position: relative;
@@ -153,7 +153,7 @@ main{
     padding: 30px 20px;
 }
 
-/* Painel Central */
+/* PAINEL CENTRAL */
 
 .container{
     position: relative;
@@ -192,7 +192,7 @@ main{
     margin-bottom: 28px;
     text-align: center;
 }
-/* Linha Administrador + Cliente */
+/* LINHA ADMINISTRADOR + CLIENTE */
 
 .linha{
     width: 100%;
@@ -211,7 +211,7 @@ main{
 .botao-cliente{
     flex: 0.9;
 }
-/* Botões*/
+/* BOTÕES */
 
 .botao{
     position: relative;
@@ -219,11 +219,13 @@ main{
     display: grid;
     grid-template-columns: 42px minmax(0, 1fr) 24px;
     align-items: center;
-    gap: 10px;   
+    gap: 10px;
+    
     width: 100%;
     min-width: 0;
     padding: 16px 18px;
     box-sizing: border-box;
+
     border-radius: 16px;
     text-decoration: none;
     transition: transform 0.2s ease, filter 0.2s ease;
@@ -260,11 +262,13 @@ main{
     font-weight: bold;
     color: white;
 }
+
 .botao-subtitulo{
     font-size: 12px;
     color: rgba(255, 255, 255, 0.75);
     white-space: nowrap;
 }
+
 .botao-seta{
     width: 24px;
     display: flex;
@@ -312,7 +316,7 @@ main{
     background: #3c6e52;
 }
 
-/* Rodapé*/
+/* RODAPÉ */
 
 footer{
     position: relative;
@@ -333,7 +337,7 @@ footer p{
     margin: 0;
 }
 
-/* Responsividade */
+/* RESPONSIVIDADE */
 
 @media (max-width: 700px){
 

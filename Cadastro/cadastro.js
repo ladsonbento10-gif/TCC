@@ -1,50 +1,93 @@
-// Cadastro - Administrador / Client / ViaCep
+// ======================================================
+// CADASTRO - ADMINISTRADOR / CLIENTE / VIACEP
+// ======================================================
+
 document.addEventListener("DOMContentLoaded", function () {
-    // Senha do Administrador
+
+    // ======================================================
+    // SENHA DO ADMINISTRADOR
+    // ======================================================
 
     var senhaAdmin = document.getElementById("senha");
     var olhoAdmin = document.getElementById("olho");
 
     if (senhaAdmin && olhoAdmin) {
+
         olhoAdmin.addEventListener("click", function () {
 
             if (senhaAdmin.type === "password") {
+
                 senhaAdmin.type = "text";
                 olhoAdmin.src = "olho_fechado.png";
                 olhoAdmin.style.opacity = "0.85";
+
             } else {
+
                 senhaAdmin.type = "password";
                 olhoAdmin.src = "olho.png";
                 olhoAdmin.style.opacity = "0.45";
+
             }
+
         });
+
     }
-    // Senha do Cliente
+
+
+    // ======================================================
+    // SENHA DO CLIENTE
+    // ======================================================
 
     var senhaCliente = document.getElementById("senha_cliente");
     var olhoCliente = document.getElementById("olho_cliente");
 
     if (senhaCliente && olhoCliente) {
+
         olhoCliente.addEventListener("click", function () {
+
             if (senhaCliente.type === "password") {
+
                 senhaCliente.type = "text";
                 olhoCliente.src = "olho_fechado.png";
                 olhoCliente.style.opacity = "0.85";
+
             } else {
+
                 senhaCliente.type = "password";
                 olhoCliente.src = "olho.png";
                 olhoCliente.style.opacity = "0.45";
+
             }
+
         });
+
     }
 
-    // ViaCep
 
-    var campoCep = document.querySelector('#campo_cliente input[name="cep"]');
-    var campoEndereco = document.querySelector('#campo_cliente input[name="endereco"]');
-    var campoBairro = document.querySelector('#campo_cliente input[name="bairro"]');
-    var campoCidade = document.querySelector('#campo_cliente input[name="cidade"]');
-    var campoEstado = document.querySelector('#campo_cliente input[name="estado"]');
+    // ======================================================
+    // VIACEP
+    // ======================================================
+
+    var campoCep = document.querySelector(
+        '#campo_cliente input[name="cep"]'
+    );
+
+    var campoEndereco = document.querySelector(
+        '#campo_cliente input[name="endereco"]'
+    );
+
+    var campoBairro = document.querySelector(
+        '#campo_cliente input[name="bairro"]'
+    );
+
+    var campoCidade = document.querySelector(
+        '#campo_cliente input[name="cidade"]'
+    );
+
+    var campoEstado = document.querySelector(
+        '#campo_cliente input[name="estado"]'
+    );
+
 
     if (campoCep) {
 
@@ -56,21 +99,38 @@ document.addEventListener("DOMContentLoaded", function () {
             // Limita o CEP para 8 números
             cep = cep.substring(0, 8);
 
-            // Máscara do cep
-         
-            if (cep.length > 5){
-                campoCep.value = cep.substring(0, 5) + "-" + cep.substring(5);
-            }else{
+
+            // ==================================================
+            // MÁSCARA DO CEP
+            // ==================================================
+
+            if (cep.length > 5) {
+
+                campoCep.value =
+                    cep.substring(0, 5) +
+                    "-" +
+                    cep.substring(5);
+
+            } else {
+
                 campoCep.value = cep;
+
             }
 
-            // Consultar Somente com 8 números
+
+            // ==================================================
+            // CONSULTA SOMENTE COM 8 NÚMEROS
+            // ==================================================
 
             if (cep.length !== 8) {
                 return;
             }
 
-        // Consulta ViaCep
+
+            // ==================================================
+            // CONSULTA VIACEP
+            // ==================================================
+
             fetch("https://viacep.com.br/ws/" + cep + "/json/")
 
                 .then(function (resposta) {
@@ -84,9 +144,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
 
                 .then(function (dados) {
-                    // Cep Não Encontrado
 
-                    if (dados.erro) { alert("CEP não encontrado.");
+
+                    // ==========================================
+                    // CEP NÃO ENCONTRADO
+                    // ==========================================
+
+                    if (dados.erro) {
+
+                        alert("CEP não encontrado.");
+
                         campoEndereco.value = "";
                         campoBairro.value = "";
                         campoCidade.value = "";
@@ -95,34 +162,65 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                     }
 
-                    // Prencher os Campos
 
-                    campoEndereco.value = dados.logradouro || "";
-                    campoBairro.value = dados.bairro || "";
-                    campoCidade.value = dados.localidade || "";
-                    campoEstado.value = dados.uf || "";
+                    // ==========================================
+                    // PREENCHER OS CAMPOS
+                    // ==========================================
+
+                    campoEndereco.value =
+                        dados.logradouro || "";
+
+                    campoBairro.value =
+                        dados.bairro || "";
+
+                    campoCidade.value =
+                        dados.localidade || "";
+
+                    campoEstado.value =
+                        dados.uf || "";
+
+
                 })
 
                 .catch(function (erro) {
+
                     console.error(
                         "Erro ao consultar o ViaCEP:",
                         erro
                     );
+
                 });
+
         });
+
     }
+
 });
 
-// Selecionar Administrador ou Clinte
+
+// ======================================================
+// SELECIONAR ADMINISTRADOR OU CLIENTE
+// ======================================================
 
 function selecionarTipo(tipo) {
 
-    var divAdmin = document.getElementById("campo_admin");
-    var divCliente = document.getElementById("campo_cliente");
-    var hidden = document.getElementById("tipo_hidden");
-    var tabs = document.querySelectorAll(".tab-btn");
+    var divAdmin =
+        document.getElementById("campo_admin");
 
-// Desabilitar Todos os Campos
+    var divCliente =
+        document.getElementById("campo_cliente");
+
+    var hidden =
+        document.getElementById("tipo_hidden");
+
+    var tabs =
+        document.querySelectorAll(".tab-btn");
+
+
+    // ======================================================
+    // DESABILITAR TODOS OS CAMPOS
+    // ======================================================
+
     document.querySelectorAll(
         "#campo_admin input, #campo_admin select, " +
         "#campo_cliente input, #campo_cliente select"
@@ -133,16 +231,30 @@ function selecionarTipo(tipo) {
 
     });
 
-// Esconder as duas áreas
+
+    // ======================================================
+    // ESCONDER AS DUAS ÁREAS
+    // ======================================================
+
     divAdmin.style.display = "none";
     divCliente.style.display = "none";
 
-// Remover Tab Ativa
+
+    // ======================================================
+    // REMOVER TAB ATIVA
+    // ======================================================
+
     tabs.forEach(function (botao) {
+
         botao.classList.remove("ativo");
 
     });
-// Administrador
+
+
+    // ======================================================
+    // ADMINISTRADOR
+    // ======================================================
+
     if (tipo === "administrador") {
 
         divAdmin.style.display = "block";
@@ -153,14 +265,23 @@ function selecionarTipo(tipo) {
             tabs[0].classList.add("ativo");
         }
 
+
         document.querySelectorAll(
             "#campo_admin input, #campo_admin select"
         ).forEach(function (campo) {
+
             campo.setAttribute("required", true);
             campo.disabled = false;
+
         });
+
     }
-// CLIENTE
+
+
+    // ======================================================
+    // CLIENTE
+    // ======================================================
+
     else if (tipo === "cliente") {
 
         divCliente.style.display = "block";
@@ -171,12 +292,16 @@ function selecionarTipo(tipo) {
             tabs[1].classList.add("ativo");
         }
 
+
         document.querySelectorAll(
             "#campo_cliente input, #campo_cliente select"
         ).forEach(function (campo) {
 
             campo.setAttribute("required", true);
             campo.disabled = false;
+
         });
+
     }
+
 }
